@@ -256,8 +256,8 @@
       .media-heading {
         width: 100%;
         padding: 15px;
-        color: black;
-        background-color: rgba(238, 238, 238, 0.603);
+        color: rgba(0, 0, 0, 0.8);
+        background-color: rgba(238, 238, 238, 0.303);
       }
 
       .xhx {
@@ -302,6 +302,12 @@
   transition: all 1s ease;
   
 }
+
+.media:hover{
+  background-color: #f8f8f8;
+}
+
+
 // 焦点hover 过渡效果  end
 
 .list-group[data-v-2be6cba0] {
