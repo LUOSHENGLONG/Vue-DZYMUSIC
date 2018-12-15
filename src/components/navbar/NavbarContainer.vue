@@ -56,7 +56,13 @@
           </li>
         </ul>
       </div><!-- /.navbar-collapse -->
+
+    
     </div><!-- /.container- -->
+      <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 10%;height: 3px"></div>
+    </div>
+    
     </nav>
 
   </div>
@@ -86,6 +92,13 @@
 .navbar {
     margin-bottom: 20px;
    
+}
+
+.progress {
+    height: 3px;
+    margin-bottom: 0;
+    border-radius: 4px;
+    background-color: #f8f8f8;
 }
 </style>
 
