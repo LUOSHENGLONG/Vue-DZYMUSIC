@@ -11,18 +11,19 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">DZYMUSIC</a>
+        <router-link class="navbar-brand" to="/">DZYMUSIC</router-link>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+          <!--  class="active" -->
+          <li><router-link to="/">首页 <span class="sr-only">(current)</span></router-link></li>
           <li><router-link to="/synth">合成器</router-link></li>
-          <li><a href="#">效果器</a></li>
-          <li><a href="#">采样包</a></li>
-          <li><a href="#">宿主</a></li>
-          <li><a href="#">教程</a></li>
+          <li><router-link to="/effects">效果器</router-link></li>
+          <li><router-link to="/sample">采样包</router-link></li>
+          <li><router-link to="/host">宿主</router-link></li>
+          <li><router-link to="/tutorial">教程</router-link></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">更多 <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -43,7 +44,7 @@
           <button type="submit" class="btn btn-primary">搜索</button>
         </form>
         <ul class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
-          <li><a href="#">用户名</a></li>
+          <li><router-link to="/user">用户名</router-link></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">设置 <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -59,9 +60,9 @@
 
     
     </div><!-- /.container- -->
-      <div class="progress">
+    <!-- <div class="progress">
       <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 10%;height: 3px"></div>
-    </div>
+    </div> -->
     
     </nav>
 
@@ -69,6 +70,8 @@
 </template>
 
 <script>
+
+
   export default {
     data() {
       return {
@@ -82,6 +85,7 @@
 </script>
 
 <style lang="scss" scoped>
+
 .form-control:focus {
     border-color: #F2F2F2;
     outline: 0;
@@ -98,6 +102,8 @@
     height: 3px;
     margin-bottom: 0;
     border-radius: 4px;
+    border: 0;
+
     background-color: #f8f8f8;
 }
 </style>

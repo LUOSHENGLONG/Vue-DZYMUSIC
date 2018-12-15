@@ -15,6 +15,9 @@
 </template>
 
 <script>
+
+import './lib/pace/js/pace.min.js'
+
 import Swiper from './components/swiper/SwiperContainer.vue'
 import Navbar from './components/navbar/NavbarContainer.vue'
 import Progress from './components/progress/ProgressContainer.vue'
@@ -75,9 +78,7 @@ export default {
 
 
 <style lang="scss" scoped>
-
-
-
+@import './lib/pace/css/pace-theme-minimal.css';
 
 a {
   text-decoration: none;

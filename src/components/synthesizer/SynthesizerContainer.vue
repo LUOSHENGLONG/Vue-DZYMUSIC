@@ -4,7 +4,7 @@
       <!--广告 -->
       <div class="col-sm-12 col-md-12 col-lg-12">
         <div class="ad">
-          123
+          合成器
         </div>
       </div>
       <!-- 合成器内容 -->
@@ -116,12 +116,33 @@
             </div>
           </div>
           
+          <!-- 分页 -->
+          <div class="pageNav">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li>
+                  <a href="#" aria-label="Previous">
+                    <span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span>
+                  </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                  <a href="#" aria-label="Next">
+                    <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
       <!-- 右侧数据排行 -->
       <div class="right col-sm-4 col-md-4 col-lg-4 hidden-xs">
         <div class="mediaRight">
-          
           <div class="list-group">
             <ul class="rightUl">
               <li>
@@ -143,16 +164,7 @@
                 </a>
               </li>
             </ul>
-            
           </div>
-
-          <div class="list-group">
-            <a href="#" class="list-group-item">
-              <h4 class="list-group-item-heading">Big EDM: EDM Halloween Festival</h4>
-              <p class="list-group-item-text hidden-xs hidden-sm">简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big</p>
-            </a>
-          </div>
-
         </div>
       </div>
 
@@ -226,30 +238,31 @@
   height: 100px;
   background-color: #aaa;
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin:15px 0;
 }
 
 .media {
   background-color: #fefefe;
-  padding: 15px;
   padding-bottom: 0;
   border-radius: 5px;
   border: 1px solid #eee;
   margin-bottom: 10px;
   .media-left {
+  padding: 0;
     
     a {
       text-decoration: none;
       color: rgba(0, 0, 0, 0.664);
       .media-heading {
-        padding-bottom: 6px;
+        width: 100%;
+        padding: 15px;
         color: black;
+        background-color: rgba(238, 238, 238, 0.603);
       }
 
       .xhx {
         width: 100%;
-        height: 2px;
-        background-color: #fcfcfc;
+        height: 3px;
       }
     }
     p {
@@ -261,7 +274,7 @@
       float: left;
       width: 200px;
       height: 140px;
-      margin: 10px 0 10px;
+      margin: 10px;
       vertical-align: middle;
     }
   }
@@ -273,22 +286,23 @@
   
 }
 
-
-
+// 焦点hover 过渡效果  start
 .media:hover {
-  box-shadow: 0 0 10px #eee inset, 0 0 20px #ccc;
-  background-color: #fefefe;
-  
-
-
+  box-shadow: 0 0 20px #eee inset, 0 0 20px #ccc;
 }
-
 
 .media:hover .xhx {
   background-color: #337ab7;
-
-  border: 1px solid #337ab7;
+  transform: translateX(0%);
+  transition: all 1s ease;
 }
+
+.media:hover img {
+  transform: scale(1.03,1.03);
+  transition: all 1s ease;
+  
+}
+// 焦点hover 过渡效果  end
 
 .list-group[data-v-2be6cba0] {
   padding-left: 0;
@@ -310,9 +324,10 @@
     border: none;
 }
 ul {
-  margin-left: 100px;
   text-align: end;
   vertical-align: middle;
+  padding: 15px;
+  padding-bottom: 0;
   li {
     list-style: none;
     display: inline-block;
@@ -342,16 +357,29 @@ ul {
   margin-bottom: 20px;
 }
 .rightUl {
-  margin-left: -40px;
+  padding-bottom: 10px;
   li {
     display: inline;
     border: none;
     a {
       display: block;
       border: none;
+      padding: 5px;
+      margin-bottom: 5px;
+      border-bottom: 1px solid #eee;
+      border-radius: 3px;
+      border-left: 5px solid #fff;
+
+    }
+    a:hover {
+      background-color: #fff;
+      border-bottom: 1px solid #fff;
+      border-left: 5px solid #337ab7;
+
     }
     h4 {
       text-align: left;
+      font-size: 18px;
     }
     p {
       text-align: left;
@@ -364,5 +392,35 @@ ul {
 .bottom {
   background-color: #eee;
 }
+
+// 分页
+.pageNav {
+  background-color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  .pagination {
+    padding: 0;
+    li {
+      height: 40px;
+      width: 50px;
+      padding: 0 3px;
+      a {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        font-size: 18px;
+          text-align: center;
+
+        span {
+          font-size: 18px;
+          padding: 0;
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+}
+
 </style>
 
