@@ -1,76 +1,175 @@
 <template>
   <div class="container">
-    <div class="user">
+    <div class="home">
       <div class="tagPage">
         <!-- Nav tabs -->
         <div class="rightBorder col-md-2 col-sm-2 col-xs-2 col-lg-2 hidden-xs">
           
-          <ul class="userInfo nav nav-tabs" role="tablist">
-            <p class="title"><span class="glyphicon glyphicon-asterisk"></span> 设置</p>
-            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">修改头像</a></li>
-            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">个人资料</a></li>
-            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">实名认证</a></li>
-            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">密码安全</a></li>
-            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">访问推广</a></li>
+          <ul class="homeInfo nav nav-tabs" role="tablist">
+            <p class="title"><span class="glyphicon glyphicon-user"></span> 设置</p>
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">个人信息</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">收藏夹</a></li>
           </ul>
         </div>
         <!-- Tab panes -->
         <div class="col-md-10 col-sm-10 col-xs-10 col-lg-10">
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="home">
-              <form>
+              <form class="form-userInfo">
                 <div class="form-group">
-                  <p>
-                    当前我的头像
-                      如果您还没有设置自己的头像，系统会显示为默认头像，您需要自己上传一张新照片来作为自己的个人头像
-                      设置我的新头像
-                      请选择一个新照片进行上传编辑。
-                      头像保存后，您可能需要刷新一下本页面(按F5键)，才能查看最新的头像效果
-                  </p>
-                  <label for="exampleInputEmail1">修改头像</label>
-                  <input type="file" class="form-control" id="exampleInputEmail1" placeholder="Email">
-                </div>
-                
-                <button type="submit" class="btn btn-default">保存</button>
-              </form>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="profile">
-              <form>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">用户名 </label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" readonly unselectable="on">
+                  <label for="exampleInputEmail1">用户名</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">性别</label>
-                  <select name="gender" id="gender" class="ps" tabindex="1">
-                    <option value="1">男</option>
-                    <option value="2">女</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">生日</label>
-                  <input type="text" class="form-control" id="birth" placeholder="date">
-
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">地区</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                  <label for="exampleInputEmail1">邮箱</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">手机号</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" maxlength="11" minlength="11">
+                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">邮箱地址</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                  <label for="exampleInputEmail1">注册时间</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
                 </div>
-                <div class="form-group mybtn">
-                  <button type="submit" class="btn btn-primary">保存</button>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">实名状态</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="未实名" disabled>
                 </div>
+                
               </form>
             </div>
-            <div role="tabpanel" class="tab-pane" id="messages">..messages.</div>
-            <div role="tabpanel" class="tab-pane" id="settings">.settings..</div>
+            <div role="tabpanel" class="tab-pane" id="profile">
+              <div class="userLike container hidden-xs ">
+                <div class="leftLike leftLike-first col-md-11 col-sm-11 col-xs-11 col-lg-11">
+                  <form action="#" class="form-search">
+                    <select name="sel" id="sel" class="form-control">
+                      <option value="synth">全站</option>
+                      <option value="synth">合成器</option>
+                      <option value="synth">采样包</option>
+                      <option value="synth">效果器</option>
+                      <option value="synth">教程</option>
+                      <option value="synth">宿主</option>
+                    </select>
+                    
+                    <input type="text" placeholder="请输入搜索内容" name="search"  class="form-control">
+                    <button class="btn btn-primary btn-search">搜索</button>
+                    <div class="divEdit hidden-sm">
+                     <button class="btn btn-danger btn-batch" @click="editBatch($event)">批量操作</button>
+                     <button ref="btnCancel" class="btn btn-danger btn-cancal" @click="cancal($event)">取消</button>
+
+                    </div>
+                  </form>
+
+                  <!-- <div class="row">
+                    <div class="col-lg-6">
+                      <div class="input-group">
+                        <div class="input-group-btn">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                          <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                          </ul>
+                        </div>
+                        <input type="text" class="form-control" aria-label="...">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                      </div>
+                    </div>
+                  </div> -->
+                </div>
+
+                <div class="rightEdit col-md-1 col-sm-1 col-xs-1 col-lg-1">
+                  <button ref="btnEdit" class="btn-edit btn btn-danger" disabled>操作</button>
+                  <button ref="btnDel" class="btn-del btn btn-danger">删除</button>
+                </div>
+              </div>
+
+              <div class="userLike container">
+                <div class="leftLike col-md-11 col-sm-11 col-xs-11 col-lg-11">
+                  <div class="media">
+                    <div class="media-body">
+                      <div class="media-left media-middle">
+                        <a href="#">
+                          <h4 class="media-heading">
+                            [万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival
+                          </h4>
+                          <div class="xhx"></div>
+                          <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
+                          <p class="hidden-xs hidden-sm">
+                          简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
+                          包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
+                          和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖
+                          </p>
+                        </a>
+                        <div class="info hidden-xs hidden-sm hidden-md">
+                          <ul class="jilu">
+                            <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
+                            <li><span class="glyphicon glyphicon-time"></span>两天前</li>
+                            <li><span class="glyphicon glyphicon-eye-open"></span> 120浏览 </li>
+                            <li><a href="#"><span class="glyphicon glyphicon-heart-empty"></span>59收藏</a></li>
+                          </ul>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="rightEdit col-md-1 col-sm-1 col-xs-1 col-lg-1">
+                  <form action="#" class="edit" ref="formEdit">
+                    <input ref="inputBox" id="color-input-red" type="checkbox" name="color-input-red" value="#f0544d" />
+                    <label ref="lab" for="color-input-red" class="glyphicon glyphicon-ok-sign"></label >
+                    <button ref="btnRm" type="button" class="glyphicon glyphicon-remove-circle" data-toggle="tooltip" data-placement="bottom" title="删除"></button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="userLike container">
+                <div class="leftLike col-md-11 col-sm-11 col-xs-11 col-lg-11">
+                  <div class="media">
+                    <div class="media-body">
+                      <div class="media-left media-middle">
+                        <a href="#">
+                          <h4 class="media-heading">
+                            [万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival
+                          </h4>
+                          <div class="xhx"></div>
+                          <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
+                          <p class="hidden-xs hidden-sm">
+                          简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
+                          包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
+                          和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖
+                          </p>
+                        </a>
+                        <div class="info hidden-xs hidden-sm hidden-md">
+                          <ul class="jilu">
+                            <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
+                            <li><span class="glyphicon glyphicon-time"></span>两天前</li>
+                            <li><span class="glyphicon glyphicon-eye-open"></span> 120浏览 </li>
+                            <li><a href="#"><span class="glyphicon glyphicon-heart-empty"></span>59收藏</a></li>
+                          </ul>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="rightEdit col-md-1 col-sm-1 col-xs-1 col-lg-1">
+                  <form action="#" class="edit" ref="formEdit">
+                    <input id="color-input-red" type="checkbox" name="color-input-red" value="#f0544d" />
+                    <label  for="color-input-red" class="glyphicon glyphicon-remove-circle"></label >
+                    <button type="button" class="glyphicon glyphicon-remove-circle" data-toggle="tooltip" data-placement="bottom" title="删除"></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            
           </div>
         </div>
       </div>
@@ -84,13 +183,60 @@ import laydate from '../../lib/laydate/laydate.js'
 laydate.render({
   elem: '#birth' //指定元素
 });
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+export default {
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+    del() {
+      this.$refs.formEdit.style.display="block"
+    },
+    editBatch(e) {
+      e.preventDefault()
+      this.$refs.btnCancel.style.display="block"
+      
+      this.$refs.btnEdit.style.display="none"
+      this.$refs.btnDel.style.display="block"
+      
+      this.$refs.btnRm.style.display="none"
+      this.$refs.inputBox.style.display="block"
+      this.$refs.lab.style.display="block"
+    },
+    cancal(e) {
+      e.preventDefault()
+      this.$refs.btnCancel.style.display="none"
+
+      this.$refs.btnEdit.style.display="block"
+      this.$refs.btnDel.style.display="none"
+      
+      this.$refs.btnRm.style.display="block"
+      this.$refs.lab.style.display="none"
+      this.$refs.inputBox.style.display="none"
+
+
+    }
+  }
+}
+
+
 </script>
+
+
 
 <style lang="scss" scoped>
 
 @import'../../lib/laydate/theme/default/laydate.css';
-
-.user {
+.container {
+  padding: 10px 0;
+}
+.home {
   width: 100%;
   height: 100%;
   margin: 15px 0;
@@ -99,7 +245,7 @@ laydate.render({
     height: 100%;
     padding: 20px 0;
     
-    ul.userInfo {
+    ul.homeInfo {
       display: block;
       border: 0;
       background-color: #fff;
@@ -150,10 +296,17 @@ laydate.render({
     border: 1px solid #ddd;
     border-bottom-color: transparent;
 }
-form {
+
+.tab-pane {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #eee;
+  background-color: #fff;
+  
+}
+form.form-userInfo {
   background-color: #fff;
   padding: 20px 50px;
-  border: 1px solid #ddd;
   div {
     margin: 10px 0;
   }
@@ -169,42 +322,244 @@ form {
     display: inline;
     max-width: 80%;
   }
-
-  
-}
-
-.mybtn {
-  width: 80%;
-  text-align: center;
-  margin: 20px;
-  margin-bottom: 0;
-  button {
-    width: 150px;
-    height: 40px;
+  input[disabled] {
+    background-color: #fff;
+    border: none;
+    box-shadow: none;
+    cursor: default;
   }
-}
-#home {
+
   
-  form {
-    .from-group {
-      input.form-control {
-        max-width: 200px;
-      }
-      .form-control:focus {
-        border-color: #3379b736; 
-      }
+}
+
+
+input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset;}
+
+ul.jilu {
+  text-align: right;
+  padding: 0 20px;
+  margin: 0;
+  li {
+    list-style: none;
+    display: inline;
+    padding: 0 5px;
+    span {
+      padding-right: 3px;
     }
   }
 }
 
+.media {
+  background-color: #fefefe;
+  padding-bottom: 0;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  .media-left {
+  padding: 0;
+    
+    a {
+      text-decoration: none;
+      color: rgba(0, 0, 0, 0.664);
+      .media-heading {
+        width: 100%;
+        padding: 10px;
+        color: rgba(0, 0, 0, 0.8);
+        background-color: rgba(238, 238, 238, 0.303);
+        font-size: 16px;
+        margin-bottom: 0px;
+      }
 
-.ps, select {
-    padding: 2px 8px 6px 16px;
+      .xhx {
+        width: 100%;
+        height: 3px;
+      }
+    }
+    p {
+      margin: 10px;
+      margin-bottom: 0;
+      padding-left: 170px;
+      color: rgba(0, 0, 0, 0.664);
+    }
+    img {
+      float: left;
+      width: 150px;
+      height: 100px;
+      margin: 10px;
+      vertical-align: middle;
+    }
+  }
 }
 
-.ps, select {
-    border: 1px solid #dfdfdf;
-    background: #fff url(https://www.7xaudio.com/template/comiis_nby/img/px.png) repeat-x 0 0;
-    box-shadow: 2px 2px 2px #f0f0f0 inset;
+.mediaRight{
+  background-color: #fefefe;
+  border-radius: 5px;
+  
 }
+
+// 焦点hover 过渡效果  start
+.media:hover {
+  box-shadow: 0 0 10px #eee inset, 0 0 10px #ccc;
+}
+
+.media:hover .xhx {
+  background-color: #337ab7;
+  transform: translateX(0%);
+  transition: all 0.5s ease;
+}
+
+.media:hover img {
+  transform: scale(1.03,1.03);
+  transition: all 1s ease;
+  
+}
+
+.media:hover{
+  form.edit {
+    background-color: #f8f8f8;
+  }
+}
+
+.row {
+  margin: 0 auto;
+  height: 100px;
+  .form-control {
+    width: 100px;
+    border-left: none
+  }
+}
+
+.userLike {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  padding-bottom: 0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  .leftLike.leftLike-first {
+    text-align: center;
+    .row {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      div {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        div {
+          width: auto;
+          height: 100%;
+          input {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+  .leftLike {
+    padding: 0;
+    .form-search {
+      float: right;
+      width: 100%;
+      vertical-align: bottom;
+      select {
+        display: inline-block;
+        width: auto;
+        padding: 0 2%;
+        margin: 3px 0;
+        height: 35px;
+        text-align: center;
+        text-align-last: center;
+        option {
+          text-align: center;
+          padding: 0 0 20px 0;
+        }
+      }
+      input {
+        margin: 3px 0;
+        display: inline-block;
+        width: auto;
+      }
+      button.btn-search {
+        margin-top: -2px;
+      }
+      div.divEdit {
+        float: right;
+        width: auto;
+        margin-top: 4px;
+        button.btn-batch {
+          margin-right: 5px;
+        }
+        button.btn-cancal {
+          float: right;
+          display: none;
+        }
+      }
+    }
+  }
+  .rightEdit {
+    width: 10%;
+    height: 100%;
+    text-align:center;
+    
+    form.edit {
+      padding: 0;
+      padding-bottom: 23px;
+      text-align: center;
+      //display: none;
+      button {
+        background-color: #fff;
+        border-radius: 50%;
+        border: none;
+        font-size: 36px;
+        padding: 0;
+
+      }
+      button:focus {
+        border: none;
+        outline: none;
+      }
+      button:hover {
+        color: #d43f3a;
+      }
+    }
+    button.btn-del {
+      display: none;
+    }
+  }
+}
+#color-input-red {
+  display: none;
+}
+#color-input-red +label{
+  display: none;
+  
+  cursor: pointer;
+  font-size: 36px;
+  margin: 0 10px;
+  
+}
+ 
+/*当input框为选中状态时，lable标签的样式，其中在css选择时，“：”表示当前input框的值，即checked；
+      该部分主要对显示的“对号”的大限居中方式，显示颜色进行了设置*/
+#color-input-red:checked +label::before{
+  color: #337ab7;
+  font-size: 36px;
+  margin: 0;
+
+}
+
+input[type=checkbox]{
+  visibility: hidden;
+  // display: none;
+}
+
+form.form-search {
+  display: inline;
+  
+}
+
+
 </style>

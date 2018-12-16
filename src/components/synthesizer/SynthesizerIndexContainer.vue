@@ -160,8 +160,8 @@ p {
 
 .content {
   background-color: #fff;
-  border-radius: 5px;
   padding: 10px 20px;
+  border: 1px solid #eee;
 }
 </style>
 

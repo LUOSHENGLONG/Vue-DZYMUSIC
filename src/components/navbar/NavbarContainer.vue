@@ -24,18 +24,8 @@
           <li><router-link to="/sample">采样包</router-link></li>
           <li><router-link to="/host">宿主</router-link></li>
           <li><router-link to="/tutorial">教程</router-link></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">更多 <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">合成器</a></li>
-              <li><a href="#">效果器</a></li>
-              <li><a href="#">采样包</a></li>
-              <li><a href="#">宿主</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#">Separated link</a></li>
-              
-            </ul>
-          </li>
+          <li><router-link to="/more">更多</router-link></li>
+         
         </ul>
         <form class="navbar-form navbar-left hidden-sm hidden-md hidden-xs">
           <div class="form-group">
@@ -44,17 +34,16 @@
           <button type="submit" class="btn btn-primary">搜索</button>
         </form>
         <ul class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
-          <li><router-link to="/user">用户名</router-link></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">设置 <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#">Separated link</a></li>
-            </ul>
+          <li>
+            <img src="../../images/tx.jpg" alt="..." class="img-circle">
           </li>
+          <li>
+            <router-link to="/user">用户名</router-link>
+          </li>
+          <li>
+            <router-link to="/setting">设置</router-link>
+          </li>
+          
         </ul>
       </div><!-- /.navbar-collapse -->
 
@@ -85,7 +74,11 @@
 </script>
 
 <style lang="scss" scoped>
-
+.img-circle {
+  width: 30px;
+  height: 30px;
+  margin: 10px 0;
+}
 .form-control:focus {
     border-color: #F2F2F2;
     outline: 0;

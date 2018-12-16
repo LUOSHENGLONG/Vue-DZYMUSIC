@@ -12,6 +12,7 @@ import SamplePackIndexContainer from './components/samplepack/SamplePackIndexCon
 import HostIndexContainer from './components/host/HostIndexContainer.vue'
 import HomeContainer from './components/home/HomeContainer.vue'
 import UserContainer from './components/user/UserContainer.vue'
+import SettingContainer from './components/setting/SettingContainer.vue'
 
 
 
@@ -29,6 +30,7 @@ var router = new VueRouter({
     {path: '/sampleindex', component: SamplePackIndexContainer},
     {path: '/hostindex', component: HostIndexContainer},
     {path: '/user', component: UserContainer},
+    {path: '/setting', component: SettingContainer},
 
   ]
 })

@@ -242,7 +242,7 @@
 }
 
 .media {
-  background-color: #fefefe;
+  background-color: #fff;
   padding-bottom: 0;
   border-radius: 5px;
   border: 1px solid #eee;
@@ -251,13 +251,17 @@
   padding: 0;
     
     a {
+      width: 100%;
+      height: 100%;
       text-decoration: none;
       color: rgba(0, 0, 0, 0.664);
       .media-heading {
         width: 100%;
-        padding: 15px;
+        padding: 10px;
         color: rgba(0, 0, 0, 0.8);
         background-color: rgba(238, 238, 238, 0.303);
+        margin-bottom: 0;
+        font-size: 16px;
       }
 
       .xhx {
@@ -266,14 +270,14 @@
       }
     }
     p {
-      margin: 15px;
+      margin: 10px;
       padding-left: 200px;
       color: rgba(0, 0, 0, 0.664);
     }
     img {
       float: left;
-      width: 200px;
-      height: 140px;
+      width: 180px;
+      height: 110px;
       margin: 10px;
       vertical-align: middle;
     }
@@ -288,8 +292,14 @@
 
 // 焦点hover 过渡效果  start
 .media:hover {
-  box-shadow: 0 0 20px #eee inset, 0 0 20px #ccc;
+  box-shadow: 0 0 10px #eee inset, 0 0 10px #ccc;
+  background-color: #fff;
 }
+.media:hover h4{
+  background-color: #fff;
+
+}
+
 
 .media:hover .xhx {
   background-color: #337ab7;
@@ -303,9 +313,6 @@
   
 }
 
-.media:hover{
-  background-color: #f8f8f8;
-}
 
 
 // 焦点hover 过渡效果  end
@@ -332,8 +339,9 @@
 ul {
   text-align: end;
   vertical-align: middle;
-  padding: 15px;
+  padding: 0 10px;
   padding-bottom: 0;
+  margin-bottom: 0;
   li {
     list-style: none;
     display: inline-block;
@@ -341,14 +349,16 @@ ul {
     height: 25px;
     text-align: center;
     color: rgba(0, 0, 0, 0.5);
+    font-size: 14px;
     a {
       display: inline-block;
       font-size: 14px;
-      
+      color: rgba(0, 0, 0, 0.5);
       span {
         font-size: 14px;
         padding-left: 5px;
         padding-right: 3px;
+        color: rgba(0, 0, 0, 0.5);
       }
     }
     span {
@@ -364,19 +374,25 @@ ul {
 }
 .rightUl {
   padding-bottom: 10px;
+  border: 1px solid #eee;
+  li:last-child a{
+    border-bottom: 1px solid #fff;
+  }
   li {
-    display: inline;
+    display: inline-block;
     border: none;
+    padding-top: 10px;
+    width: 100%;
+    height: 100%;
     a {
       display: block;
       border: none;
       padding: 5px;
-      margin-bottom: 5px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid rgba(238, 238, 238, 0.603);
       border-radius: 3px;
       border-left: 5px solid #fff;
-
     }
+    
     a:hover {
       background-color: #fff;
       border-bottom: 1px solid #fff;
@@ -400,10 +416,16 @@ ul {
 }
 
 // 分页
+.pageNav:hover {
+  background-color: rgba(241, 241, 241, 0.1);
+
+}
+
 .pageNav {
   background-color: #fff;
   text-align: center;
   border-radius: 5px;
+  border: 1px solid rgba(204, 204, 204, 0.397);
   .pagination {
     padding: 0;
     li {
