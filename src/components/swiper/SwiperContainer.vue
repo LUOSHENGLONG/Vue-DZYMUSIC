@@ -11,8 +11,8 @@
         <div class="swiper-pagination"></div>
         3
         <!-- 如果需要导航按钮 -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev" @click="prev()"></div>
+        <div class="swiper-button-next" @click="next()"></div>
         
         <!-- 如果需要滚动条 -->
         <!-- <div class="swiper-scrollbar"></div> -->
@@ -54,7 +54,13 @@
     this.mySwiper = mySwiper
   },
   methods: {
-    
+    prev() {
+      this.mySwiper.slidePrev();
+    },
+    next() {
+      this.mySwiper.slideNext();
+
+    }
   }
 };
 </script>
