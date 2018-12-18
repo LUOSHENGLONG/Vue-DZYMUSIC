@@ -17,8 +17,6 @@
   <!-- 首页 教程模块 -->
   <TutorialIndexContainer></TutorialIndexContainer>
   
-  <!--底部 copyright-->
-  <Bottom></Bottom>
   </div>
 
 </template>

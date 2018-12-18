@@ -1,11 +1,10 @@
 <template>
-  <div class="samplePackContainer">
-    SamplePackContainer
+   <div class="synthesizerContainer">
+    <EachContainer></EachContainer>
   </div>
-    
 </template>
 <script>
-
+import EachContainer from '../sub/EachContainer.vue'
   export default {
     data() {
       return {
@@ -16,12 +15,13 @@
       
     },
     components: {
+      EachContainer
     }
   }
 </script>
 <style lang="scss" scoped>
-.bottom {
-  background-color: #eee;
-}
+
+
+
 </style>
 

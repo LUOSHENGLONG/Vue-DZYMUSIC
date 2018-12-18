@@ -1,13 +1,10 @@
 <template>
-  <div class="hostContainer">
-    HostContainer
+   <div class="synthesizerContainer">
+    <EachContainer></EachContainer>
   </div>
-    
 </template>
 <script>
-  import Navbar from '../navbar/NavbarContainer.vue'
-  import Bottom from '../bottom/BottomContainer.vue'
-
+import EachContainer from '../sub/EachContainer.vue'
   export default {
     data() {
       return {
@@ -18,14 +15,13 @@
       
     },
     components: {
-      Navbar,
-      Bottom
+      EachContainer
     }
   }
 </script>
 <style lang="scss" scoped>
-.bottom {
-  background-color: #eee;
-}
+
+
+
 </style>
 

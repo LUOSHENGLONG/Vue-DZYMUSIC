@@ -3,7 +3,7 @@
     <div class="container">
       <div class="content">
         <div class="title">
-          <a href="#"><p>合成器</p></a>
+          <a href="#"><p>采样包</p></a>
           <a href="#"><p>更多</p></a>
         </div>
         <div class="row">
@@ -160,8 +160,8 @@ p {
 
 .content {
   background-color: #fff;
-  border-radius: 5px;
   padding: 10px 20px;
+  border: 1px solid #eee;
 }
 </style>
 
