@@ -33,6 +33,7 @@ import Progress from './components/progress/ProgressContainer.vue'
 import Bottom from './components/bottom/BottomContainer.vue'
 import Login from './components/login/LoginContainer.vue'
 import Signup from './components/signup/SignupContainer.vue'
+import Info from './components/sub/InfoContainer.vue'
 
 
 import SynthesizerIndexContainer from './components/synthesizer/SynthesizerIndexContainer.vue'
@@ -190,6 +191,7 @@ export default {
     Bottom,
     Login,
     Signup,
+    Info,
     SynthesizerIndexContainer,
     EffectsIndexContainer,
     SamplePackIndexContainer,

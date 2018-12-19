@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <!--广告 -->
-      <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="ad-container col-sm-12 col-md-12 col-lg-12">
         <div class="ad">
           合成器
         </div>
@@ -9,24 +9,27 @@
       <!-- 合成器内容 -->
       <div class="left col-sm-8 col-md-8 col-lg-8">
         <div class="mediaLeft">
-
-          <div class="media">
+          <div class="media" v-for="item of pageData" :key="item.id">
             <div class="media-body">
               <div class="media-left media-middle">
-                <a href="#">
+                <div class="Content">
                   <h4 class="media-heading">
-                    [万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival
+                    <a href="#" @click="label($event)" class="label">合成器</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <router-link  :to="`/`+item.type+`/info/`+item.id">
+                      {{ item.title }}
+                    </router-link>
+                    
                   </h4>
                   <div class="xhx"></div>
                   <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
                   <p class="hidden-xs hidden-sm">
-                  简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
-                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
-                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖
+                      {{ item.content }}
+                      <a href="#">继续阅读</a>
                   </p>
-                </a>
+                </div>
                 <div class="info hidden-xs hidden-sm hidden-md">
-                  <ul>
+                  <ul class="message">
                     <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
                     <li><span class="glyphicon glyphicon-time"></span>两天前</li>
                     <li><span class="glyphicon glyphicon-eye-open"></span>120浏览</li>
@@ -36,84 +39,7 @@
             </div>
             </div>
           </div>
-          <div class="media">
-            <div class="media-body">
-              <div class="media-left media-middle">
-                <a href="#">
-                  <h4 class="media-heading">
-                    [万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival
-                  </h4>
-                  <div class="xhx"></div>
-                  <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
-                  <p class="hidden-xs hidden-sm">
-                  简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
-                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
-                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖
-                  </p>
-                </a>
-                <div class="info hidden-xs hidden-sm hidden-md">
-                  <ul>
-                    <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
-                    <li><span class="glyphicon glyphicon-time"></span>两天前</li>
-                    <li><span class="glyphicon glyphicon-eye-open"></span>120浏览</li>
-                    <li><a href="#"><span class="glyphicon glyphicon-heart-empty"></span>59收藏</a></li>
-                  </ul>
-                </div>
-            </div>
-            </div>
-          </div>
-          <div class="media">
-            <div class="media-body">
-              <div class="media-left media-middle">
-                <a href="#">
-                  <h4 class="media-heading">
-                    [万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival
-                  </h4>
-                  <div class="xhx"></div>
-                  <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
-                  <p class="hidden-xs hidden-sm">
-                  简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
-                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
-                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖
-                  </p>
-                </a>
-                <div class="info hidden-xs hidden-sm hidden-md">
-                  <ul>
-                    <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
-                    <li><span class="glyphicon glyphicon-time"></span>两天前</li>
-                    <li><span class="glyphicon glyphicon-eye-open"></span>120浏览</li>
-                    <li><a href="#"><span class="glyphicon glyphicon-heart-empty"></span>59收藏</a></li>
-                  </ul>
-                </div>
-            </div>
-            </div>
-          </div>
-          <div class="media">
-            <div class="media-body">
-              <div class="media-left media-middle">
-                <a href="#">
-                  <h4 class="media-heading">
-                    [万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival
-                  </h4>
-                  <div class="xhx"></div>
-                  <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
-                  <p class="hidden-xs hidden-sm">
-                  简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
-                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
-                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖
-                  </p>
-                </a>
-                <div class="info hidden-xs hidden-sm hidden-md">
-                  <ul>
-                    <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
-                    <li><span class="glyphicon glyphicon-time"></span>两天前</li>
-                    <li><span class="glyphicon glyphicon-eye-open"></span>120浏览</li>
-                    <li><a href="#"><span class="glyphicon glyphicon-heart-empty"></span>59收藏</a></li>
-                  </ul>
-                </div>
-            </div>
-            </div>
-          </div>
+          
           
           <!-- 分页 -->
           <div class="pageNav">
@@ -143,66 +69,45 @@
       <div class="right col-sm-4 col-md-4 col-lg-4 hidden-xs">
         <div class="mediaRight">
           <div class="list-group">
+            <span class="hot-logo glyphicon glyphicon-stats"></span>
+            <span class="hot-title">&nbsp;下载热度排行</span>
             <ul class="rightUl">
-              <li>
+              <li v-for="(item, index) of rankData" :key="item.id">
                 <a href="#" class="list-group-item">
-                  <h4 class="list-group-item-heading">Big EDM: EDM Halloween Festival</h4>
-                  <p class="list-group-item-text hidden-xs hidden-sm">简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big</p>
+                  <span class="rank-num">{{ index+1 }}. </span>
+                  <span class="rank-title">{{ item.title }}</span>
                 </a>
               </li>
-              <li>
-                <a href="#" class="list-group-item">
-                  <h4 class="list-group-item-heading">Big EDM: EDM Halloween Festival</h4>
-                  <p class="list-group-item-text hidden-xs hidden-sm">简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big</p>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="list-group-item">
-                  <h4 class="list-group-item-heading">Big EDM: EDM Halloween Festival</h4>
-                  <p class="list-group-item-text hidden-xs hidden-sm">简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big</p>
-                </a>
-              </li>
+              
             </ul>
           </div>
         </div>
       </div>
-
+      
       <div class="right col-sm-4 col-md-4 col-lg-4 hidden-xs">
         <div class="mediaRight">
-          
           <div class="list-group">
             <ul class="rightUl">
               <li>
                 <a href="#" class="list-group-item">
                   <h4 class="list-group-item-heading">Big EDM: EDM Halloween Festival</h4>
-                  <p class="list-group-item-text hidden-xs hidden-sm">简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big</p>
                 </a>
               </li>
               <li>
                 <a href="#" class="list-group-item">
                   <h4 class="list-group-item-heading">Big EDM: EDM Halloween Festival</h4>
-                  <p class="list-group-item-text hidden-xs hidden-sm">简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big</p>
                 </a>
               </li>
               <li>
                 <a href="#" class="list-group-item">
                   <h4 class="list-group-item-heading">Big EDM: EDM Halloween Festival</h4>
-                  <p class="list-group-item-text hidden-xs hidden-sm">简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big</p>
                 </a>
               </li>
             </ul>
-            
           </div>
-
-          <div class="list-group">
-            <a href="#" class="list-group-item">
-              <h4 class="list-group-item-heading">Big EDM: EDM Halloween Festival</h4>
-              <p class="list-group-item-text hidden-xs hidden-sm">简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big</p>
-            </a>
-          </div>
-
         </div>
       </div>
+      
     </div>
 </template>
 <script>
@@ -210,12 +115,81 @@
     data() {
       return {
         pageData: [
+          {
+            id:"1",
+            type: "synth", 
+            title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
+            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
+                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
+                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预加恐怖`},
+          {
+            id:"2",
+            type: "effects", 
+            title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
+            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
+                  包含超过 500 MB。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
+                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖`},
+          {
+            id:"3",
+            type: "sample", 
+            title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
+            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
+                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
+                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖`},
+          {
+            id:"4",
+            type: "host", 
+            title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
+            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Bi。
+                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
+                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖`},
+          {
+            id:"5",
+            type: "tutorial", 
+            title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
+            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
+                  包含超过 500 MB 的内容和糖果以及超过 280 个文这个包更加恐怖`},
           
+          
+         
+        ],
+        rankData: [
+          {
+            id:"11",
+            title:"Big EDM: EDM Halloween FestivalFestien Festien Festival"
+          },
+          {
+            id:"22",
+            title:"Big EDM: EDM Halloween FestivalFestien Festien Festival"
+          },
+          {
+            id:"33",
+            title:"Big EDM: EDM Halloween FestivalFestien Festien Festival"
+          },
+          {
+            id:"44",
+            title:"Big EDM: EDM Halloween Festien Festien Festival"
+          },{
+            id:"55",
+            title:"Big EDM: EDM Halloween Festien Festien Festival"
+          },{
+            id:"66",
+            title:"Big EDM: EDM Halloween Festien Festien Festival"
+          },{
+            id:"77",
+            title:"Big EDM: EDM Halloween Festien Festien Festival"
+          },{
+            id:"88",
+            title:"Big EDM: EDM Halloween Festien Festien Festival"
+          },
         ]
       }
     },
     methods: {
-      
+      label(e) {
+        e.preventDefault();
+        console.log(1111111)
+      }
     },
     components: {
     }
@@ -225,231 +199,280 @@
 
 
 
-.synthesizerContainer {
-  margin: 20px 0;
-}
 .container {
   padding: 0;
-}
-
-
-.ad {
-  width: 100%;
-  height: 100px;
-  background-color: #aaa;
-  border-radius: 5px;
-  margin:15px 0;
-}
-
-.media {
-  background-color: #fff;
-  padding-bottom: 0;
-  border-radius: 5px;
-  border: 1px solid #eee;
-  margin-bottom: 10px;
-  .media-left {
-  padding: 0;
-    
-    a {
+  //广告内容
+  .ad-container {
+    .ad {
       width: 100%;
-      height: 100%;
-      text-decoration: none;
-      color: rgba(0, 0, 0, 0.664);
-      .media-heading {
-        width: 100%;
-        padding: 10px;
-        color: rgba(0, 0, 0, 0.8);
-        background-color: rgba(238, 238, 238, 0.303);
-        margin-bottom: 0;
-        font-size: 16px;
-      }
-
-      .xhx {
-        width: 100%;
-        height: 3px;
-      }
-    }
-    p {
-      margin: 10px;
-      padding-left: 200px;
-      color: rgba(0, 0, 0, 0.664);
-    }
-    img {
-      float: left;
-      width: 180px;
-      height: 110px;
-      margin: 10px;
-      vertical-align: middle;
+      height: 100px;
+      background-color: #aaa;
+      border-radius: 5px;
+      margin:15px 0;
     }
   }
-}
-
-.mediaRight{
-  background-color: #fefefe;
-  border-radius: 5px;
-  
-}
-
-// 焦点hover 过渡效果  start
-.media:hover {
-  box-shadow: 0 0 10px #eee inset, 0 0 10px #ccc;
-  background-color: #fff;
-}
-.media:hover h4{
-  background-color: #fff;
-
-}
-
-
-.media:hover .xhx {
-  background-color: #337ab7;
-  transform: translateX(0%);
-  transition: all 1s ease;
-}
-
-.media:hover img {
-  transform: scale(1.03,1.03);
-  transition: all 1s ease;
-  
-}
-
-
-
-// 焦点hover 过渡效果  end
-
-.list-group[data-v-2be6cba0] {
-  padding-left: 0;
-  margin-bottom: 1px;
-  background-color: #fff;
-}
-
-.list-group[data-v-2be6cba0][data-v-2be6cba0] {
-  padding-left: 0;
-  margin-bottom: 1px;
-  background-color: #fff;
-
-}
-
-.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
-    z-index: 2;
-    color: rgba(0, 0, 0, 0.664);
-    background-color: #fff; 
-    border: none;
-}
-ul {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0 10px;
-  padding-bottom: 0;
-  margin-bottom: 0;
-  li {
-    list-style: none;
-    display: inline-block;
-    width: 80px;
-    height: 25px;
-    text-align: center;
-    color: rgba(0, 0, 0, 0.5);
-    font-size: 14px;
-    a {
-      display: inline-block;
-      font-size: 14px;
-      color: rgba(0, 0, 0, 0.5);
-      span {
-        font-size: 14px;
-        padding-left: 5px;
-        padding-right: 3px;
-        color: rgba(0, 0, 0, 0.5);
-      }
-    }
-    span {
-        font-size: 14px;
-        padding-left: 5px;
-        padding-right: 3px;
-      }
-  }
-}
-.mediaRight {
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-.rightUl {
-  padding-bottom: 10px;
-  border: 1px solid #eee;
-  li:last-child a{
-    border-bottom: 1px solid #fff;
-  }
-  li {
-    display: inline-block;
-    border: none;
-    padding-top: 10px;
-    width: 100%;
-    height: 100%;
-    a {
-      display: block;
-      border: none;
-      padding: 5px;
-      border-bottom: 1px solid rgba(238, 238, 238, 0.603);
-      border-radius: 3px;
-      border-left: 5px solid #fff;
-    }
-    
-    a:hover {
-      background-color: #fff;
-      border-bottom: 1px solid #fff;
-      border-left: 5px solid #337ab7;
-
-    }
-    h4 {
-      text-align: left;
-      font-size: 18px;
-    }
-    p {
-      text-align: left;
-
-    }
-  }
-}
-
-
-.bottom {
-  background-color: #eee;
-}
-
-// 分页
-.pageNav:hover {
-  background-color: rgba(241, 241, 241, 0.1);
-
-}
-
-.pageNav {
-  background-color: #fff;
-  text-align: center;
-  border-radius: 5px;
-  border: 1px solid rgba(204, 204, 204, 0.397);
-  .pagination {
-    padding: 0;
-    margin: 15px 0;
-    li {
-      height: 40px;
-      width: 50px;
-      padding: 0 3px;
-      a {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
+  //页面左边 显示数据
+  .left {
+    .mediaLeft {
+      .media {
+        background-color: #fff;
+        padding-bottom: 0;
         border-radius: 5px;
-        font-size: 18px;
-          text-align: center;
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+        .media-body {
+          position: relative;
+          .media-left {
+            padding: 0;
+            .Content:hover {
+              .media-heading {
+                color: rgb(43, 101, 151);
+              }
+            }
+            //发布内容详细信息 发布标题 内容 图片
+            .Content {
+              width: 100%;
+              height: 100%;
+              text-decoration: none;
+              color: rgba(0, 0, 0, 0.664);
+              .media-heading {
+                width: 100%;
+                padding: 10px;
+                color: #337AB7;
+                background-color: rgba(238, 238, 238, 0.303);
+                margin-bottom: 0;
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 20px;
+                .label {
+                  background-color: #C71D24;
+                  display: inline-block;
+                  color: #fff;
+                  position: absolute;
+                  width: 50px;
+                  height: 21px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  line-height: 16px;
+                  text-align: center;
+                  padding: 2px;
+                  border: 0;
+                }
+                .label:hover {
+                  background-color: rgb(221, 40, 46);
 
-        span {
-          font-size: 18px;
+                }
+                a {
+                  text-decoration: none;
+                }
+              }
+              .xhx {
+                width: 100%;
+                height: 3px;
+              }
+            }
+            //发布详细信息 发布人 发布时间 收藏数 
+            .info {
+              .message {
+                text-align: right;
+                vertical-align: middle;
+                padding: 0 10px;
+                padding-bottom: 0;
+                margin-bottom: 0;
+                position: absolute;
+                right: 15px;
+                bottom: 0px;
+                li {
+                  list-style: none;
+                  display: inline-block;
+                  width: 80px;
+                  height: 25px;
+                  text-align: center;
+                  color: rgba(0, 0, 0, 0.5);
+                  font-size: 14px;
+                  a {
+                    display: inline-block;
+                    font-size: 14px;
+                    color: rgba(0, 0, 0, 0.5);
+                    span {
+                      font-size: 14px;
+                      padding-left: 5px;
+                      padding-right: 3px;
+                      color: rgba(0, 0, 0, 0.5);
+                    }
+                  }
+                  span {
+                    font-size: 14px;
+                    padding-left: 5px;
+                    padding-right: 3px;
+                  }
+                }
+              }             
+            }
+            p {
+              margin: 10px;
+              padding-left: 200px;
+              color: rgba(0, 0, 0, 0.664);
+            }
+            img {
+              float: left;
+              width: 180px;
+              height: 110px;
+              margin: 10px;
+              vertical-align: middle;
+            }
+          }  
+        }
+        
+      }
+      // 焦点hover 过渡效果 
+      .media:hover {
+        box-shadow: 0 0 10px #eee inset, 0 0 10px #ccc;
+        background-color: #fff;
+        .xhx {
+          background-color: #337ab7;
+          transform: translate(0);
+          transition: all .8s linear;
+        }
+        h4{
+          background-color: #fff;
+        }
+        img {
+          transform: scale(1.03,1.03);
+          transition: all 1s ease;
+        }
+      }
+      // 分页 过渡效果  
+      .pageNav:hover {
+        box-shadow: 0 0 10px #eee, 0 0 20px rgba(238, 238, 238, 0.575) inset;
+      }
+      //分页
+      .pageNav {
+        background-color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid rgba(204, 204, 204, 0.397);
+        .pagination {
           padding: 0;
-          margin-top: 3px;
+          margin: 15px 0;
+          text-align: right;
+          vertical-align: middle;
+          padding: 0 10px;
+          padding-bottom: 0;
+          li {
+            height: 40px;
+            width: 50px;
+            padding: 0 3px;
+            list-style: none;
+            display: inline-block;
+            text-align: center;
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 14px;
+            a {
+              display: inline-block;
+              width: 100%;
+              height: 100%;
+              border-radius: 5px;
+              font-size: 18px;
+                text-align: center;
+
+              span {
+                font-size: 18px;
+                padding: 0;
+                margin-top: 3px;
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+  //页面左边显示排行情况
+  .right {
+    .mediaRight{
+      background-color: #fefefe;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      .list-group {
+        padding-left: 0;
+        margin-bottom: 1px;
+        background-color: #fff;
+        .hot-logo, .hot-title {
+          margin: 20px 5px 0 20px;
+          font-size: 22px;
+        }
+        .hot-logo {
+          color: #d9534f;
+        }
+        .hot-title {
+          margin-left: 0;
+          font-weight: 700;
+          color: rgba(0, 0, 0, 0.7);
+        }
+        .rightUl {
+          padding: 10px;
+          padding-top: 0;
+          li:last-child a{
+            border-bottom: 1px solid #fff;
+          }
+          li {
+            display: inline-block;
+            border: none;
+            padding-top: 10px;
+            width: 100%;
+            height: 100%;
+            a {
+              display: block;
+              border: none;
+              padding: 5px;
+              border-radius: 3px;
+              border-left: 5px solid #fff;
+              position: relative;
+              line-height: 20px;
+              overflow:hidden;
+              .rank-title {
+                color: rgba(0, 0, 0, 0.8);
+                font-size: 18px;
+                word-wrap: none;
+                white-space:pre;
+                position: absolute;
+                left: 35px;
+                top:5px;
+              }
+              .rank-num {
+                font-size: 26px;
+                color: #337ab7;
+                font-weight: 700;
+                display: inline-block;
+              }
+            }
+            .a.active, .a.active:focus, .a.active:hover {
+                z-index: 2;
+                color: rgba(0, 0, 0, 0.664);
+                background-color: #fff; 
+                border: none;
+            }
+            a:hover {
+              background-color: #fff;
+              border-left: 5px solid #337ab7;
+            }
+            h4 {
+              text-align: left;
+              font-size: 18px;
+            }
+            p {
+              text-align: left;
+            }
+          }
         }
       }
     }
   }
 }
+
+
+
 
 </style>
 

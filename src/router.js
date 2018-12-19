@@ -36,7 +36,7 @@ var router = new VueRouter({
     {path: '/setting', component: SettingContainer},
     {path: '/login', component: LoginContainer},
     {path: '/each', component: EachContainer},
-    {path: '/info:id', component: InfoContainer},
+    {path: '/:type/info/:id', component: InfoContainer, name:"info"},
 
   ]
 })
