@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="home">
+    <div class="home"  :style="{minHeight: minHeight + 'px'}">
       <div class="tagPage">
         <!-- Nav tabs -->
         <div class="rightBorder col-md-2 col-sm-2 col-xs-2 col-lg-2 hidden-xs">
@@ -17,24 +17,24 @@
             <div role="tabpanel" class="tab-pane active" id="home">
               <form class="form-userInfo">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">用户名</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
+                  <label for="userName">用户名</label>
+                  <input type="text" class="form-control" id="userName" placeholder="Email" disabled>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">邮箱</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
+                  <label for="email">邮箱</label>
+                  <input type="text" class="form-control" id="email" placeholder="Email" disabled>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">手机号</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
+                  <label for="phone">手机号</label>
+                  <input type="text" class="form-control" id="phone" placeholder="Email" disabled>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">注册时间</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
+                  <label for="createTime">注册时间</label>
+                  <input type="text" class="form-control" id="createTime" placeholder="Email" disabled>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">实名状态</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="未实名" disabled>
+                  <label for="status">实名状态</label>
+                  <input type="text" class="form-control" id="status" placeholder="未实名" disabled>
                 </div>
                 
               </form>
@@ -61,27 +61,6 @@
 
                     </div>
                   </form>
-
-                  <!-- <div class="row">
-                    <div class="col-lg-6">
-                      <div class="input-group">
-                        <div class="input-group-btn">
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                          <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                          </ul>
-                        </div>
-                        <input type="text" class="form-control" aria-label="...">
-                        <span class="input-group-btn">
-                          <button class="btn btn-default" type="button">Go!</button>
-                        </span>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
 
                 <div class="rightEdit col-md-1 col-sm-1 col-xs-1 col-lg-1">
@@ -171,7 +150,14 @@ export default {
           title: "[3万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival"
         }
         ],
-      batchData: []
+      batchData: [],
+      minHeight: 0
+    }
+  },
+  mounted() {
+    this.minHeight = document.documentElement.clientHeight - 160
+    window.onresize = () =>　{
+      this.minHeight = document.documentElement.clientHeight - 160
     }
   },
   methods: {
@@ -264,6 +250,7 @@ export default {
 .home {
   margin: 0;
   border-radius: 5px;
+  max-width: 100%;
   .tagPage {
     height: 100%;
     padding: 20px 0;

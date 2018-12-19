@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container"  :style="{minHeight: minHeight + 'px'}">
     <div class="setting">
       <div class="tagPage">
         <!-- Nav tabs -->
@@ -120,9 +120,26 @@
 <script>
 import laydate from '../../lib/laydate/laydate.js'
 
-laydate.render({
-  elem: '#birth' //指定元素
-});
+
+
+export default {
+  data() {
+    return {
+      minHeight: 0,
+    }
+  },
+  mounted() {
+    this.minHeight = document.documentElement.clientHeight - 160
+    window.onresize = () =>　{
+      this.minHeight = document.documentElement.clientHeight - 160
+    }
+
+    //初始化日历插件
+    laydate.render({
+      elem: '#birth' //指定元素
+    });
+  },
+}
 </script>
 
 <style lang="scss" scoped>

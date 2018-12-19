@@ -25,7 +25,7 @@
                         <div class="control-col">
                             <button class="btn btn-primary btn-lg btn-login" type="submit" name="bnt">登&nbsp;&nbsp;&nbsp;录</button>
                             
-                            <div class="rows-forget"><span class="pull-left">没有秒嘀帐号？<a href="/register.html" class="zhuce-href" shape="rect">立即注册</a></span><a href="/reg/forget-pwd" target="_blank" class="forger-pas" shape="rect">忘记密码</a></div>
+                            <div class="rows-forget"><span class="pull-left">没有帐号？<a href="#" @click="goSignup($event)" class="zhuce-href">立即注册</a></span><a href="/reg/forget-pwd" target="_blank" class="forger-pas">忘记密码</a></div>
                         </div>
                     </div>
                 </form>
@@ -47,7 +47,12 @@ export default {
   methods: {
     cancel() {
       this.$emit("cancel")
-    }
+    },
+    goSignup(e) {
+        e.preventDefault();
+        this.$emit("signup")
+    },
+    
   }
    
 }
@@ -139,12 +144,12 @@ export default {
                     }
                     .btn-login {
                         width: 100%;
-                        margin-top: 10px;
+                        margin-top: 0;
                         font-size: 14px;
                     }
                     .btn-primary {
-                        background-color: #ef5b54;
-                        border-color: #ef5b54;
+                        background-color: #337ab7;
+                        border-color: #337ab7;
                     }
                     .btn-lg, .btn-group-lg > .btn {
                         padding: 10px 16px;

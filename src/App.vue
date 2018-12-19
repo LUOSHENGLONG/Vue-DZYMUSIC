@@ -1,5 +1,5 @@
 <template>
-  <div ref="all" class="all" @touchmove.prevent>
+  <div ref="all" class="all">
     <!-- 顶部栏 --> 
     <Navbar @showLogin="showLoginDiv" @showSignup="showSignupDiv"></Navbar>
     <!--进度条-->
@@ -9,8 +9,10 @@
     
     <!--底部 copyright-->
     <div ref="login" class="login">
-      <Login v-if="isLogin" @cancel="cancelLogin()"></Login>
-      <Signup v-if="isSignup"  @cancel="cancelSignup()"></Signup>
+      <transition name="fade">
+      <Login v-if="isLogin" @cancel="cancelLogin()" @signup="switchSignup()"></Login>
+      <Signup v-if="isSignup"  @cancel="cancelSignup()" @login="switchLogin()"></Signup>
+      </transition>
     </div>
     
 
@@ -49,7 +51,6 @@ export default {
       username: "",
       password: "",
       mySwiper: {},
-      fullHeight: document.documentElement.clientHeight,
       isLogin: false,
       isSignup: false,
       top: 0 ,
@@ -57,30 +58,38 @@ export default {
   },
   mounted() {
     window.onresize = () => {
+      this.auto()
+      console.log(document.documentElement.clientHeight)
+    
+    },
+    window.onscroll = () => {
+      this.auto()
+    }
+    
+  }
+  ,
+  methods: {
+    
+    auto() {
       let divlogin = this.$refs.login
       // div宽度
       let divWidth = divlogin.offsetWidth
       // 浏览器宽度
       let docWidth = document.documentElement.clientWidth
-      // 设置top
+      // 设置left
       this.$refs.login.style.left = docWidth/2 - divWidth/2 + "px"
-    },
-    window.onscroll = () => {
-      let divlogin = this.$refs.login
-      // div高度
+
+       // div高度
       let divHeight = divlogin.offsetHeight
       // 屏幕滚出高度
       let srcollHeight = $('html,body').scrollTop()
       // 浏览器高度
       let docHeight = document.documentElement.clientHeight
       // 设置left
-      this.$refs.login.style.top = srcollHeight+docHeight/2-divHeight/1.5 + "px"
-
-    }
-    
-  },
- 
-  methods: {
+      this.top = srcollHeight+docHeight/2-divHeight/2
+      
+      this.$refs.login.style.top = this.top + "px"
+    },
     register() {
       this.$http
         .post(
@@ -96,13 +105,7 @@ export default {
           console.log(result);
         });
     },
-    handleScroll () {
-      window.addEventListener('scroll', this.handleScroll)
-      
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      console.log("-----"+scrollTop)
-      
-    },
+    
     //显示登录div 遮罩层
     showLoginDiv() {
       this.isLogin = true
@@ -118,7 +121,7 @@ export default {
       // 浏览器宽度
       let docWidth = document.documentElement.clientWidth
       // 设置top
-      this.$refs.login.style.top = srcollHeight+docHeight/2-divHeight/1.5 + "px"
+      this.$refs.login.style.top = srcollHeight+docHeight/2-divHeight/2 + "px"
       // 设置left
       this.$refs.login.style.left = docWidth/2 - divWidth/2 + "px"
       //遮罩层 显示
@@ -149,8 +152,9 @@ export default {
       // 浏览器宽度
       let docWidth = document.documentElement.clientWidth
       // 设置top
-      this.top = srcollHeight+docHeight/2-divHeight/1.5
-      this.$refs.login.style.top = this.top
+      this.top = srcollHeight+docHeight/2-divHeight/2
+      
+      this.$refs.login.style.top = this.top + "px"
       console.log(this.top+" top")
       // 设置left
       this.$refs.login.style.left = docWidth/2 - divWidth/2 + "px"
@@ -168,8 +172,17 @@ export default {
       this.isSignup = false
     },
 
-    
+    switchSignup() {
+      this.isLogin = false
+      this.isSignup = true 
+    },
+    switchLogin() {
+      this.isLogin = true
+      this.isSignup = false 
+
+    }
   },
+  
   components: {
     Swiper,
     Navbar,
@@ -202,8 +215,15 @@ div.popContainer{
     display: none;
     z-index: 33;
 }
-
-
+.all {
+  overflow-x: hidden;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 
 
 .login {
