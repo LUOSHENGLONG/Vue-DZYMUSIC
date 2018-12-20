@@ -10,7 +10,7 @@
                     <div class="form-group first-group">
                         <!-- <label class="col-xs-12 control-label" for="username">邮箱 / 手机</label> -->
                         <div class="control-col rel">
-                            <input type="text" class="form-control" autocomplete="off" maxlength="32" name="email" id="email" placeholder="请输入注册邮箱 / 手机" v-model="email">
+                            <input ref="email" type="text" class="form-control" autocomplete="off" maxlength="32" name="email" id="email" placeholder="请输入注册邮箱 / 手机" v-model="email">
                             <b class="abs-icon first-abs-icon"><img src="../../images/people-icon.png" alt=""></b>
                             <span ref="emailErrorTips" class="glyphicon glyphicon-remove error-tips email-error-tips" @mouseout="hiddenEmailErrorDiv()" @mouseover="showEmailErrorDiv()"></span>
                             <span ref="emailSuccessTips" class="glyphicon glyphicon-ok success-tips email-success-tips"></span>
@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <!-- <label class="col-xs-12 control-label" for="password">密码</label> -->
                         <div class="control-col rel">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" maxlength="16" v-model="password">
+                            <input type="password" ref="password" class="form-control" id="password" name="password" placeholder="请输入密码" maxlength="16" v-model="password">
                             <b class="abs-icon"><img src="../../images/password-icon.png" alt=""></b>
                             <span ref="passwordErrorTips" class="glyphicon glyphicon-remove error-tips password-error-tips" @mouseout="hiddenPasswordErrorDiv()" @mouseover="showPasswordErrorDiv()"></span>
                             <span ref="passwordSuccessTips" class="glyphicon glyphicon-ok success-tips password-success-tips"></span>
@@ -33,7 +33,7 @@
                         <!-- <label class="col-xs-12 control-label" for="password">密码</label> -->
                         <div class="control-col rel">
                             <input type="password" class="form-control" id="CAPTCHA" name="passwd" placeholder="请输入验证码" maxlength="16" v-model="CAPTCHA">
-                            <button type="button" class="btn-CAPTCHA btn btn-default disabled" @click="sendCode($event)">发送验证码</button>
+                            <button ref="btnCAPTCHA" type="button" class="btn-CAPTCHA btn btn-default" @click="sendCode($event)">发送验证码</button>
                             <span class="glyphicon glyphicon-remove error-tips CAPTCHA-error-tips"></span>
                             <span class="glyphicon glyphicon-ok success-tips CAPTCHA-success-tips"></span>
                         </div>
@@ -62,7 +62,10 @@ export default {
         password: "",
         CAPTCHA: "",
         message: "",
-        isRegister: false
+        isRegister: false,
+        confirmEmailOrPhone: false,
+        confirmPassword: false,
+        confirmCAPTCHA: false,
     }
   },
   mounted() {
@@ -78,11 +81,49 @@ export default {
     },
     sendCode(e) {
         e.preventDefault();
-        console.log('124')
+        if(this.confirmEmailOrPhone === false) {
+            const email = this.$refs.email
+            $(email).focus();
+            this.showEmailErrorDiv();
+            window.setTimeout( () => {
+                this.hiddenEmailErrorDiv()
+            },3000)
+            return
+        }
+
+        if(this.confirmPassword === false) {
+            $(this.$refs.password).focus();
+            this.showPasswordErrorDiv();
+            
+            window.setTimeout( () => {
+                this.hiddenPasswordErrorDiv()
+            },3000)
+            
+            return
+        }
+        console.log("可以发送验证码")
+        const bnt = this.$refs.btnCAPTCHA
+        //发送验证码后禁用button 120秒后才能再次发送
+        
+        $(bnt).attr("disabled",true)
+        let i = 120
+
+        const timeOut = window.setInterval(() => {
+            $(bnt).text(`已发送 `+ i-- +`秒`)
+        },1000)
+
+        window.setTimeout( () => {
+            window.clearInterval(timeOut)
+            $(bnt).attr("disabled",false)
+            $(bnt).text(`发送验证码`)
+
+        },121000)
+
     },
+    
     summit() {
         if(this.isRegister === false) {
-            console.log(this.$refs.errorAnimate)
+            console.log("11")
         }
     },
     showEmailErrorDiv() {
@@ -117,11 +158,15 @@ export default {
         //验证邮箱不匹配
         if( !emailConfirm.test(newVal) ) {
             //验证邮箱不匹配 验证是否为手机号码
+            this.confirmEmailOrPhone = false
+            this.isRegister = false
             if( !phoneConfirm.test(newVal) ){
                 //邮箱和手机号码都不正确
                 this.$refs.emailSuccessTips.style.visibility = "hidden"
                 this.$refs.emailErrorTips.style.visibility = "visible"
                 this.message = "邮箱或手机号码格式错误"
+                this.confirmEmailOrPhone = false
+                this.isRegister = false
             }else {
                 //手机号码格式正确
                 this.$refs.emailSuccessTips.style.visibility = "visible"
@@ -129,20 +174,25 @@ export default {
                 this.message = ""
                 //设置是否可以注册提交
                 this.isRegister = true
+                this.confirmEmailOrPhone = true
             }
 
         }else {
-        //手机号码格式正确
+        //邮箱格式正确
             this.$refs.emailErrorTips.style.visibility = "hidden"
             this.$refs.emailSuccessTips.style.visibility = "visible"
             this.message = ""
             //设置是否可以注册提交
             this.isRegister = true
+            this.confirmEmailOrPhone = true
         }
         //
         if(newVal === "" || newVal.length === 0) {
-        this.$refs.emailErrorTips.style.visibility = "hidden"
-        this.$refs.emailSuccessTips.style.visibility = "hidden"
+            this.$refs.emailErrorTips.style.visibility = "hidden"
+            this.$refs.emailSuccessTips.style.visibility = "hidden"
+            this.isRegister = false
+            this.confirmEmailOrPhone = false
+            this.message = "表单未完整填写"
         }
     },
     password( newVal, oldVal ) {
@@ -154,7 +204,8 @@ export default {
             this.$refs.passwordErrorTips.style.visibility = "visible"
             this.message = "密码必须包含字母和数字且不低于八位数"
             //设置是否可以注册提交
-            this.isRegister = false    
+            this.isRegister = false
+            this.confirmPassword = false    
         }else{
         //密码格式正确 必须包含字母和数字 不少于8位数
             this.$refs.passwordErrorTips.style.visibility = "hidden"
@@ -162,13 +213,31 @@ export default {
             this.message = ""
             //设置是否可以注册提交
             this.isRegister = true
+            this.confirmPassword = true    
         }
         //
         if(newVal === "" || newVal.length === 0) {
-        this.$refs.emailErrorTips.style.visibility = "hidden"
-        this.$refs.emailSuccessTips.style.visibility = "hidden"
+            this.$refs.passwordErrorTips.style.visibility = "hidden"
+            this.$refs.passwordSuccessTips.style.visibility = "hidden"
+            this.message = "表单未完整填写"
+            this.isRegister = false
+            this.confirmPassword = false  
         }
     },
+    isRegister(newVal, oldVal) {
+        if(newVal === true) {
+        }
+    },
+    confirmPassword(newVal, oldVal) {
+        if ( newVal === true ) {
+                this.hiddenPasswordErrorDiv()
+        }
+    },
+    confirmEmailOrPhone(newVal, oldVal) {
+        if (newVal === true ) {
+            this.hiddenEmailErrorDiv()
+        }
+    }
     
   }
    

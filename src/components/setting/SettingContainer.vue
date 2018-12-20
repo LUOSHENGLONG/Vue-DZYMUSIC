@@ -15,7 +15,7 @@
           </ul>
         </div>
         <!-- Tab panes -->
-        <div class="col-md-10 col-sm-10 col-xs-10 col-lg-10">
+        <div class="Tab col-md-10 col-sm-10 col-xs-10 col-lg-10">
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="home">
               <form>
@@ -147,6 +147,12 @@ export default {
 @import'../../lib/laydate/theme/default/laydate.css';
 .container {
   padding: 10px 0;
+}
+.rightBorder {
+  padding: 0;
+}
+.Tab {
+  padding-right: 0;
 }
 .setting {
   width: 100%;

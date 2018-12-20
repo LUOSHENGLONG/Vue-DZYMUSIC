@@ -93,7 +93,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+.container {
+  padding: 0;
+}
 .img-circle {
   width: 30px;
   height: 30px;

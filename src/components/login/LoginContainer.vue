@@ -21,9 +21,14 @@
                             <b class="abs-icon"><img src="../../images/password-icon.png" alt=""></b>
                         </div>
                     </div>
+
+                    <transition name="fade">
+                        <div ref="TipsDiv" @click="tips" class="tipsDiv alert alert-danger alert-dismissible fade in">{{ message }}</div>
+                    </transition>
+
                     <div class="form-group">
                         <div class="control-col">
-                            <button class="btn btn-primary btn-lg btn-login" type="submit" name="bnt">登&nbsp;&nbsp;&nbsp;录</button>
+                            <button class="btn btn-primary btn-lg btn-login" type="button" name="bnt" @click="post()">登&nbsp;&nbsp;&nbsp;录</button>
                             
                             <div class="rows-forget"><span class="pull-left">没有帐号？<a href="#" @click="goSignup($event)" class="zhuce-href">立即注册</a></span><a href="/reg/forget-pwd" target="_blank" class="forger-pas">忘记密码</a></div>
                         </div>
@@ -39,6 +44,9 @@
 export default {
   data() {
     return {
+        message: "账号或密码错误,点击返回登录",
+        confirmLogin: false,
+        loginTimes: 0 ,
     }
   },
   mounted() {
@@ -52,6 +60,25 @@ export default {
         e.preventDefault();
         this.$emit("signup")
     },
+    post() {
+        console.log(11)
+        if( this.confirmLogin === false ) {
+            this.loginTimes++
+            
+            const tip = this.$refs.TipsDiv
+            if(this.loginTimes > 3) {
+                $(tip).text("连续三次登入错误,请15分钟后再试")
+            }
+            tip.style.display = "block"
+            window.setTimeout(()=> {
+                tip.style.display = "none"
+            },3000)
+        }
+    },
+    tips() {
+        const tip = this.$refs.TipsDiv
+        tip.style.display = "none"
+    }
     
   }
    
@@ -59,6 +86,18 @@ export default {
 </script>
 <style lang="scss" scoped>
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: none;
+}
+
+input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 .login-form {
     z-index: 33;
     overflow: hidden;
@@ -117,6 +156,24 @@ export default {
         }
         .form-bd {
             .form-horizontal {
+                
+                .tipsDiv {
+                    height: 46px;
+                    width: 288px;
+                    line-height: 46px;
+                    position: absolute;
+                    background-color: #c9302c;
+                    border: none;
+                    left: 30px;
+                    top: 233px;
+                    margin: 0;
+                    padding: 0;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    display: none;
+                    color: #fff;
+                    cursor: pointer;
+                }
                 .form-group {
                     margin: 0 0 15px;
                     .rel {
@@ -178,6 +235,7 @@ export default {
                         color: #676a6c;
                     }
                 }
+                
             }
         }
     }

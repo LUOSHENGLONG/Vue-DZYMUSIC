@@ -12,7 +12,7 @@
           </ul>
         </div>
         <!-- Tab panes -->
-        <div class="col-md-10 col-sm-10 col-xs-10 col-lg-10">
+        <div class="Tab col-md-10 col-sm-10 col-xs-10 col-lg-10">
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="home">
               <form class="form-userInfo">
@@ -247,6 +247,9 @@ export default {
   padding: 0;
   
 }
+.Tab {
+  padding-right: 0;
+}
 .home {
   margin: 0;
   border-radius: 5px;
@@ -346,7 +349,9 @@ form.form-userInfo {
 
   
 }
-
+.rightBorder {
+  padding: 0;
+}
 
 input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset;}
 

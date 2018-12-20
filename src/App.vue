@@ -206,6 +206,19 @@ export default {
 
 <style lang="scss" scoped>
 @import './lib/pace/css/pace-theme-minimal.css';
+
+
+body, textarea, input, select, section {
+    color: rgb(68, 68, 68);
+    font-size: 14px;
+    line-height: 1.8;
+    font-weight: normal;
+    font-family: "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    margin: 0px;
+    padding: 0px;
+}
+
 // 遮罩层
 div.popContainer{
     position: fixed;
