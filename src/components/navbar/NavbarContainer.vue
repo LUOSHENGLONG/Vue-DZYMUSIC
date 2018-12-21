@@ -111,11 +111,24 @@
 .navbar {
     margin-bottom: 20px;
     z-index: 1;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.9);
    
 }
 
-
+ul li {
+  font-size: 18px;
+  a {
+    padding: 5px;
+    margin: 10px;
+    margin-bottom: 6px;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.9);
+    color: #34495ed5 !important;
+    font-weight: 700;
+  }
+  a:hover {
+    border-bottom: 3px solid #337ab7;
+  }
+}
 .progress {
     height: 3px;
     margin-bottom: 0;

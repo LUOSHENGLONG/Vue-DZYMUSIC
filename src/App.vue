@@ -27,6 +27,7 @@
 
 import './lib/pace/js/pace.min.js'
 
+
 import Swiper from './components/swiper/SwiperContainer.vue'
 import Navbar from './components/navbar/NavbarContainer.vue'
 import Progress from './components/progress/ProgressContainer.vue'
@@ -206,7 +207,8 @@ export default {
 
 <style lang="scss" scoped>
 @import './lib/pace/css/pace-theme-minimal.css';
-
+@import './asset/css/buttons.css';
+@import './asset/css/font-awesome.min.css';
 
 body, textarea, input, select, section {
     color: rgb(68, 68, 68);

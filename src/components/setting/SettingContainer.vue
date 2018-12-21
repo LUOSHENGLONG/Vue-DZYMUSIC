@@ -129,9 +129,9 @@ export default {
     }
   },
   mounted() {
-    this.minHeight = document.documentElement.clientHeight - 160
+    this.minHeight = document.documentElement.clientHeight - 754
     window.onresize = () =>　{
-      this.minHeight = document.documentElement.clientHeight - 160
+      this.minHeight = document.documentElement.clientHeight - 754
     }
 
     //初始化日历插件

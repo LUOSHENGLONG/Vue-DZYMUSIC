@@ -175,10 +175,10 @@ a {
     .title-image-wrap {
       position: relative;
       height: 32px;
-      padding-top: 160px;
+      padding-top: 180px;
       .title-image {
         width: 100%;
-        height: 160px;
+        height: 180px;
         position: absolute;
         top: 0;
         left: 0;

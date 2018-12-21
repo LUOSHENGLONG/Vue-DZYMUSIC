@@ -1,6 +1,7 @@
 <template>
     <div class="container">
       <!--广告 -->
+      
       <div class="ad-container col-sm-12 col-md-12 col-lg-12">
         <div class="ad">
           合成器
@@ -8,7 +9,12 @@
       </div>
       <!-- 合成器内容 -->
       <div class="left col-sm-9 col-md-9 col-lg-9">
+        
         <div class="mediaLeft">
+          <ol class="breadcrumb">
+            <li><a href="#"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</a></li>
+            <li class="active">合成器</li>
+          </ol>
           <div class="media" v-for="item of pageData" :key="item.id">
             <div class="media-body">
               <div class="media-left media-middle">
@@ -21,7 +27,7 @@
                         {{ item.title }}
                     </h4>
                     <div class="xhx"></div>
-                      <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
+                    <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
                     <p class="pDiv hidden-xs hidden-sm">
                         {{ item.content }}
                     </p>
@@ -105,8 +111,8 @@
             type: "synth", 
             title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
             content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
-                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
-                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预加恐怖`},
+                  包含超过 500 MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
+                  和 80 多个MB 的内容和MB和 80 多个MB 的内容和MB和 80 多个MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和及旋律采样。Sylenth1、Spire和Serum的预加恐怖`},
           {
             id:"2",
             type: "effects", 
@@ -243,10 +249,22 @@ a {
       width: 100%;
       height: 100px;
       background-color: #aaa;
-      border-radius: 5px;
       margin:15px 0;
     }
   }
+  //标题
+  
+  .breadcrumb {
+    border: 1px solid #eee;
+    border-bottom: 0;
+    margin: 0;
+    border-radius: 0;
+    li {
+      font-size: 20px;
+      line-height: 42px;
+    }
+  }
+    
   //页面左边 显示数据
   .left {
     padding: 0;
@@ -262,48 +280,58 @@ a {
           position: relative;
           height: 100%;
           .media-left {
+            
             padding: 0;
             .Content:hover {
               .media-heading {
                 color: rgb(43, 101, 151);
               }
             }
+            
             //发布内容详细信息 发布标题 内容 图片
             .Content {
               width: 100%;
               height: 100%;
               text-decoration: none;
               color: rgba(0, 0, 0, 0.664);
+              .media-object {
+                display: inline-block;
+              }
               .media-heading {
                 width: 100%;
-                padding: 8px;
+                padding: 15px 10px 0px 10px;
                 padding-bottom: 4px;
                 color: #428BD1;
                 margin-bottom: 0;
-                font-size: 18px;
+                font-size: 20px;
                 font-weight: 700;
-                line-height: 20px;
+                line-height: 22px;
                 .label {
-                  background-color: #C71D24;
+                  background-color: #7745b8d7;
                   display: inline-block;
                   color: #fff;
                   position: absolute;
                   width: 50px;
-                  height: 20px;
+                  height: 22px;
                   font-size: 14px;
                   font-weight: 400;
-                  line-height: 16px;
+                  line-height: 18px;
                   text-align: center;
                   padding: 2px;
                   border: 0;
                 }
                 .label:hover {
-                  background-color: rgb(221, 40, 46);
+                  background-color: #7645b8;
 
                 }
                 a {
                   text-decoration: none;
                 }
+              }
+              .pDiv {
+                padding: 0;
+                font-size: 16px;
+                display: -webkit-box;-webkit-line-clamp: 4;-webkit-box-orient: vertical;overflow: hidden;
               }
               .xhx {
                 width: 100%;
@@ -313,6 +341,8 @@ a {
             }
             //发布详细信息 发布人 发布时间 收藏数 
             .info {
+              width: 100%;
+              height: 100%;
               .message {
                 text-align: right;
                 vertical-align: middle;
@@ -367,14 +397,14 @@ a {
       }
       // 焦点hover 过渡效果 
       .media:hover {
-        box-shadow: 0 0 10px #eee inset, 0 0 10px #ccc;
-        background-color: #fff;
         .xhx {
           background-color: #337ab7;
           transform: translate(0);
           transition: all .8s linear;
         }
         h4{
+          box-shadow: 0 0 20px #eee inset;
+
           background-color: #fff;
         }
         img {
@@ -444,12 +474,16 @@ a {
         .right-title {
           background-color: #F7F7F7;
           border-bottom: 1px solid #eaeaea;
-          .hot-logo, .hot-title {
+          .hot-logo, .hot-title,.last-article {
             font-size: 22px;
-            margin: 10px 20px;
+            margin: 14px 20px;
           }
           .hot-logo {
             color: #d9534f;
+            margin-right: 0;
+          }
+          .last-article {
+            color: #337ab7;
             margin-right: 0;
           }
           .hot-title {

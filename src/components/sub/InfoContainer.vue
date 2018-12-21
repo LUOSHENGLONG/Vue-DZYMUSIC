@@ -8,6 +8,11 @@
       </div>
       <!-- 详细内容 -->
       <div class="left col-sm-9 col-md-9 col-lg-9">
+        <ol class="breadcrumb">
+          <li><a href="#"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</a></li>
+          <li><a href="#">合成器</a></li>
+          <li class="active">Ableton 用户福利：来自 Huston Singletary 的经典合成器音源 Singularities 免费下载</li>
+        </ol>
         <section class="main-content">
           <div class="main-title">
             <h2>{{ infoData.title}}</h2>
@@ -22,14 +27,13 @@
                 <span ref="likeSpan" :class="isLike"></span>59收藏
                 </a>
               </li>
+              <li>
+                <span class="qrcode glyphicon glyphicon-qrcode"></span>
+              </li>
             </ul>
           </div>
           <div class="post-content mdf_connect">
-            <p class="post-content-text">曾获得美国公告牌音乐奖最佳乡村巡演奖的美国著名乡村音乐歌手
-              <span class="intexthighlight">Kenny Chesney</span>
-               在其“ trip around the sun” 巡演中使用了sE V7 MC1音头。至于为什么使用以及效果如何
-              我们采访了此次巡演舞台工程师Chris Rabold和与Kenny共事18年的监控工程师Phillip "SidePhill" Robinson一起来听一听他们的声音。<br><br>
-            </p>
+            
             <p class="post-content-img">
               <img class="content-img" 
                 alt="" 
@@ -38,13 +42,20 @@
                 style="display: inline;">
               <br>
             </p>
+
+            <p class="post-content-text">曾获得美国公告牌音乐奖最佳乡村巡演奖的美国著名乡村音乐歌手
+              <span class="intexthighlight">Kenny Chesney</span>
+               在其“ trip around the sun” 巡演中使用了sE V7 MC1音头。至于为什么使用以及效果如何
+              我们采访了此次巡演舞台工程师Chris Rabold和与Kenny共事18年的监控工程师Phillip "SidePhill" Robinson一起来听一听他们的声音。<br><br>
+            </p>
+            
             <p class="post-content-text">Kenny Chesney此次巡演舞台工程师Chris Rabold：</p>
             <blockquote>
               <p class="post-content-text">  “我知道sE,我一直在用sE RF(反射器),之后sE MC1上市，我身边的Ken "POOCH" Van Druten和Alex，他们是我在Justin Bibier演唱会上的工作伙伴，他们都在玩MC1，Andy Meyer也很喜欢这款音头，并在Justin Timberlake的巡演中用到了它，这让我觉得有机会我一定要试试，刚好这次在Kenny的演唱会中用到，果然没让我失望，演出非常成功!”</p>
             </blockquote>
             <div class="video-responsive">
-              <iframe src="//v.qq.com/txp/iframe/player.html?vid=v0812nmz60u" allowfullscreen="true" frameborder="0">
-              </iframe>
+              <iframe src="//v.qq.com/txp/iframe/player.html?vid=v0812nmz60u" allowfullscreen="true" frameborder="0"></iframe>
+              <iframe src="//player.bilibili.com/player.html?aid=38535307&cid=67736992&page=1" frameborder="0" allowfullscreen="true"> </iframe>
               <br>
               <hr>
             </div>
@@ -57,10 +68,20 @@
                   </a>
                   <br>
                   提取码: <span ref="tqm">8hsh</span>&nbsp;&nbsp;
-                  <button class="tqm btn btn-success">复制提取码</button>
+                  <button @click="showAndhideTips1()" id="btnTips1" type="button" class="tqm btn btn-success" data-toggle="popover" title="" data-content="已复制">复制提取码</button>
                    &nbsp;&nbsp;&nbsp;
                    解压密码: <span ref="jymm">无</span>  &nbsp;&nbsp;
-                   <button class="jymm btn btn-success">复制解压密码</button>
+                  <button @click="showAndhideTips2()" id="btnTips2" type="button" class="jymm btn btn-success" data-toggle="popover" title="" data-content="已复制">复制解压密码</button>
+
+                </p>
+              </blockquote>
+            </div>
+            <div class="description">
+              <blockquote>
+                <p class="post-content-text"> 
+                  我知道sE,我一直在用sE RF(我知道sE,我一直在用sE R
+                  我知道sE,我一直在用sE RF(我知道sE,我一直在用sE RF(
+                  F(我知道sE,我一直在用sE RF(我知道sE,我一直在用sE RF(
                 </p>
               </blockquote>
             </div>
@@ -68,6 +89,28 @@
         </section>
       </div>
       <!-- 右侧数据排行 -->
+      <!-- 最新文章 -->
+      <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
+        <div class="mediaRight">
+          <div class="list-group">
+            <div class="right-title">
+              <span class="last-article glyphicon glyphicon-bookmark hidden-sm"></span>
+              <p class="hot-title">&nbsp;最新文章</p>
+            </div>
+            <ul class="rightUl">
+              <li v-for="(item, index) of rankData" :key="item.id">
+                <div class="zhx"></div>
+                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
+                <a ref="rankA" href="#" class="list-group-item">
+                  <p :ref="`rankTitle`+item.id" @mouseout="stopScroll(item.id)" @mouseover="scrollTitle(item.id)" class="rank-title">{{ item.title }}</p>
+                </a>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 下载排行 -->
       <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
         <div class="mediaRight">
           <div class="list-group">
@@ -88,7 +131,6 @@
           </div>
         </div>
       </div>
-      
       
     </div>
 </template>
@@ -129,6 +171,9 @@
           },{
             id:"88",
             title:"Big EDM: EDM Halloween Festien Festien Festival"
+          },{
+            id:"99",
+            title:"Big EDM: EDM Halloween Festien Festien Festival"
           },
         ],
         isLike: "glyphicon glyphicon-heart-empty",
@@ -142,8 +187,22 @@
       })
 
       
+      
     },
     methods: {
+      showAndhideTips1() {
+        $('#btnTips1').popover('show');
+        setTimeout(() => {
+          $('#btnTips1').popover('hide');
+        }, 2000);
+      },
+      showAndhideTips2() {
+        $('#btnTips2').popover('show');
+        setTimeout(() => {
+          $('#btnTips2').popover('hide');
+        }, 2000);
+      }
+      ,
       label(e) {
         e.preventDefault();
         console.log(1111111)
@@ -249,6 +308,9 @@ button.active[data-v-a15ca838] {
             padding-left: 5px;
             padding-right: 3px;
           }
+          .qrcode {
+            color: #337AB7;
+          }
         }
         
       } 
@@ -277,24 +339,31 @@ button.active[data-v-a15ca838] {
       .video-responsive {
         iframe {
           width: 100%;
-          height: 480px;
+          height: 592px;
         }
       }
       .download {
         blockquote {
-          
           background-color: #dff0d8;
           border-color: #449d44;
           p {
             color: #3c763d;
           }
-          .tqm:hover,.jymm:hover {
-            color: #449d44;
-            background-color: #fff;
-            border-color: #fff;
+          // .tqm:hover,.jymm:hover {
+          //   color: #449d44;
+          //   background-color: #fff;
+          //   border-color: #fff;
+          // }
+        }
+      }
+      .description {
+        blockquote {
+          background-color: #f7f7f9;
+          border-color: #337ab7;
+          p {
+            color: rgba(0, 0, 0, 0.801);
           }
         }
-        
       }
     }
   }
@@ -314,6 +383,16 @@ button.active[data-v-a15ca838] {
   .left {
     padding: 0;
     padding-right: 10px;
+    .breadcrumb {
+      margin: 0;
+      border: 1px solid #eee;
+      border-bottom: 0;
+      border-radius: 0;
+      li {
+        font-size: 20px;
+        line-height: 42px;
+      }
+    }
     .mediaLeft {
       .media {
         background-color: #eee;
@@ -404,11 +483,17 @@ button.active[data-v-a15ca838] {
                       color: rgba(0, 0, 0, 0.5);
                     }
                   }
+                  
                   span {
                     font-size: 14px;
                     padding-left: 5px;
                     padding-right: 3px;
                   }
+                  .QR-Code {
+                    font-size: 20px;
+                    color: #337AB7;
+                  }
+                  
                 }
               }             
             }
@@ -465,12 +550,16 @@ button.active[data-v-a15ca838] {
         .right-title {
           background-color: #F7F7F7;
           border-bottom: 1px solid #eaeaea;
-          .hot-logo, .hot-title {
+          .hot-logo, .hot-title,.last-article {
             font-size: 22px;
             margin: 10px 20px;
           }
           .hot-logo {
             color: #d9534f;
+            margin-right: 0;
+          }
+          .last-article {
+            color: #337ab7;
             margin-right: 0;
           }
           .hot-title {
