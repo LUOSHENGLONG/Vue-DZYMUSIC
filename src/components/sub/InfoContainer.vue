@@ -1,7 +1,11 @@
 <template>
     <div class="container">
       <!--广告 -->
-      
+      <div class="ad-container col-sm-12 col-md-12 col-lg-12">
+        <div class="ad">
+          合成器
+        </div>
+      </div>
       <!-- 详细内容 -->
       <div class="left col-sm-9 col-md-9 col-lg-9">
         <section class="main-content">
@@ -20,20 +24,63 @@
               </li>
             </ul>
           </div>
+          <div class="post-content mdf_connect">
+            <p class="post-content-text">曾获得美国公告牌音乐奖最佳乡村巡演奖的美国著名乡村音乐歌手
+              <span class="intexthighlight">Kenny Chesney</span>
+               在其“ trip around the sun” 巡演中使用了sE V7 MC1音头。至于为什么使用以及效果如何
+              我们采访了此次巡演舞台工程师Chris Rabold和与Kenny共事18年的监控工程师Phillip "SidePhill" Robinson一起来听一听他们的声音。<br><br>
+            </p>
+            <p class="post-content-img">
+              <img class="content-img" 
+                alt="" 
+                data-original="//image.midifan.com/data/attach/album/2018/1218/9219_1545127635_thumb.jpg" 
+                src="//image.midifan.com/data/attach/album/2018/1218/9219_1545127635_thumb.jpg" 
+                style="display: inline;">
+              <br>
+            </p>
+            <p class="post-content-text">Kenny Chesney此次巡演舞台工程师Chris Rabold：</p>
+            <blockquote>
+              <p class="post-content-text">  “我知道sE,我一直在用sE RF(反射器),之后sE MC1上市，我身边的Ken "POOCH" Van Druten和Alex，他们是我在Justin Bibier演唱会上的工作伙伴，他们都在玩MC1，Andy Meyer也很喜欢这款音头，并在Justin Timberlake的巡演中用到了它，这让我觉得有机会我一定要试试，刚好这次在Kenny的演唱会中用到，果然没让我失望，演出非常成功!”</p>
+            </blockquote>
+            <div class="video-responsive">
+              <iframe src="//v.qq.com/txp/iframe/player.html?vid=v0812nmz60u" allowfullscreen="true" frameborder="0">
+              </iframe>
+              <br>
+              <hr>
+            </div>
+            <div class="download">
+              <blockquote>
+                <p class="post-content-text"> 
+                  下载地址：
+                  <a href="https://pan.baidu.com/share/init?surl=7wNYgLQ3hszRcrOV44HDQg" target="_blank">
+                    https://pan.baidu.com/share/init?surl=7wNYgLQ3hszRcrOV44HDQg
+                  </a>
+                  <br>
+                  提取码: <span ref="tqm">8hsh</span>&nbsp;&nbsp;
+                  <button class="tqm btn btn-success">复制提取码</button>
+                   &nbsp;&nbsp;&nbsp;
+                   解压密码: <span ref="jymm">无</span>  &nbsp;&nbsp;
+                   <button class="jymm btn btn-success">复制解压密码</button>
+                </p>
+              </blockquote>
+            </div>
+          </div>
         </section>
       </div>
       <!-- 右侧数据排行 -->
-      <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs ">
+      <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
         <div class="mediaRight">
           <div class="list-group">
-            <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
-            <span ref="hotTitle" class="hot-title hidden-sm">&nbsp;下载热度排行</span>
+            <div class="right-title">
+              <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
+              <p class="hot-title">&nbsp;下载热度排行</p>
+            </div>
             <ul class="rightUl">
               <li v-for="(item, index) of rankData" :key="item.id">
                 <div class="zhx"></div>
-                <span class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </span>
+                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
                 <a ref="rankA" href="#" class="list-group-item">
-                  <span :ref="`rankTitle`+item.id" @mouseout="stopScroll(item.id)" @mouseover="scrollTitle(item.id)" class="rank-title">{{ item.title }}</span>
+                  <p :ref="`rankTitle`+item.id" @mouseout="stopScroll(item.id)" @mouseover="scrollTitle(item.id)" class="rank-title">{{ item.title }}</p>
                 </a>
               </li>
               
@@ -42,11 +89,7 @@
         </div>
       </div>
       
-      <div class="ad-container col-sm-12 col-md-12 col-lg-12">
-        <div class="ad">
-          合成器
-        </div>
-      </div>
+      
     </div>
 </template>
 <script>
@@ -134,7 +177,7 @@ a {
   text-decoration: none;
 }
 
-body, textarea, input, select, section, span {
+body, textarea, input, select, section, li, p {
     color: rgb(68, 68, 68);
     font-size: 14px;
     line-height: 1.8;
@@ -148,18 +191,20 @@ body, textarea, input, select, section, span {
 .Glyphicons {
   font-family: "Glyphicons Halflings" !important;
 }
+//去除点击button outline轮廓
+button[data-v-a15ca838], 
+button[data-v-a15ca838]:focus, 
+button.active[data-v-a15ca838] {
+    outline: none;
+}
 
 .container {
   padding: 0;
-  margin-top: 20px;
-  
-  //广告内容
   .main-content {
     width: 100%;
-    height: 600px;
     background-color: #fff;
     border: 1px solid #eee;
-    padding: 20px 79px 65px 70px;
+    padding: 20px 40px 65px 40px;
     .main-title {
       text-align: left;
       border-bottom: 1px solid #eee;
@@ -177,14 +222,14 @@ body, textarea, input, select, section, span {
         text-align: left;
         vertical-align: middle;
         padding: 0;
-        padding-bottom: 0;
         margin: 10px 0;
-        
+        display: inline-block;
         li {
+          margin-right: 10px;
           list-style: none;
           display: inline-block;
           height: 25px;
-          text-align: center;
+          text-align: left;
           color: rgba(0, 0, 0, 0.5);
           font-size: 16px;
           
@@ -207,23 +252,71 @@ body, textarea, input, select, section, span {
         }
         
       } 
+      
+    }
+    .post-content {
+      .post-content-text {
+        font-size: 18px;
+        .intexthighlight {
+          color: rgb(26, 117, 255);
+          line-height: 32.4px;
+        }
+      }
+      .post-content-img {
+        text-align: center;
+        .content-img {
+          width: 100%;
+        }
+      }
+      blockquote {
+        background-color: rgba(238, 238, 238, 0.4);
+        p {
+          color: rgba(0, 0, 0, 0.9);
+        }
+      }
+      .video-responsive {
+        iframe {
+          width: 100%;
+          height: 480px;
+        }
+      }
+      .download {
+        blockquote {
+          
+          background-color: #dff0d8;
+          border-color: #449d44;
+          p {
+            color: #3c763d;
+          }
+          .tqm:hover,.jymm:hover {
+            color: #449d44;
+            background-color: #fff;
+            border-color: #fff;
+          }
+        }
+        
+      }
     }
   }
+  //广告内容
   .ad-container {
+    padding: 0;
     .ad {
       width: 100%;
       height: 100px;
       background-color: #aaa;
-      border-radius: 5px;
       margin:15px 0;
+      
     }
   }
+  
   //页面左边 显示数据
   .left {
     padding: 0;
+    padding-right: 10px;
     .mediaLeft {
       .media {
-        background-color: #fff;
+        background-color: #eee;
         padding-bottom: 0;
         border-radius: 5px;
         border: 1px solid #eee;
@@ -369,17 +462,31 @@ body, textarea, input, select, section, span {
         padding-left: 0;
         margin-bottom: 1px;
         background-color: #fff;
-        .hot-logo, .hot-title {
-          margin: 20px 5px 0 20px;//上 右 下 左
-          font-size: 22px;
+        .right-title {
+          background-color: #F7F7F7;
+          border-bottom: 1px solid #eaeaea;
+          .hot-logo, .hot-title {
+            font-size: 22px;
+            margin: 10px 20px;
+          }
+          .hot-logo {
+            color: #d9534f;
+            margin-right: 0;
+          }
+          .hot-title {
+            margin-left: 10px;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.7);
+          }
         }
-        .hot-logo {
-          color: #d9534f;
+        
+        p {
+          margin-bottom: 0;
         }
         .hot-title {
-          margin-left: 0;
+          display: inline-block;
+          font-size: 24px;
           font-weight: 700;
-          color: rgba(0, 0, 0, 0.7);
         }
         .rightUl {
           padding: 0 15px 15px 10px;
@@ -460,9 +567,6 @@ body, textarea, input, select, section, span {
                 height: 40px;
                 line-height: 40px;
               }
-              
-              
-              
               .rank-logo {
                 position: absolute;
                 right: 0;
@@ -495,8 +599,14 @@ body, textarea, input, select, section, span {
 }
 
 
-
-
+div.mdf_connect {
+    font-size: 18px;
+    height: 100%;
+}
+.post-content {
+    margin: 7px 0 35px 0;
+    font-size: 18px;
+}
 </style>
 
 

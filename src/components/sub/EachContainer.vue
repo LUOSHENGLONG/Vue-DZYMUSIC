@@ -73,14 +73,16 @@
       <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
         <div class="mediaRight">
           <div class="list-group">
-            <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
-            <span ref="hotTitle" class="hot-title hidden-sm">&nbsp;下载热度排行</span>
+            <div class="right-title">
+              <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
+              <p class="hot-title">&nbsp;下载热度排行</p>
+            </div>
             <ul class="rightUl">
               <li v-for="(item, index) of rankData" :key="item.id">
                 <div class="zhx"></div>
-                <span class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </span>
+                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
                 <a ref="rankA" href="#" class="list-group-item">
-                  <span :ref="`rankTitle`+item.id" @mouseout="stopScroll(item.id)" @mouseover="scrollTitle(item.id)" class="rank-title">{{ item.title }}</span>
+                  <p :ref="`rankTitle`+item.id" @mouseout="stopScroll(item.id)" @mouseover="scrollTitle(item.id)" class="rank-title">{{ item.title }}</p>
                 </a>
               </li>
               
@@ -213,7 +215,7 @@
 <style lang="scss" scoped>
 
 
-body, textarea, input, select, section, h4, span {
+body, textarea, input, select, section, h4, li {
     color: rgb(68, 68, 68);
     font-size: 14px;
     line-height: 1.8;
@@ -247,18 +249,18 @@ a {
   }
   //页面左边 显示数据
   .left {
-    background-color: #fff;
     padding: 0;
-    border: 1px solid #eee;
+    padding-right: 10px;
     .mediaLeft {
       .media {
         background-color: #fff;
         padding-bottom: 0;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-        margin-bottom: 10px;
+        border: 1px solid #eee;
+        border-bottom: none;
+        margin: 0;
         .media-body {
           position: relative;
+          height: 100%;
           .media-left {
             padding: 0;
             .Content:hover {
@@ -276,8 +278,7 @@ a {
                 width: 100%;
                 padding: 8px;
                 padding-bottom: 4px;
-                color: rgb(44, 112, 172);
-                background-color: rgba(238, 238, 238, 0.303);
+                color: #428BD1;
                 margin-bottom: 0;
                 font-size: 18px;
                 font-weight: 700;
@@ -317,7 +318,7 @@ a {
                 vertical-align: middle;
                 padding: 0 10px;
                 padding-bottom: 0;
-                margin-bottom: 0;
+                margin-bottom: 3px;
                 position: absolute;
                 right: 15px;
                 bottom: 0px;
@@ -387,9 +388,9 @@ a {
       }
       //分页
       .pageNav {
+        margin-top: 10px;
         background-color: #fff;
         text-align: center;
-        border-radius: 5px;
         border: 1px solid rgba(204, 204, 204, 0.397);
         .pagination {
           padding: 0;
@@ -440,17 +441,31 @@ a {
         padding-left: 0;
         margin-bottom: 1px;
         background-color: #fff;
-        .hot-logo, .hot-title {
-          margin: 20px 5px 0 20px;//上 右 下 左
-          font-size: 22px;
+        .right-title {
+          background-color: #F7F7F7;
+          border-bottom: 1px solid #eaeaea;
+          .hot-logo, .hot-title {
+            font-size: 22px;
+            margin: 10px 20px;
+          }
+          .hot-logo {
+            color: #d9534f;
+            margin-right: 0;
+          }
+          .hot-title {
+            margin-left: 10px;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.7);
+          }
         }
-        .hot-logo {
-          color: #d9534f;
+        
+        p {
+          margin-bottom: 0;
         }
         .hot-title {
-          margin-left: 0;
+          display: inline-block;
+          font-size: 24px;
           font-weight: 700;
-          color: rgba(0, 0, 0, 0.7);
         }
         .rightUl {
           padding: 0 15px 15px 10px;
@@ -531,9 +546,6 @@ a {
                 height: 40px;
                 line-height: 40px;
               }
-              
-              
-              
               .rank-logo {
                 position: absolute;
                 right: 0;

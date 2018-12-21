@@ -111,8 +111,10 @@
 .navbar {
     margin-bottom: 20px;
     z-index: 1;
+    background-color: #fff;
    
 }
+
 
 .progress {
     height: 3px;
