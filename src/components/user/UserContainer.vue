@@ -3,7 +3,7 @@
     <div class="home"  :style="{minHeight: minHeight + 'px'}">
       <div class="tagPage">
         <!-- Nav tabs -->
-        <div class="rightBorder col-md-2 col-sm-2 col-xs-2 col-lg-2 hidden-xs">
+        <div class="rightBorder col-md-2 col-sm-2 col-xs-2 col-lg-2">
           
           <ul class="homeInfo nav nav-tabs" role="tablist">
             <p class="title"><span class="glyphicon glyphicon-user"></span> 设置</p>
@@ -245,6 +245,7 @@ export default {
 @import'../../lib/laydate/theme/default/laydate.css';
 .container {
   padding: 0;
+  min-width: 800px;
   
 }
 .Tab {
@@ -351,6 +352,7 @@ form.form-userInfo {
 }
 .rightBorder {
   padding: 0;
+  
 }
 
 input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset;}

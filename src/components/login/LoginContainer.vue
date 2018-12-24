@@ -96,7 +96,7 @@ export default {
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
     outline: none;
 }
-
+// 解决 input自动提示补全 背景黄色
 input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 .login-form {
     z-index: 33;

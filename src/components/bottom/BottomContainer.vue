@@ -5,10 +5,10 @@
       <div class="inner">
         <h3><label for="member_email">订阅我们的周刊 (英文)</label></h3>
         <form class="newsletter-form">
-          <input class="newsletter-input" type="email" name="member[email]" id="member_email"  placeholder="邮件地址">
-          <input class="button newsletter-button" type="submit" value="订阅" name="member[subscribe]" id="member_submit">
+          <input class="newsletter-input" v-model="email" type="email" name="member[email]" id="member_email"  placeholder="邮件地址">
+          <input class="button newsletter-button" @click="confirmEmail" type="button" value="订阅" name="member[subscribe]" id="member_submit">
         </form>
-        <p>
+        <p ref="emailTips">
           你可以在 <a href="https://news.vuejs.org" target="_blank">news.vuejs.org</a> 翻阅往期的 issue，也可以收听 podcast。
         </p>
       </div>
@@ -38,16 +38,18 @@
           <i class="fa"></i>
         </button>
       </div>
+
       <div ref="btnPopup" class="btn-popup">
         <div class="title">
           
           <h3>扫描二维码<span @click="hiddenWechat()" class="closeSpan glyphicon glyphicon-remove"></span></h3>
           
         </div>
-        <div class="qrcode">
-          <img src="../../asset/icon/qr.jpg" alt="">
+        <div ref="qrcode" class="qrcode">
+          <img ref="qrcodeImg" src="../../asset/icon/qr.jpg" alt="">
         </div>
       </div>
+
     </div>
     <div class="row footer-top">
       <div class="col-md-4 col-lg-4">
@@ -122,22 +124,67 @@
   export default {
     data() {
       return {
-
+        email: ""
       }
     },
     methods: {
       showWechat() {
+        const nowTime = new Date().getTime();   
         const div = this.$refs.btnPopup
-        div.style.display = "block"
+        const clickTime = $(div).attr("ctime");  
+        //禁止连续点击按钮
+        if( clickTime != 'undefined' && (nowTime - clickTime < 1000)){
+          return false;
+        }else {
+          $(div).attr("ctime",nowTime);
+          const qrcodeImg = this.$refs.qrcodeImg
+          const status = div.style.display
+          if (status === "block"){
+            this.hiddenWechat()
+          }else {
+            $(div).animate({height: "250px"},1200)
+            $(qrcodeImg).animate({height: "200px",width: "200px"},1200)
+            div.style.display = "block"
+          }
+        } 
       },
       hiddenWechat() {
         const div = this.$refs.btnPopup
-        div.style.display = "none"
+        const qrcodeImg = this.$refs.qrcodeImg
+        $(qrcodeImg).animate({height: "0px",width: "0px"},1000)
+        $(div).animate({height: "0px"},1000)
+
+        setTimeout(() => {
+          div.style.display = "none"
+        }, 1000);
+      },
+      confirmEmail() {
+          //正则 邮箱验证
+          const emailConfirm = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/
+          //验证邮箱不匹配
+          const emailTips = this.$refs.emailTips
+
+          if( !emailConfirm.test(this.email) ) {
+            $(emailTips).text("xxxxxxxxx")
+            emailTips.style.color = "red"
+          }else {
+            $(emailTips).text("对对度低")
+            emailTips.style.color = "green"
+          //邮箱格式正确
+          }
       }
-    }
+    },
+    watch: {
+      
+    },
+    
   }
 </script>
 <style lang="scss" scoped>
+
+// 解决 input自动提示补全 背景黄色
+input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
+
 .ins {
   // background-color: #f8374a;
   background-image: url(../../asset/icon/ins2.png);
@@ -151,7 +198,7 @@ button {
 }
 .btn-popup {
   width: 100%;
-  height: 100%;
+  height: 0px;
   display: none;
 .title {
     .closeSpan {
@@ -164,15 +211,14 @@ button {
   }
   .qrcode {
     width: 100%;
-    height: 100%;
+    height: 200px;
     img {
-      max-width: 30%;
-      max-height: 30%;
-      min-width: 120px;
-      min-height: 120px;
+      width: 0px;
+      height: 0;
     }
   }
 }
+
 .footer {
     color: #777;
     padding: 30px 0;
