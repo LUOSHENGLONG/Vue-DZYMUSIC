@@ -32,7 +32,7 @@
                     <div class="form-group">
                         <!-- <label class="col-xs-12 control-label" for="password">密码</label> -->
                         <div class="control-col rel">
-                            <input type="password" class="form-control" id="CAPTCHA" name="passwd" placeholder="请输入验证码" maxlength="16" v-model="CAPTCHA">
+                            <input type="text" class="form-control" id="CAPTCHA" name="passwd" placeholder="请输入验证码" maxlength="16" v-model="CAPTCHA" ref="CAPTCHA">
                             <button ref="btnCAPTCHA" type="button" class="btn-CAPTCHA btn btn-default" @click="sendCode($event)">发送验证码</button>
                             <span class="glyphicon glyphicon-remove error-tips CAPTCHA-error-tips"></span>
                             <span class="glyphicon glyphicon-ok success-tips CAPTCHA-success-tips"></span>
@@ -40,7 +40,8 @@
                     </div>
                     <div class="form-group">
                         <div class="control-col">
-                            <button ref="summit" class="btn btn-success btn-lg btn-login" type="button" name="bnt" @click="summit()">注&nbsp;&nbsp;&nbsp;册</button>
+                            <button ref="summit()" class="btn btn-success btn-lg btn-login" type="button" name="bnt" @click="summit()">注&nbsp;&nbsp;&nbsp;册</button>
+                            <div ref="errorTip" @click="hiddenErrorTip" class="errorTip">邮箱或手机号码已注册 点击返回</div>
                             <div class="rows-forget"><span class="pull-left">已注册？<a href="#" @click="goLogin($event)" class="zhuce-href">立即登录</a></span><a href="/reg/forget-pwd" target="_blank" class="forger-pas">忘记密码</a></div>
                         </div>
                     </div>
@@ -54,8 +55,10 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 
 export default {
+    
   data() {
     return {
         email: "",
@@ -66,6 +69,8 @@ export default {
         confirmEmailOrPhone: false,
         confirmPassword: false,
         confirmCAPTCHA: false,
+        CAPTCHANum1: 0,
+        CAPTCHANum2: 0,
     }
   },
   mounted() {
@@ -75,12 +80,61 @@ export default {
     cancel() {
       this.$emit("cancel")
     },
-    goLogin(e) {
-        e.preventDefault();
+    goLogin() {
+        if(arguments.length > 0){
+            arguments[0].preventDefault();
+        }
         this.$emit("login")
     },
     sendCode(e) {
         e.preventDefault();
+        if(this.confirmEmailOrPhone === false) {
+            const email = this.$refs.email
+            this.message = "请输入正确的邮箱地址或手机号码"
+            $(email).focus();
+            this.showEmailErrorDiv();
+            window.setTimeout( () => {
+                this.hiddenEmailErrorDiv()
+            },3000)
+            return
+        }
+
+        if(this.confirmPassword === false) {
+            $(this.$refs.password).focus();
+            this.showPasswordErrorDiv();
+            this.message = "密码必须包含字母和数字且不低于八位数"
+            window.setTimeout( () => {
+                this.hiddenPasswordErrorDiv()
+            },3000)
+            
+            return
+        }
+        console.log("可以发送验证码")
+        
+        this.CAPTCHANum1 = Math.floor(Math.random()*9)+1
+        this.CAPTCHANum2 = Math.floor(Math.random()*9)+1
+        const bnt = this.$refs.btnCAPTCHA
+        $(bnt).text(this.CAPTCHANum1 + ` + ` + this.CAPTCHANum2 +` = ?`)
+        
+        //发送验证码后禁用button 120秒后才能再次发送
+        
+        //$(bnt).attr("disabled",true)
+        // let i = 120
+
+        // const timeOut = window.setInterval(() => {
+        //     $(bnt).text(`已发送 `+ i-- +`秒`)
+        // },1000)
+
+        // window.setTimeout( () => {
+        //     window.clearInterval(timeOut)
+        //     $(bnt).attr("disabled",false)
+        //     $(bnt).text(`发送验证码`)
+
+        // },121000)
+
+    },
+    //提交注册
+    summit() {
         if(this.confirmEmailOrPhone === false) {
             const email = this.$refs.email
             $(email).focus();
@@ -101,30 +155,48 @@ export default {
             
             return
         }
-        console.log("可以发送验证码")
-        const bnt = this.$refs.btnCAPTCHA
-        //发送验证码后禁用button 120秒后才能再次发送
-        
-        $(bnt).attr("disabled",true)
-        let i = 120
 
-        const timeOut = window.setInterval(() => {
-            $(bnt).text(`已发送 `+ i-- +`秒`)
-        },1000)
-
-        window.setTimeout( () => {
-            window.clearInterval(timeOut)
-            $(bnt).attr("disabled",false)
-            $(bnt).text(`发送验证码`)
-
-        },121000)
-
-    },
-    
-    summit() {
-        if(this.isRegister === false) {
-            console.log("11")
+        if( parseInt(this.CAPTCHA ) !== (this.CAPTCHANum1 + this.CAPTCHANum2)){
+            $(this.$refs.CAPTCHA).focus();
+            this.$refs.CAPTCHA.style.border = "1px solid red"
+            console.log(false)
+            return 
         }
+        this.$refs.CAPTCHA.style.border = "1px solid #eee"
+        axios.post("http://localhost:3001/register",{username:this.email,password:this.password})
+        .then(result => {
+            console.log(result)
+            // 0 代表 邮箱 或 手机 已注册
+            if( result.data.status === 0 ){
+                this.$refs.errorTip.style.background = "#c9302c"
+                $(this.$refs.errorTip).text(result.data.message)
+                this.$refs.errorTip.style.display = "block"
+                $(this.$refs.email).focus();
+                this.$refs.email.style.border = "1px solid #c9302c"
+                setTimeout(() => {
+                    this.$refs.errorTip.style.display = "none"
+                }, 2000);
+            // 注册成功    
+            }else {
+                console.log("注册成功")
+                this.$refs.errorTip.style.background = "#337ab7"
+                this.$refs.email.style.border = "1px solid #eee"
+                $(this.$refs.errorTip).text('注册成功 正在跳转到登录页')
+                this.$refs.errorTip.style.display = "block"
+                setTimeout(() => {
+                    this.goLogin();
+                }, 1500);
+            }
+            $(this.$refs.btnCAPTCHA).text("发送验证码")
+            this.CAPTCHANum1 = Math.floor(Math.random()*9)+1
+            this.CAPTCHANum2 = Math.floor(Math.random()*9)+1 
+        })
+        .catch( err => {
+            console.log(err)
+        })
+    },
+    hiddenErrorTip() {
+        this.$refs.errorTip.style.display = "none"
     },
     showEmailErrorDiv() {
         const tips = this.$refs.emailTipsDiv
@@ -152,9 +224,9 @@ export default {
     email( newVal, oldVal) {
         
         //正则 邮箱验证
-        const emailConfirm = new RegExp("(^1[3,4,5,6,7,9,8][0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$)")
+        const phoneConfirm = new RegExp("(^1[3,4,5,6,7,9,8][0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$)")
         //正则 手机号码验证
-        const phoneConfirm = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/
+        const emailConfirm = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/
         //验证邮箱不匹配
         if( !emailConfirm.test(newVal) ) {
             //验证邮箱不匹配 验证是否为手机号码
@@ -426,7 +498,22 @@ export default {
 
 
 
-
+.errorTip {
+    width: 278px;
+    height: 46px;
+    position: absolute;
+    left: 60px;
+    bottom: 92px;
+    background-color: #c9302c;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 46px;
+    font-size: 18px;
+    color: #fff;
+    display: none;
+    cursor: pointer;
+}
 
 .slogon {
     border-top: #f1f1f1 solid 2px;

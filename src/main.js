@@ -2,10 +2,14 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
+import axios from 'axios'
 // import Clipboard from 'clipboard'
 Vue.use(VueResource)
 Vue.use(VueRouter)
+// Vue.use(axios)
 // Vue.use(Clipboard)
+
+
 import VueClipboard from 'vue-clipboard2'
 
 Vue.use(VueClipboard)
@@ -19,6 +23,7 @@ import 'bootstrap/dist/js/bootstrap.min'
 import 'swiper/dist/css/swiper.min.css'
 
 import router from './router.js'
+
 
 const vm = new Vue({
   el: '#app',

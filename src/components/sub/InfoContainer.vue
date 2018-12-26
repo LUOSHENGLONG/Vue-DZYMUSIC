@@ -145,7 +145,7 @@
               </div>
               <div class="con">
                 <div class="user">
-                  <a href="#" target="_blank" class="name vip-red-name">舞法天女麦迪文</a>
+                  <a href="#" target="_blank" :ref="`commentName`+1" class="name vip-red-name">舞法天女麦迪文</a>
                   <p class="text">风暴英雄会胜利吗？应该不会了。——黄旭东</p>
                 </div>
                 <div class="info">
@@ -158,11 +158,10 @@
                     <i class="fa fa-thumbs-o-up"></i>
                     <span :ref="`commentLikeCount`+1">1793</span>
                   </span>
-                  <span ref="hate" @click="commentHate(1)" class="hate "><i class="fa fa-thumbs-o-down"></i></span>
-                  <span class="reply btn-hover btn-highlight">回复</span>
+                  <span @click="reply(1,1)" class="reply btn-hover btn-highlight">回复</span>
                   <div class="operation">
                     <div @click="showOpera(1)" class="spot"><i class="fa fa-ellipsis-v"></i></div>
-                    <div :ref="`operaList`+1" class="opera-list">
+                    <div @mouseleave="hiddenOpera(1)" :ref="`operaList`+1" class="opera-list">
                       <ul>
                         <li class="blacklist">加入黑名单</li>
                         <li class="report">举报</li>
@@ -177,7 +176,7 @@
                     </a>
                     <div class="replay-con">
                       <div class="user">
-                        <a href="#" target="_blank" class="name vip-red-name">Matatatatatatata</a>
+                        <a href="#" target="_blank" class="name vip-red-name" :ref="`commentName`+2" >Matatatatatatata</a>
                         
                         <span class="text-con">你这是奶呢还是反奶呢123。</span>
                       </div>
@@ -187,10 +186,10 @@
                           <i class="fa fa-thumbs-o-up"></i>
                           <span :ref="`commentLikeCount`+2">24</span>
                         </span>
-                        <span class="reply btn-hover">回复</span>
+                        <span @click="reply(2,1)" class="reply btn-hover">回复</span>
                         <div class="operation btn-hover btn-hide-re">
                           <div  @click="showOpera(2)" class="spot"><i class="fa fa-ellipsis-v"></i></div>
-                          <div :ref="`operaList`+2" class="opera-list" style="display: none;">
+                          <div @mouseleave="hiddenOpera(2)" :ref="`operaList`+2" class="opera-list" style="display: none;">
                             <ul>
                               <li class="blacklist">加入黑名单</li>
                               <li class="report">举报</li></ul>
@@ -201,11 +200,103 @@
                   </div>
                   
                 </div>
+                <!-- //回复@回复评论区 -->
+                <div class="comment-send" :ref="`commentSend`+1">
+                  <div class="user-face">
+                    <img class="user-head" src="../../asset/icon/微信.png">
+                  </div>
+                  <div class="textarea-container">
+                    <i class="ipt-arrow"></i>
+                    <textarea :ref="`commentSendTxt`+1" cols="80" name="msg" rows="5" placeholder="" class="ipt-txt"></textarea>
+                    <button type="submit" class="comment-submit">发表评论</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <!-- 第二个评论 -->
-          
+          <div class="comment-list">
+            <div class="list-item reply-wrap">
+              <div class="user-face">
+                <a href="#" target="_blank">
+                <img src="../../asset/icon/微信.png" alt="">
+                </a>
+                
+                <div class="hot-follow">
+                  <button class="follow-btn">关注</button>
+                </div>
+              </div>
+              <div class="con">
+                <div class="user">
+                  <a href="#" target="_blank" :ref="`commentName`+3" class="name vip-red-name">舞法天女麦迪文</a>
+                  <p class="text">风暴英雄会胜利吗？应该不会了22。——黄旭东</p>
+                </div>
+                <div class="info">
+                  <span class="floor">#123</span>
+                  <span class="plad">
+                    来自<a href="#" target="_blank">安卓客户端</a>
+                  </span>
+                  <span class="time">2018-12-21 21:04</span>
+                  <span :ref="`like`+3" @click="commentLike(3)" class="like ">
+                    <i class="fa fa-thumbs-o-up"></i>
+                    <span :ref="`commentLikeCount`+3">1793</span>
+                  </span>
+                  <span @click="reply(3,2)" class="reply btn-hover btn-highlight">回复</span>
+                  <div class="operation">
+                    <div @click="showOpera(3)" class="spot"><i class="fa fa-ellipsis-v"></i></div>
+                    <div @mouseleave="hiddenOpera(3)" :ref="`operaList`+3" class="opera-list">
+                      <ul>
+                        <li class="blacklist">加入黑名单</li>
+                        <li class="report">举报</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="replay-box">
+                  <div class="replay-item reply-wrap">
+                    <a href="#" target="_blank" class="reply-face">
+                      <img class="reply-face-img" src="../../asset/icon/微信.png" alt="">
+                    </a>
+                    <div class="replay-con">
+                      <div class="user">
+                        <a href="#" target="_blank" class="name vip-red-name" :ref="`commentName`+4" >Matatatatatatata</a>
+                        
+                        <span class="text-con">你这是奶呢还是反奶呢123。</span>
+                      </div>
+                      <div class="info">
+                        <span class="time">2018-12-21 21:28</span>
+                        <span :ref="`like`+4" @click="commentLike(4)" class="like ">
+                          <i class="fa fa-thumbs-o-up"></i>
+                          <span :ref="`commentLikeCount`+4">24</span>
+                        </span>
+                        <span @click="reply(4,2)" class="reply btn-hover">回复</span>
+                        <div class="operation btn-hover btn-hide-re">
+                          <div  @click="showOpera(4)" class="spot"><i class="fa fa-ellipsis-v"></i></div>
+                          <div @mouseleave="hiddenOpera(4)" :ref="`operaList`+4" class="opera-list" style="display: none;">
+                            <ul>
+                              <li class="blacklist">加入黑名单</li>
+                              <li class="report">举报</li></ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <!-- //回复@回复评论区 -->
+                <div class="comment-send" :ref="`commentSend`+2" >
+                  <div class="user-face">
+                    <img class="user-head" src="../../asset/icon/微信.png">
+                  </div>
+                  <div class="textarea-container">
+                    <i class="ipt-arrow"></i>
+                    <textarea  :ref="`commentSendTxt`+2" cols="80" name="msg" rows="5" placeholder="" class="ipt-txt"></textarea>
+                    <button type="submit" class="comment-submit">发表评论</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
       <!-- 右侧数据排行 -->
@@ -302,8 +393,7 @@ import Clipboard from 'clipboard';
         isRed: "black",
         scrollTitleInterval: {},
         clipboard: {},
-        isCommentLike: 0,
-        isComentHate: 0,
+        commentId: 0,
       }
     },
     mounted() {
@@ -312,9 +402,13 @@ import Clipboard from 'clipboard';
       })
       const copybtn = this.$refs.btnTips1
       this.clipboard = new Clipboard(copybtn);
-      
+      this.menu()
     },
     methods: {
+      menu() {
+        window.scrollTo(0,0);
+      },
+      // 复制提取码按钮
       showAndhideTips1() {
         const value = this.$refs.tqm.textContent
 
@@ -323,6 +417,7 @@ import Clipboard from 'clipboard';
           $('#btnTips1').popover('hide');
         }, 2000);
       },
+      // 复制解压密码
       showAndhideTips2() {
       const copybtn = this.$refs.btnTips2
         
@@ -338,6 +433,7 @@ import Clipboard from 'clipboard';
         e.preventDefault();
         console.log(1111111)
       },
+      // 滚动右侧排行
       scrollTitle(id) {
         const rankTitle = "rankTitle" + id
         const title = this.$refs[rankTitle]
@@ -345,72 +441,82 @@ import Clipboard from 'clipboard';
         const width = $(title).width()-aWidth+50
         $(title).animate({left: -width+"px"},2000);
       },
+      // 停止滚动
       stopScroll(id) {
-        const rankTitle = "rankTitle" + id
-        const title = this.$refs[rankTitle]
+        const title = this.$refs["rankTitle" + id]
         $(title).stop()
         $(title).animate({left: "-0"},300);
       },
+      // 点击按钮显示加入黑名单 举报 div
       showOpera(id) {
-        const name = `operaList`+id
-        const operaList = this.$refs[name];
+        // 获取对应dom
+        const operaList = this.$refs[`operaList`+id];
         const status = operaList.style.display
+        //  设置显示和隐藏
         if (status === "block") {
           operaList.style.display = "none"
         }else {
           operaList.style.display = "block"
         }
       },
-      commentLike(id) {
-        const likeColor = `like`+id
-        const likeTag = this.$refs[likeColor];
-        const like = `commentLikeCount`+id
-        const likeCount = this.$refs[like];
-        if ( this.isCommentLike === 0) {
-          $(likeCount).text(parseInt(likeCount.textContent)+1)
-          this.isCommentLike = this.isCommentLike + 1 
-          if (this.isComentHate === 1 ){
-            this.isComentHate = this.isComentHate -1
-            likeTag.style.color = "#00a1d6"
-          }else {
-            likeTag.style.color = "#99a2aa"
-          }
-          likeTag.style.color = "#00a1d6"
-        }else {
-          $(likeCount).text(likeCount.textContent-1)
-          this.isCommentLike = this.isCommentLike - 1 
-
-          likeTag.style.color = "#99a2aa"
-
+      // 鼠标离开 mouseleave 操作黑名单举报 div隐藏
+      hiddenOpera(id) {
+        // 获取对应评论条 div
+        const operaList = this.$refs[`operaList`+id];
+        const status = operaList.style.display
+        //鼠标离开 则隐藏
+        if (status === "block") {
+          operaList.style.display = "none"
         }
       },
-      commentHate(id) {
-        const like = `commentLikeCount`+id
-        const likeCount = this.$refs[like];
+      // 点击大拇指点赞 再次点击取消点赞
+      commentLike(id) {
+        // 获取对应点赞dom
+        const likeTag = this.$refs[`like`+id];
+        // 获取对应数值
+        const likeCount = this.$refs[`commentLikeCount`+id];
+       
+        
+        
+        
 
-        const likeColor = `like`+id
-        const likeTag = this.$refs[likeColor];
-
-        if (this.isComentHate === 0 ){
-          this.isComentHate = this.isComentHate +1
-          likeTag.style.color = "#99a2aa"
-        }else {
-          this.isComentHate = this.isComentHate -1
-          likeTag.style.color = "#00a1d6"
-
-        }
-        console.log(this.isComentHate)
+        // if ( this.isCommentLike === 0) {
+        //   //isCommentLike ===0 代表第一次点击 则点赞数+1 大拇指颜色为蓝色
+        //   $(likeCount).text(parseInt(likeCount.textContent)+1)
+        //   this.isCommentLike = this.isCommentLike + 1 
+        //   likeTag.style.color = "#00a1d6"
+        // }else {
+        //   //isCommentLike === 1 代表第2次点击 则点赞数-1 大拇指颜色为灰色
+        //   $(likeCount).text(likeCount.textContent-1)
+        //   this.isCommentLike = this.isCommentLike - 1 
+        //   likeTag.style.color = "#99a2aa"
+        // }
+      },
+      // 回复评论 显示隐藏div
+      reply(id, commentSendDivId) {
+        this.commentId = commentSendDivId
+        //回复 名
+        const name = `commentName` + id
+        // 对应DIV
+        const commentName = this.$refs[name]
+        // 回复评论区div
+        const commentSendDivName = `commentSend` + commentSendDivId
+        const commentSendDiv = this.$refs[commentSendDivName]
+        // 回复textarea
+        const commentSendTxt = this.$refs[`commentSendTxt`+commentSendDivId]
+        // 设置textarea placeholder 名
+        $(commentSendTxt).attr("placeholder",`回复 @`+commentName.textContent+`: `)
+        // 显示回复框
+        commentSendDiv.style.display = "block"
       }
     },
     watch: {
-      isComentHate(newVal, oldVal) {
-        
-        const hate = this.$refs.hate 
-        if ( newVal === 0) {
-          hate.style.color = "#99a2aa"
-        }else {
-          hate.style.color = "#00a1d6"
+      // 回复模块隐藏和显示 回复下一条评论 则隐藏上一条回复框
+      commentId(newVal, oldVal) {
+        if( oldVal !== 0) {
+          this.$refs[`commentSend` + oldVal].style.display = "none"
         }
+
       }
     },  
     components: {
@@ -935,6 +1041,7 @@ div.mdf_connect {
           width: 48px;
           height: 48px;
           border-radius: 50%;
+          
         }
       }
       .textarea-container {
@@ -961,10 +1068,12 @@ div.mdf_connect {
           padding: 5px 10px;
           line-height: normal;
           resize:none;
+          outline: none;
         }
-        textarea:focus {
+        textarea:focus, textarea:hover {
           background-color: #fff;
           background-color: #fff !important;
+          border: 1px solid #00a1d6;
         }
         .comment-submit {
           width: 70px;
@@ -1251,6 +1360,76 @@ div.mdf_connect {
             }
           }
         }
+        // --------回复@回复评论区
+        .comment-send {
+            margin: 10px 0;
+            display: none;
+          .user-face {
+            float: left;
+            margin: 0 auto;
+            position: relative;
+            .user-head {
+              width: 48px;
+              height: 48px;
+              border-radius: 50%;
+            }
+          }
+          .textarea-container {
+            position: relative;
+            margin-left: 85px;
+            margin-right: 80px;
+            .ipt-arrow {
+              position: absolute;
+              left: -12px;
+              top: 22px;
+              width: 13px;
+              height: 20px;
+              display: inline-block;
+              z-index: 2;
+            }
+            .ipt-txt:hover, .ipt-txt:focus {
+              background-color: #fff;
+              border: 1px solid #00a1d6;
+            }
+            .ipt-txt {
+              font-size: 12px;
+              display: inline-block;
+              box-sizing: border-box;
+              background-color: #f4f5f7;
+              border: 1px solid #e5e9ef;
+              overflow: auto;
+              border-radius: 4px;
+              color: #555;
+              width: 100%!important;
+              height: 65px;
+              transition: 0s;
+              padding: 5px 10px;
+              line-height: normal;
+              outline: none;
+              resize: none;
+            }
+            .comment-submit {
+              width: 70px;
+              height: 64px;
+              position: absolute;
+              right: -80px;
+              top: 0;
+              padding: 4px 15px;
+              font-size: 14px;
+              color: #fff;
+              border-radius: 4px;
+              text-align: center;
+              min-width: 60px;
+              vertical-align: top;
+              cursor: pointer;
+              background-color: #00a1d6;
+              border: 1px solid #00a1d6;
+              transition: .1s;
+              user-select: none;
+              outline: none;
+            }
+          }
+        }
       }
     }
   }
@@ -1306,6 +1485,10 @@ img {
       font-size: 14px;
     }
   }
+}
+
+.active {
+  font-size: 18px !important;
 }
 
 .comment-sendDiv {

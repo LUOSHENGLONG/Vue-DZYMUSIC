@@ -185,9 +185,12 @@
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
       })
-      
+      this.menu()
     },
     methods: {
+      menu() {
+        window.scrollTo(0,0);
+      },
       label(e) {
         e.preventDefault();
         console.log(1111111)

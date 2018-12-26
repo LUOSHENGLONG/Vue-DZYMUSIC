@@ -10,14 +10,14 @@
                     <div class="form-group">
                         <!-- <label class="col-xs-12 control-label" for="username">邮箱 / 手机</label> -->
                         <div class="control-col rel">
-                            <input type="text" class="form-control" maxlength="32" name="username" id="username" placeholder="请输入邮箱 / 手机" value="">
+                            <input type="text" class="form-control" maxlength="32" v-model="username" name="username" id="username" placeholder="请输入邮箱 / 手机" value="">
                             <b class="abs-icon"><img src="../../images/people-icon.png" alt=""></b>
                         </div>
                     </div>
                     <div class="form-group">
                         <!-- <label class="col-xs-12 control-label" for="password">密码</label> -->
                         <div class="control-col rel">
-                            <input type="password" class="form-control" id="password" name="passwd" placeholder="请输入账号密码" maxlength="16">
+                            <input type="password" class="form-control" id="password" v-model="password" name="passwd" placeholder="请输入账号密码" maxlength="16">
                             <b class="abs-icon"><img src="../../images/password-icon.png" alt=""></b>
                         </div>
                     </div>
@@ -41,12 +41,16 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
         message: "账号或密码错误,点击返回登录",
         confirmLogin: false,
         loginTimes: 0 ,
+        username: '',
+        password: ''
     }
   },
   mounted() {
@@ -61,19 +65,32 @@ export default {
         this.$emit("signup")
     },
     post() {
-        console.log(11)
-        if( this.confirmLogin === false ) {
-            this.loginTimes++
-            
-            const tip = this.$refs.TipsDiv
-            if(this.loginTimes > 3) {
-                $(tip).text("连续三次登入错误,请15分钟后再试")
+        console.log(this.username)
+        console.log(this.password)
+        axios.post("http://localhost:3001/login",{username:this.username,password:this.password})
+        .then(result => {
+            console.log(result)
+            if( result.data.staus === 1 ) {
+
             }
-            tip.style.display = "block"
-            window.setTimeout(()=> {
-                tip.style.display = "none"
-            },3000)
-        }
+        })
+        .catch( err => {
+            console.log(err)
+        })
+
+
+        // if( this.confirmLogin === false ) {
+        //     this.loginTimes++
+            
+        //     const tip = this.$refs.TipsDiv
+        //     if(this.loginTimes > 3) {
+        //         $(tip).text("连续三次登入错误,请15分钟后再试")
+        //     }
+        //     tip.style.display = "block"
+        //     window.setTimeout(()=> {
+        //         tip.style.display = "none"
+        //     },3000)
+        // }
     },
     tips() {
         const tip = this.$refs.TipsDiv
