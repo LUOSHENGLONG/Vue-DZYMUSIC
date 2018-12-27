@@ -15,13 +15,13 @@
             <li><a href="#"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</a></li>
             <li class="active">合成器</li>
           </ol>
-          <div class="media" v-for="item of pageData" :key="item.id">
+          <div class="media" v-for="item of data" :key="item.id">
             <div class="media-body">
               <div class="media-left media-middle">
                 <div class="Content">
                   <router-link  :to="`/`+item.type+`/info/`+item.id">
                     <h4 class="media-heading">
-                      <a href="#" @click="label($event)" class="label">合成器</a>
+                      <a href="#" @click="label($event)" class="label">{{item.type}}</a>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       
                         {{ item.title }}
@@ -41,7 +41,7 @@
                     <li><span class="glyphicon glyphicon-eye-open"></span>120浏览</li>
                     <li>
                       <a href="#" @click="like($event)">
-                      <span ref="likeSpan" :class="isLike"></span>59收藏
+                      <span ref="likeSpan" :class="isLike"></span>{{item.like}}收藏
                       </a>
                     </li>
                   </ul>
@@ -52,8 +52,8 @@
           
           
           <!-- 分页 -->
-          <div class="pageNav">
-            <nav aria-label="Page navigation">
+          <div class="pageNav" id="pageNav">
+            <!-- <nav aria-label="Page navigation">
               <ul class="pagination">
                 <li>
                   <a href="#" aria-label="Previous">
@@ -71,7 +71,7 @@
                   </a>
                 </li>
               </ul>
-            </nav>
+            </nav> -->
           </div>
         </div>
       </div>
@@ -102,6 +102,7 @@
     </div>
 </template>
 <script>
+import paginate from "../../asset/jPaginate/jquery.paginate.js"
   export default {
     data() {
       return {
@@ -181,13 +182,19 @@
       }
     }
     ,
+    props: ["data"],
     mounted() {
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
       })
       this.menu()
+
+      console.log(this.data)
+
+      
     },
     methods: {
+      
       menu() {
         window.scrollTo(0,0);
       },
@@ -222,7 +229,7 @@
   }
 </script>
 <style lang="scss" scoped>
-
+@import '../../asset/jPaginate/css/style.css';
 
 body, textarea, input, select, section, h4, li {
     color: rgb(68, 68, 68);
@@ -358,7 +365,7 @@ a {
                 li {
                   list-style: none;
                   display: inline-block;
-                  width: 80px;
+                  width: 90px;
                   height: 25px;
                   text-align: center;
                   color: rgba(0, 0, 0, 0.5);

@@ -1,7 +1,7 @@
 <template>
   <div ref="all" class="all">
     <!-- 顶部栏 --> 
-    <Navbar @showLogin="showLoginDiv" @showSignup="showSignupDiv"></Navbar>
+    <Navbar :navStatus="navStatus" @showLogin="showLoginDiv" @showSignup="showSignupDiv"></Navbar>
     <!--进度条-->
     <Progress></Progress>
 
@@ -56,6 +56,7 @@ export default {
       isLogin: false,
       isSignup: false,
       top: 0 ,
+      navStatus: this.$store.state.isLogin,
     };
   },
   mounted() {

@@ -65,38 +65,101 @@ export default {
         this.$emit("signup")
     },
     post() {
-        console.log(this.username)
-        console.log(this.password)
+        //登录验证
+        const tip = this.$refs.TipsDiv
+        if( this.confirmLogin === false ) {
+            // this.loginTimes++
+            
+            // if(this.loginTimes > 3) {
+            //     $(tip).text("连续三次登入错误,请15分钟后再试")
+            // }
+            tip.style.display = "block"
+            window.setTimeout(()=> {
+                tip.style.display = "none"
+            },3000)
+            return
+        }
+        
+        // console.log(this.username)
+        // console.log(this.password)
+
         axios.post("http://localhost:3001/login",{username:this.username,password:this.password})
         .then(result => {
             console.log(result)
-            if( result.data.staus === 1 ) {
-
+            //登录成功
+            if( result.data.status === 1 ) {
+                this.message = result.data.message
+                tip.style.background = "#5cb85c"
+                tip.style.display = "block"
+                this.$store.state.user = result.data.user
+                this.$store.state.token = result.data.user.token
+                
+                localStorage.setItem("user",JSON.stringify(result.data.user))
+                localStorage.setItem("token",result.data.user.token)
+                
+                this.$store.commit('showLogin')
+                setTimeout(() => {
+                    this.cancel();
+                }, 1000);
+                console.log(this.$store.state.user)
+                console.log(this.$store.state.isLogin)
+            }else {
+                this.message = "账号或密码错误,点击返回登录"
+                tip.style.display = "block"
+                window.setTimeout(()=> {
+                    tip.style.display = "none"
+                },3000)
             }
         })
         .catch( err => {
             console.log(err)
         })
 
-
-        // if( this.confirmLogin === false ) {
-        //     this.loginTimes++
-            
-        //     const tip = this.$refs.TipsDiv
-        //     if(this.loginTimes > 3) {
-        //         $(tip).text("连续三次登入错误,请15分钟后再试")
-        //     }
-        //     tip.style.display = "block"
-        //     window.setTimeout(()=> {
-        //         tip.style.display = "none"
-        //     },3000)
-        // }
+        
     },
     tips() {
         const tip = this.$refs.TipsDiv
         tip.style.display = "none"
     }
     
+  },
+  watch: {
+      username( newVal, oldVal) {
+        
+        //正则 邮箱验证
+        const phoneConfirm = new RegExp("(^1[3,4,5,6,7,9,8][0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$)")
+        //正则 手机号码验证
+        const emailConfirm = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/
+        //验证邮箱不匹配
+        if( !emailConfirm.test(newVal) ) {
+            //验证邮箱不匹配 验证是否为手机号码
+            this.confirmLogin = false
+            if( !phoneConfirm.test(newVal) ){
+                //邮箱和手机号码都不正确
+                this.confirmLogin = false
+            }else {
+                //手机号码格式正确
+                this.confirmLogin = true
+            }
+
+        }else {
+        //邮箱格式正确
+            this.confirmLogin = true
+        }
+        
+    },
+    password( newVal, oldVal ) {
+        //正则 密码验证
+        const passwordConfirm = /^[a-zA-Z][a-zA-Z0-9_]{5,20}$/
+        if( !passwordConfirm.test(newVal)){
+        //验证不匹配 密码格式错误
+            this.confirmLogin = false
+        }else{
+        //密码格式正确 必须包含字母和数字 不少于8位数
+            this.confirmLogin = true
+        }
+        
+    },
   }
    
 }
@@ -182,7 +245,7 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
                     background-color: #c9302c;
                     border: none;
                     left: 30px;
-                    top: 233px;
+                    top: 232px;
                     margin: 0;
                     padding: 0;
                     border-radius: 5px;

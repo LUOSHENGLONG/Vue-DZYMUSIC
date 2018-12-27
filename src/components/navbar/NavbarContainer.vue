@@ -33,7 +33,7 @@
           </div>
           <button type="submit" class="btn btn-primary">搜索</button>
         </form>
-        <ul v-if="isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
+        <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
           <li>
             <img src="../../images/tx.jpg" alt="..." class="img-circle">
           </li>
@@ -44,7 +44,7 @@
             <router-link to="/setting">设置</router-link>
           </li>
         </ul>
-        <ul v-if="!isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
+        <ul v-if="!this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
           
           <li>
             <a href="#" @click="showLogin($event)">登录</a>
@@ -72,11 +72,12 @@
   export default {
     data() {
       return {
-        isLogin: false
       }
     },
     props: {
-      
+      navStatus: {
+        type: Boolean,
+      }
     }
     ,
     methods: {
@@ -87,6 +88,12 @@
       showSignup(e) {
         e.preventDefault();
         this.$emit('showSignup')
+      }
+    },
+    watch: {
+      navStatus(newVal, oldVal) {
+        console.log(newVal)
+        console.log("------")
       }
     }
   }
@@ -111,19 +118,18 @@
 .navbar {
     margin-bottom: 20px;
     z-index: 1;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: #fff;
    
 }
 
 ul li {
-  font-size: 18px;
+  font-size: 16px;
   a {
     padding: 5px;
     margin: 10px;
     margin-bottom: 6px;
     border-bottom: 3px solid rgba(255, 255, 255, 0.9);
     color: #34495ed5 !important;
-    font-weight: 700;
   }
   a:hover {
     border-bottom: 3px solid #337ab7;
