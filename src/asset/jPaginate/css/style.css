@@ -5,6 +5,9 @@
     font-size:small;   
 	width:100%;
 }
+a, a:hover {
+    outline: 0 !important;
+}
 .jPaginate a{
     line-height:15px;
     height:18px;
@@ -12,6 +15,7 @@
     padding:2px 5px;
     margin:2px;
     float:left;
+    outline: 0;
 }
 .jPag-control-back{
 	position:absolute;

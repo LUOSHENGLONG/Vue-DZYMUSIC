@@ -13,8 +13,26 @@ Vue.use(VueRouter)
 // Vue.use(Clipboard)
 // import Paginate from 'vuejs-paginate'
 // Vue.component('paginate', Paginate)
+import Paginate from 'vuejs-paginate'
+Vue.component('paginate', Paginate)
 
 import VueClipboard from 'vue-clipboard2'
+
+//filter
+Vue.filter('typeFormat', function (dataStr) {
+  if(dataStr === "synthesizer"){
+    return "合成器"
+  }else if( dataStr === "effects") {
+    return "效果器"
+  }else if( dataStr === "samplePack") {
+    return "采样包"
+  }else if( dataStr === "host") {
+    return "宿主"
+  }else if( dataStr === "tutorial") {
+    return "教程"
+  }
+})
+
 
 Vue.use(VueClipboard)
 import App from './App.vue'

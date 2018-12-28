@@ -1,6 +1,6 @@
 <template>
    <div class="synthesizerContainer">
-    <EachContainer :data="data"></EachContainer>
+    <EachContainer :data="data" :PageCount="count" @currentPage="setCurrentPage" :labelTypeColor="labelTypeColor"></EachContainer>
   </div>
 </template>
 <script>
@@ -9,7 +9,10 @@ import EachContainer from '../sub/EachContainer.vue'
   export default {
     data() {
       return {
-        data:[]
+        data:[],
+        count: {},
+        currentPage: 1,
+        labelTypeColor: "background: rgb(244, 67, 54)"
       }
     },
     mounted() {
@@ -18,11 +21,20 @@ import EachContainer from '../sub/EachContainer.vue'
     ,
     methods: {
       getData() {
-        axios.post("http://localhost:3001/synth")
+        axios.post("http://localhost:3001/synth",{currentPage: this.currentPage})
         .then(result => {
-          console.log(result)
-          this.data = result.data
+          this.data = result.data.data
+          this.count = result.data.count["count(id)"]
         })
+      },
+      setCurrentPage(e) {
+        this.currentPage = e
+        this.data = {}
+        this.getData()
+        this.scrollTop()
+      },
+      scrollTop() {
+        window.scrollTo(0,0);
       }
     },
     components: {

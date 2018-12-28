@@ -20,12 +20,12 @@
           </div>
           <div class="main-info">
             <ul class="message">
-              <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
-              <li><span class="glyphicon glyphicon-time"></span>2018-12-12</li>
-              <li><span class="glyphicon glyphicon-eye-open"></span>120浏览</li>
+              <li><span class="glyphicon glyphicon-user"></span>{{ infoData.issuer }}</li> 
+              <li><span class="glyphicon glyphicon-time"></span>{{ infoData.releaseTime }}</li>
+              <li><span class="glyphicon glyphicon-eye-open"></span>{{ infoData.look }}浏览</li>
               <li>
                 <a href="#" @click="like($event)">
-                <span ref="likeSpan" :class="isLike"></span>59收藏
+                <span ref="likeSpan" :class="isLike"></span>{{ infoData.like }}收藏
                 </a>
               </li>
               <li>
@@ -44,15 +44,15 @@
               <br>
             </p>
 
-            <p class="post-content-text">曾获得美国公告牌音乐奖最佳乡村巡演奖的美国著名乡村音乐歌手
-              <span class="intexthighlight">Kenny Chesney</span>
-               在其“ trip around the sun” 巡演中使用了sE V7 MC1音头。至于为什么使用以及效果如何
-              我们采访了此次巡演舞台工程师Chris Rabold和与Kenny共事18年的监控工程师Phillip "SidePhill" Robinson一起来听一听他们的声音。<br><br>
+            <p class="post-content-text">
+              <!-- <span class="intexthighlight">Kenny Chesney</span> -->
+              {{ infoData.content }}
+              <br><br>
             </p>
             
-            <p class="post-content-text">Kenny Chesney此次巡演舞台工程师Chris Rabold：</p>
+            <!-- <p class="post-content-text">Kenny Chesney此次巡演舞台工程师Chris Rabold：</p> -->
             <blockquote>
-              <p class="post-content-text">  “我知道sE,我一直在用sE RF(反射器),之后sE MC1上市，我身边的Ken "POOCH" Van Druten和Alex，他们是我在Justin Bibier演唱会上的工作伙伴，他们都在玩MC1，Andy Meyer也很喜欢这款音头，并在Justin Timberlake的巡演中用到了它，这让我觉得有机会我一定要试试，刚好这次在Kenny的演唱会中用到，果然没让我失望，演出非常成功!”</p>
+              <p class="post-content-text">{{ infoData.description }}</p>
             </blockquote>
             <div class="video-responsive">
               <iframe src="//v.qq.com/txp/iframe/player.html?vid=v0812nmz60u" allowfullscreen="true" frameborder="0"></iframe>
@@ -64,11 +64,11 @@
               <blockquote>
                 <p class="post-content-text"> 
                   下载地址：
-                  <a href="https://pan.baidu.com/share/init?surl=7wNYgLQ3hszRcrOV44HDQg" target="_blank">
-                    https://pan.baidu.com/share/init?surl=7wNYgLQ3hszRcrOV44HDQg
+                  <a :href="infoData.downloadLink" target="_blank">
+                    {{ infoData.downloadLink }}
                   </a>
                   <br>
-                  提取码: <span ref="tqm" id="tqm">xhsh</span>&nbsp;&nbsp;
+                  提取码: <span ref="tqm" id="tqm">{{ infoData.downloadPassword }}</span>&nbsp;&nbsp;
                   <button 
                     @click="showAndhideTips1()" 
                     id="btnTips1" type="button" 
@@ -79,7 +79,7 @@
                     data-clipboard-target="#tqm"
                   >复制提取码</button>
                    &nbsp;&nbsp;&nbsp;
-                   解压密码: <span ref="jymm" id="jymm">无</span>  &nbsp;&nbsp;
+                   解压密码: <span ref="jymm" id="jymm">xxx</span>  &nbsp;&nbsp;
 
                   <button 
                     @click="showAndhideTips2()" 
@@ -347,15 +347,12 @@
 </template>
 <script>
 import Clipboard from 'clipboard';
+import axios from 'axios'
 
   export default {
     data() {
       return {
-        infoData: {
-          id: 1,
-          title: "Ableton 用户福利：来自 Huston Singletary 的经典合成器音源 Singularities 免费下载",
-          content: ""
-        },
+        infoData: {},
         rankData: [
           {
             id:"11",
@@ -394,6 +391,7 @@ import Clipboard from 'clipboard';
         scrollTitleInterval: {},
         clipboard: {},
         commentId: 0,
+        id: this.$route.params.id
       }
     },
     mounted() {
@@ -403,11 +401,21 @@ import Clipboard from 'clipboard';
       const copybtn = this.$refs.btnTips1
       this.clipboard = new Clipboard(copybtn);
       this.menu()
+      this.getInfoData()
+
     },
     methods: {
       menu() {
         window.scrollTo(0,0);
       },
+      getInfoData() {
+        axios.post("http://localhost:3001/info",{id: this.id})
+        .then(result => {
+          this.infoData = result.data.data
+          console.log(this.infoData)
+        })
+      }
+      ,
       // 复制提取码按钮
       showAndhideTips1() {
         const value = this.$refs.tqm.textContent
@@ -1018,7 +1026,7 @@ div.mdf_connect {
     border-bottom: 2px solid;
   }
   .section-title, .techniques-title h2  {
-    border-bottom-color: rgb(221, 156, 16);
+    border-bottom-color: #337ab7;
   
     .main-comment {
       padding: 15px 0;
@@ -1073,7 +1081,7 @@ div.mdf_connect {
         textarea:focus, textarea:hover {
           background-color: #fff;
           background-color: #fff !important;
-          border: 1px solid #00a1d6;
+          border: 1px solid #337ab7;
         }
         .comment-submit {
           width: 70px;
@@ -1089,8 +1097,8 @@ div.mdf_connect {
           min-width: 60px;
           vertical-align: top;
           cursor: pointer;
-          background-color: #00a1d6;
-          border: 1px solid #00a1d6;
+          background-color: #337ab7;
+          border: 1px solid #337ab7;
           transition: .1s;
           user-select: none;
           outline: none;
@@ -1120,7 +1128,7 @@ div.mdf_connect {
             padding: 0;
             color: #fff;
             font-size: 12px;
-            background-color: #00a1d6;
+            background-color: #337ab7;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -1174,7 +1182,7 @@ div.mdf_connect {
           }
           .like:hover, .hate:hover {
             i {
-              color: #00a1d6;
+              color: #337ab7;
             }
           }
           .like {
@@ -1249,7 +1257,7 @@ div.mdf_connect {
                   transition: all .3s;
                 }
                 li:hover {
-                  background: #00a1d6;;
+                  background: #337ab7;
                   color: #fff;
                 }
                 .blacklist {
@@ -1389,7 +1397,7 @@ div.mdf_connect {
             }
             .ipt-txt:hover, .ipt-txt:focus {
               background-color: #fff;
-              border: 1px solid #00a1d6;
+              border: 1px solid #337ab7;
             }
             .ipt-txt {
               font-size: 12px;
@@ -1422,8 +1430,8 @@ div.mdf_connect {
               min-width: 60px;
               vertical-align: top;
               cursor: pointer;
-              background-color: #00a1d6;
-              border: 1px solid #00a1d6;
+              background-color: #337ab7;
+              border: 1px solid #337ab7;
               transition: .1s;
               user-select: none;
               outline: none;
@@ -1461,7 +1469,7 @@ img {
 
  a {
     outline: none;
-    color: #00a1d6;
+    color: #337ab7;
     text-decoration: none;
     cursor: pointer;
 }
@@ -1475,7 +1483,7 @@ img {
 
  a {
     outline: none;
-    color: #00a1d6;
+    color: #337ab7;
     text-decoration: none;
     cursor: pointer;
 }

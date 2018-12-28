@@ -231,7 +231,7 @@ div.popContainer{
     bottom: 0;
     background: rgba(0,0,0,0.3);
     display: none;
-    z-index: 33;
+    z-index: 999;
 }
 .all {
   overflow-x: hidden;

@@ -21,13 +21,13 @@
                 <div class="Content">
                   <router-link  :to="`/`+item.type+`/info/`+item.id">
                     <h4 class="media-heading">
-                      <a href="#" @click="label($event)" class="label">{{item.type}}</a>
+                      <a href="#" :style="labelTypeColor" @click="label($event,item.id)" class="label" :ref="`labelType`">{{item.type | typeFormat}}</a>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       
-                        {{ item.title }}
+                        {{item.id}}---{{ item.title }}
                     </h4>
                     <div class="xhx"></div>
-                    <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
+                    <img class="media-object hidden-xs hidden-sm" :src="item.img" alt="...">
                     <p class="pDiv hidden-xs hidden-sm">
                         {{ item.content }}
                     </p>
@@ -72,6 +72,14 @@
                 </li>
               </ul>
             </nav> -->
+
+            <paginate
+              :page-count="Math.round(PageCount / 10)"
+              :click-handler="page"
+              :prev-text="'Prev'"
+              :next-text="'Next'"
+              :container-class="'pagination'">
+            </paginate>
           </div>
         </div>
       </div>
@@ -106,45 +114,7 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
   export default {
     data() {
       return {
-        pageData: [
-          {
-            id:"1",
-            type: "synth", 
-            title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
-            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
-                  包含超过 500 MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
-                  和 80 多个MB 的内容和MB和 80 多个MB 的内容和MB和 80 多个MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和MB 的内容和及旋律采样。Sylenth1、Spire和Serum的预加恐怖`},
-          {
-            id:"2",
-            type: "effects", 
-            title:"[万圣节风格圣节风格圣节风格圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
-            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
-                  包含超过 500 MB。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
-                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖`},
-          {
-            id:"3",
-            type: "sample", 
-            title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
-            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
-                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
-                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖`},
-          {
-            id:"4",
-            type: "host", 
-            title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
-            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Bi。
-                  包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
-                  和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖`},
-          {
-            id:"5",
-            type: "tutorial", 
-            title:"[万圣节风格EDM采样包+Sylenth1/Serum/Spire预置]Big EDM: EDM Halloween Festival",
-            content:`简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
-                  包含超过 500 MB 的内容和糖果以及超过 280 个文这个包更加恐怖`},
-          
-          
-         
-        ],
+        
         rankData: [
           {
             id:"11",
@@ -177,12 +147,12 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
         ],
         isLike: "glyphicon glyphicon-heart-empty",
         isRed: "black",
-        scrollTitleInterval: {}
+        scrollTitleInterval: {},
 
       }
     }
     ,
-    props: ["data"],
+    props: ["data","PageCount","labelTypeColor"],
     mounted() {
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
@@ -190,17 +160,37 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
       this.menu()
 
       console.log(this.data)
-
-      
+      console.log(this.count)
     },
     methods: {
-      
+      labelColor() {
+        
+        this.$refs.labelType.forEach(item => {
+          if(item.textContent === '合成器'){
+            item.style.background = "#ea6f5a"
+          }else if(item.textContent === '采样包'){
+            item.style.background = "red"
+          }else if(item.textContent === '宿主'){
+            item.style.background = "red"
+          }else if(item.textContent === '效果器'){
+            item.style.background = "red"
+          }else if(item.textContent === '教程'){
+            item.style.background = "red"
+          }
+        })
+      },
+      getCount() {
+        
+      },
+      page(e) {
+        this.$emit("currentPage",e)
+      },
       menu() {
         window.scrollTo(0,0);
       },
-      label(e) {
+      label(e,id) {
         e.preventDefault();
-        console.log(1111111)
+        this.$router.push({name: 'info', params: {id: id}})
       },
       like(e) {
         e.preventDefault();
@@ -448,13 +438,14 @@ a {
             text-align: center;
             color: rgba(0, 0, 0, 0.5);
             font-size: 14px;
+            
             a {
               display: inline-block;
               width: 100%;
               height: 100%;
               border-radius: 5px;
               font-size: 18px;
-                text-align: center;
+              text-align: center;
 
               span {
                 font-size: 18px;
@@ -599,7 +590,7 @@ a {
               }
             }
             .a.active, .a.active:focus, .a.active:hover {
-                z-index: 2;
+                z-index: 0;
                 color: rgba(0, 0, 0, 0.664);
                 background-color: #fff; 
                 border: none;
@@ -620,7 +611,6 @@ a {
     }
   }
 }
-
 
 
 

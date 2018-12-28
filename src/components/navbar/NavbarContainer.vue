@@ -117,7 +117,7 @@
 
 .navbar {
     margin-bottom: 20px;
-    z-index: 1;
+    z-index: 99;
     background-color: #fff;
    
 }
