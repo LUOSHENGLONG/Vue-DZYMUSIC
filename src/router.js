@@ -16,6 +16,8 @@ import SettingContainer from './components/setting/SettingContainer.vue'
 import LoginContainer from './components/login/LoginContainer.vue'
 import EachContainer from './components/sub/EachContainer.vue'
 import InfoContainer from './components/sub/InfoContainer.vue'
+import SearchContainer from './components/search/SearchContainer.vue'
+import Search2Container from './components/search/Search2Container.vue'
 
 
 
@@ -36,6 +38,8 @@ var router = new VueRouter({
     {path: '/setting', component: SettingContainer},
     {path: '/login', component: LoginContainer},
     {path: '/each', component: EachContainer},
+    {path: '/search/:keyword', component: SearchContainer, name:"search"},
+    {path: '/search/:keyword', component: Search2Container, name:"search2"},
     {path: '/:type/info/:id', component: InfoContainer, name:"info"},
 
   ]

@@ -11,7 +11,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <router-link class="navbar-brand" to="/">DZYMUSIC</router-link>
+        <router-link class="navbar-brand" to="/"><img class="headImg" src="../../asset/icon/sss11.png" alt=""></router-link>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -29,9 +29,10 @@
         </ul>
         <form class="navbar-form navbar-left hidden-sm hidden-md hidden-xs">
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="请输入搜索内容">
+            <input ref="keyword" v-model="keyword" type="text" class="form-control" placeholder="请输入搜索内容">
           </div>
-          <button type="submit" class="btn btn-primary">搜索</button>
+          <button @click="search()" type="button" class="btn btn-primary">搜索</button>
+          
         </form>
         <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
           <li>
@@ -72,6 +73,9 @@
   export default {
     data() {
       return {
+        keyword: "",
+        switch: 0,
+        oldKeyword: ""
       }
     },
     props: {
@@ -80,6 +84,7 @@
       }
     }
     ,
+    
     methods: {
       showLogin(e) {
         e.preventDefault();
@@ -88,14 +93,28 @@
       showSignup(e) {
         e.preventDefault();
         this.$emit('showSignup')
+      },
+      search() {
+        if(this.keyword.trim() !== "" || this.keyword.trim() !== null ){
+            if(this.switch % 2 === 0) {
+              this.$router.push({name: 'search', params: {keyword: this.keyword}})
+            }else {
+              this.$router.push({name: 'search2', params: {keyword: this.keyword}})
+            }
+            this.oldKeyword = this.keyword
+            this.switch ++
+          }
+        
       }
     },
     watch: {
-      navStatus(newVal, oldVal) {
-        console.log(newVal)
-        console.log("------")
+      keyword(newVal, oldVal) {
+        if(newVal !== oldVal) {
+          
+        }
       }
     }
+    
   }
 </script>
 
@@ -109,7 +128,7 @@
   margin: 10px 0;
 }
 .form-control:focus {
-    border-color: #F2F2F2;
+    border-color: rgb(109, 109, 109);
     outline: 0;
     -webkit-box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 2px rgba(0,0,0,.075);
     box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 2px rgba(0,0,0,.075);
@@ -142,6 +161,14 @@ ul li {
     border: 0;
 
     background-color: #f8f8f8;
+}
+
+.headImg {
+  width: 140px;
+  height: 30px;
+}
+.navbar-brand {
+  padding: 10px;
 }
 </style>
 

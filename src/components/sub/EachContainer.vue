@@ -12,8 +12,8 @@
         
         <div class="mediaLeft">
           <ol class="breadcrumb">
-            <li><a href="#"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</a></li>
-            <li class="active">合成器</li>
+            <li><router-link to="/"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</router-link></li>
+            <li class="active">{{navType}}</li>
           </ol>
           <div class="media" v-for="item of data" :key="item.id">
             <div class="media-body">
@@ -21,7 +21,7 @@
                 <div class="Content">
                   <router-link  :to="`/`+item.type+`/info/`+item.id">
                     <h4 class="media-heading">
-                      <a href="#" :style="labelTypeColor" @click="label($event,item.id)" class="label" :ref="`labelType`">{{item.type | typeFormat}}</a>
+                      <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label" :ref="`labelType`">{{item.type | typeFormat}}</a>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       
                         {{item.id}}---{{ item.title }}
@@ -80,6 +80,7 @@
               :next-text="'Next'"
               :container-class="'pagination'">
             </paginate>
+            
           </div>
         </div>
       </div>
@@ -92,11 +93,30 @@
               <p class="hot-title">&nbsp;下载热度排行</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of rankData" :key="item.id">
+              <li v-for="(item, index) of this.$store.state.rightData1" :key="item.id">
                 <div class="zhx"></div>
                 <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
                 <a ref="rankA" href="#" class="list-group-item">
-                  <p :ref="`rankTitle`+item.id" @mouseout="stopScroll(item.id)" @mouseover="scrollTitle(item.id)" class="rank-title">{{ item.title }}</p>
+                  <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
+                </a>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+
+        <div class="mediaRight">
+          <div class="list-group">
+            <div class="right-title">
+              <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
+              <p class="hot-title">&nbsp;下载热度排行</p>
+            </div>
+            <ul class="rightUl">
+              <li v-for="(item, index) of this.$store.state.rightData2" :key="item.id">
+                <div class="zhx"></div>
+                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
+                <a ref="rankA" href="#" class="list-group-item">
+                  <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
                 </a>
               </li>
               
@@ -152,33 +172,15 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
       }
     }
     ,
-    props: ["data","PageCount","labelTypeColor"],
+    props: ["data","PageCount","navType"],
     mounted() {
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
       })
       this.menu()
-
-      console.log(this.data)
-      console.log(this.count)
     },
     methods: {
-      labelColor() {
-        
-        this.$refs.labelType.forEach(item => {
-          if(item.textContent === '合成器'){
-            item.style.background = "#ea6f5a"
-          }else if(item.textContent === '采样包'){
-            item.style.background = "red"
-          }else if(item.textContent === '宿主'){
-            item.style.background = "red"
-          }else if(item.textContent === '效果器'){
-            item.style.background = "red"
-          }else if(item.textContent === '教程'){
-            item.style.background = "red"
-          }
-        })
-      },
+      
       getCount() {
         
       },
@@ -200,15 +202,15 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
           this.isLike = "glyphicon glyphicon-heart-empty"
         }
       },
-      scrollTitle(id) {
-        const rankTitle = "rankTitle" + id
+      scrollTitle(id,type) {
+        const rankTitle = "rankTitle" + type + id
         const title = this.$refs[rankTitle]
         const aWidth = $(this.$refs.rankA).width()
         const width = $(title).width()-aWidth+50
         $(title).animate({left: -width+"px"},2000);
       },
-      stopScroll(id) {
-        const rankTitle = "rankTitle" + id
+      stopScroll(id,type) {
+        const rankTitle = "rankTitle" + type + id
         const title = this.$refs[rankTitle]
         $(title).stop()
         $(title).animate({left: "-0"},300);
@@ -398,27 +400,26 @@ a {
       // 焦点hover 过渡效果 
       .media:hover {
         .xhx {
-          background-color: #337ab7;
-          transform: translate(0);
-          transition: all .8s linear;
+          // background-color: #337ab7;
+          // transform: translate(0);
+          // transition: all .8s linear;
         }
         h4{
-          box-shadow: 0 0 20px #eee inset;
+          // box-shadow: 0 0 20px #eee inset;
 
           background-color: #fff;
+          color: rgba(0, 0, 0, 0.918);
         }
         img {
-          transform: scale(1.03,1.03);
-          transition: all 1s ease;
+          opacity: 0.7;
         }
       }
       // 分页 过渡效果  
       .pageNav:hover {
-        box-shadow: 0 0 10px #eee, 0 0 20px rgba(238, 238, 238, 0.575) inset;
+        // box-shadow: 0 0 10px #eee, 0 0 20px rgba(238, 238, 238, 0.575) inset;
       }
       //分页
       .pageNav {
-        margin-top: 10px;
         background-color: #fff;
         text-align: center;
         border: 1px solid rgba(204, 204, 204, 0.397);
@@ -465,10 +466,10 @@ a {
     .mediaRight{
       background-color: #fefefe;
       border-radius: 5px;
+      margin-bottom: 15px;
       .list-group {
         border: 1px solid #eee;
-        border-left: none;
-        border-bottom: none;
+        
         padding-left: 0;
         margin-bottom: 1px;
         background-color: #fff;

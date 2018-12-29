@@ -1,6 +1,6 @@
 <template>
-   <div class="synthesizerContainer">
-    <EachContainer :data="data" :PageCount="count" @currentPage="setCurrentPage" :navType="navType" :rightData=this.$store.state.rightData></EachContainer>
+   <div class="searchContainer">
+    <EachContainer :data="data" :PageCount="count" @currentPage="setCurrentPage" :navType="navType"></EachContainer>
   </div>
 </template>
 <script>
@@ -12,20 +12,24 @@ import EachContainer from '../sub/EachContainer.vue'
         data:[],
         count: {},
         currentPage: 1,
-        navType: "合成器"
+        labelTypeColor: "background: #CC0033",
+        keyword: this.$route.params.keyword,
+        navType: "搜索结果"
       }
     },
     mounted() {
       this.getData()
-      this.$store.commit("queryRightData")
     }
     ,
     methods: {
       getData() {
-        axios.post("http://localhost:3001/synth",{currentPage: this.currentPage})
+        console.log(this.keyword)
+        axios.post("http://localhost:3001/search",{currentPage: this.currentPage, keyword: this.keyword})
         .then(result => {
           this.data = result.data.data
           this.count = result.data.count["count(id)"]
+          console.log("xxxxxxxxxxxxxxxxxssssssssssssssssssssss")
+          
         })
       },
       setCurrentPage(e) {
@@ -40,6 +44,10 @@ import EachContainer from '../sub/EachContainer.vue'
     },
     components: {
       EachContainer
+    },
+    watch: {
+      keyword(newVal, oldVal) {
+      }
     }
   }
 </script>

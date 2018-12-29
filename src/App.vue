@@ -57,6 +57,7 @@ export default {
       isSignup: false,
       top: 0 ,
       navStatus: this.$store.state.isLogin,
+      
     };
   },
   mounted() {

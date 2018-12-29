@@ -54,9 +54,9 @@
     <div class="row footer-top">
       <div class="col-md-4 col-lg-4">
         <h4>
-          <img src="../../asset/icon/logo.png">
+          <img class="logo" src="../../asset/icon/sss11.png">
         </h4>
-        <p>我们一直致力于为广大音乐制作人提供更多的优质资源！</p>
+        <p>&nbsp;&nbsp;我们一直致力于为广大音乐制作人提供更多的优质资源！</p>
       </div>
       <div class="col-md-8  col-lg-7 col-lg-offset-1">
         <div class="row about">
@@ -308,5 +308,10 @@ p {
 }
 p {
     word-spacing: 0.05em;
+}
+
+.logo {
+  height: 68px;
+  width: 350px;
 }
 </style>

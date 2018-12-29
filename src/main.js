@@ -32,6 +32,20 @@ Vue.filter('typeFormat', function (dataStr) {
     return "教程"
   }
 })
+// 
+Vue.filter('colorFormat', function (dataStr) {
+  if(dataStr === "synthesizer"){
+    return "background: #663a9e"
+  }else if( dataStr === "effects") {
+    return "background: #CC3366"
+  }else if( dataStr === "samplePack") {
+    return "background: #03A9F4"
+  }else if( dataStr === "host") {
+    return "background: #3366FF"
+  }else if( dataStr === "tutorial") {
+    return "background: #CC0033"
+  }
+})
 
 
 Vue.use(VueClipboard)

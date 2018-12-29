@@ -1,6 +1,6 @@
 <template>
    <div class="samplePackContainer">
-    <EachContainer :data="data" :PageCount="count" @currentPage="setCurrentPage" :labelTypeColor="labelTypeColor"></EachContainer>
+    <EachContainer :data="data" :PageCount="count" @currentPage="setCurrentPage" :navType="navType"></EachContainer>
   </div>
 </template>
 <script>
@@ -12,7 +12,7 @@ import EachContainer from '../sub/EachContainer.vue'
         data:[],
         count: {},
         currentPage: 1,
-        labelTypeColor: "background: #03A9F4"
+        navType: "采样包"
       }
     },
     mounted() {
