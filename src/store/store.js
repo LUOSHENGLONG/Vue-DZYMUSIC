@@ -26,12 +26,11 @@ const mutations = {
   axios.post("http://localhost:3001/rightData1")
     .then(result => {
       state.rightData1 = result.data.data
-      console.log(result)
-      
+      localStorage.setItem("rightData1",JSON.stringify(state.rightData1))
     })
     .then(axios.post("http://localhost:3001/rightData2").then(result => {
       state.rightData2 = result.data.data
-      console.log(result)
+      localStorage.setItem("rightData2",JSON.stringify(state.rightData2))
     }))
   },
   getHomeData(state) {

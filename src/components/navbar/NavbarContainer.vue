@@ -101,8 +101,10 @@
             }else {
               this.$router.push({name: 'search2', params: {keyword: this.keyword}})
             }
+            if(this.keyword !== this.oldKeyword) {
+              this.switch ++
+            }
             this.oldKeyword = this.keyword
-            this.switch ++
           }
         
       }

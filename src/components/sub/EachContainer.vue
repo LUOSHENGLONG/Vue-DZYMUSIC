@@ -20,8 +20,8 @@
               <div class="media-left media-middle">
                 <div class="Content">
                   <router-link  :to="`/`+item.type+`/info/`+item.id">
-                    <h4 class="media-heading">
-                      <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label" :ref="`labelType`">{{item.type | typeFormat}}</a>
+                    <!-- <h4 class="media-heading">
+                      <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       
                         {{item.id}}---{{ item.title }}
@@ -30,7 +30,19 @@
                     <img class="media-object hidden-xs hidden-sm" :src="item.img" alt="...">
                     <p class="pDiv hidden-xs hidden-sm">
                         {{ item.content }}
-                    </p>
+                    </p> -->
+                    <div class="imgDiv">
+                      <img class="media-object hidden-xs hidden-sm" :src="item.img" alt="...">
+                    </div>
+                    <div class="titleDiv">
+                      <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
+                      <h4 class="media-heading">{{item.id}}---{{ item.title }}</h4>
+                    </div>
+                    <div class="contentDiv">
+                      <p class="pDiv hidden-xs hidden-sm">
+                        {{ item.content }}
+                      </p>
+                    </div>
                   </router-link>
 
                 </div>
@@ -50,9 +62,11 @@
             </div>
           </div>
           
-          
+          <div ref="noResult" class="noResult" style="width: 100%; height:400px;display: none">
+            <img src="../../asset/icon/noresult.png" alt="" style="width: 100%; height:400px;">
+          </div>
           <!-- 分页 -->
-          <div class="pageNav" id="pageNav">
+          <div ref="paginate" class="pageNav" id="pageNav">
             <!-- <nav aria-label="Page navigation">
               <ul class="pagination">
                 <li>
@@ -74,11 +88,12 @@
             </nav> -->
 
             <paginate
-              :page-count="Math.round(PageCount / 10)"
+              :page-count="Math.ceil(PageCount / 10)"
               :click-handler="page"
               :prev-text="'Prev'"
               :next-text="'Next'"
-              :container-class="'pagination'">
+              :container-class="'pagination'"
+              >
             </paginate>
             
           </div>
@@ -90,13 +105,13 @@
           <div class="list-group">
             <div class="right-title">
               <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
-              <p class="hot-title">&nbsp;下载热度排行</p>
+              <p class="hot-title">&nbsp;最新文章</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of this.$store.state.rightData1" :key="item.id">
+              <li v-for="(item, index) of rightData1" :key="item.id">
                 <div class="zhx"></div>
                 <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
-                <a ref="rankA" href="#" class="list-group-item">
+                <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
                 </a>
               </li>
@@ -108,14 +123,14 @@
         <div class="mediaRight">
           <div class="list-group">
             <div class="right-title">
-              <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
-              <p class="hot-title">&nbsp;下载热度排行</p>
+              <span class="hot-logo glyphicon glyphicon-sort-by-order hidden-sm" style="color: rgb(102, 58, 158);"></span>
+              <p class="hot-title">&nbsp;下载热度</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of this.$store.state.rightData2" :key="item.id">
+              <li v-for="(item, index) of rightData2" :key="item.id">
                 <div class="zhx"></div>
                 <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
-                <a ref="rankA" href="#" class="list-group-item">
+                <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
                 </a>
               </li>
@@ -134,41 +149,11 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
   export default {
     data() {
       return {
-        
-        rankData: [
-          {
-            id:"11",
-            title:"Big EDM: EDM Halloween FestivalFestien Festien Festival"
-          },
-          {
-            id:"22",
-            title:"Big EDM: EDM Halloween FestivalFestien Festien Festival"
-          },
-          {
-            id:"33",
-            title:"Big EDM: EDM Halloween FestivalFestien Festien Festival"
-          },
-          {
-            id:"44",
-            title:"Big EDM: EDM Halloween Festien Festien Festival"
-          },{
-            id:"55",
-            title:"Big EDM: EDM Halloween Festien Festien Festival"
-          },{
-            id:"66",
-            title:"Big EDM: EDM Halloween Festien Festien Festival"
-          },{
-            id:"77",
-            title:"Big EDM: EDM Halloween Festien Festien Festival"
-          },{
-            id:"88",
-            title:"Big EDM: EDM Halloween Festien Festien Festival"
-          },
-        ],
         isLike: "glyphicon glyphicon-heart-empty",
         isRed: "black",
         scrollTitleInterval: {},
-
+        rightData1: JSON.parse(localStorage.getItem("rightData1") || []),
+        rightData2: JSON.parse(localStorage.getItem("rightData2") || []),
       }
     }
     ,
@@ -178,9 +163,19 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
         $('[data-toggle="tooltip"]').tooltip()
       })
       this.menu()
+      
     },
     methods: {
-      
+      intoInfo(e, id, type) {
+        e.preventDefault()
+        this.$router.push({path: `/${type}/info/${id}`})
+      },
+      hiddenNoResult() {
+        this.$refs.noResult.style.display = "none"
+      },
+      showNoResult() {
+        this.$refs.noResult.style.display = "block"
+      },
       getCount() {
         
       },
@@ -217,6 +212,17 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
       }
     },
     components: {
+    },
+    watch: {
+      data(newVal, oldVal) {
+        if(newVal === 0) {
+          this.$refs.noResult.style.display = "block"
+          this.$refs.paginate.style.display = "none"
+        }else {
+          this.$refs.noResult.style.display = "none"
+          this.$refs.paginate.style.display = "block"
+        }
+      }
     }
   }
 </script>
@@ -281,6 +287,7 @@ a {
         .media-body {
           position: relative;
           height: 100%;
+          padding-bottom: 10px;
           .media-left {
             
             padding: 0;
@@ -291,54 +298,63 @@ a {
             }
             
             //发布内容详细信息 发布标题 内容 图片
+            .Content:hover {
+              .imgDiv {
+                img {
+                  border-left: 5px solid #337ab7;
+                  opacity: 0.8;
+                }
+              }
+              .titleDiv {
+                .media-heading {
+                  color: rgb(47, 103, 151);
+                }
+              }
+            }
             .Content {
               width: 100%;
               height: 100%;
               text-decoration: none;
               color: rgba(0, 0, 0, 0.664);
-              .media-object {
-                display: inline-block;
+              
+              .imgDiv {
+                img {
+                  padding: 0 0 0 4px;
+                  border-left: 5px solid #fff;
+                  float: left;
+                  width: 220px;
+                  height: 140px;
+                  margin: 0px 10px 0px 6px;
+                  vertical-align: middle;
+                }
+              
               }
-              .media-heading {
-                width: 100%;
-                padding: 15px 10px 0px 10px;
-                padding-bottom: 4px;
-                color: #428BD1;
-                margin-bottom: 0;
-                font-size: 20px;
-                font-weight: 700;
-                line-height: 22px;
+              .titleDiv {
+                margin: 10px 10px 4px 10px;
                 .label {
-                  background-color: #7745b8d7;
-                  display: inline-block;
-                  color: #fff;
-                  position: absolute;
-                  width: 50px;
-                  height: 22px;
-                  font-size: 14px;
-                  font-weight: 400;
-                  line-height: 18px;
-                  text-align: center;
-                  padding: 2px;
-                  border: 0;
+                  font-size: 100%;
+                  float: left;
                 }
-                .label:hover {
-                  background-color: #7645b8;
-
-                }
-                a {
-                  text-decoration: none;
+                .media-heading {
+                  display: inline;
+                  padding-top: 0;
+                  padding: 15px 10px 0px 10px;
+                  padding-bottom: 4px;
+                  color: #428BD1;
+                  font-size: 22px;
+                  font-weight: 700;
+                  line-height: 22px;
                 }
               }
-              .pDiv {
-                padding: 0;
-                font-size: 16px;
-                display: -webkit-box;-webkit-line-clamp: 4;-webkit-box-orient: vertical;overflow: hidden;
+              .contentDiv {
+                .pDiv {
+                  padding: 0;
+                  font-size: 16px;
+                  display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;
+                  margin-right: 15px;
+                }
               }
-              .xhx {
-                width: 100%;
-                height: 3px;
-              }
+              
               
             }
             //发布详细信息 发布人 发布时间 收藏数 
@@ -386,38 +402,12 @@ a {
               padding-left: 200px;
               color: rgba(0, 0, 0, 0.664);
             }
-            img {
-              float: left;
-              width: 180px;
-              height: 110px;
-              margin: 10px;
-              vertical-align: middle;
-            }
+            
           }  
         }
         
       }
-      // 焦点hover 过渡效果 
-      .media:hover {
-        .xhx {
-          // background-color: #337ab7;
-          // transform: translate(0);
-          // transition: all .8s linear;
-        }
-        h4{
-          // box-shadow: 0 0 20px #eee inset;
-
-          background-color: #fff;
-          color: rgba(0, 0, 0, 0.918);
-        }
-        img {
-          opacity: 0.7;
-        }
-      }
-      // 分页 过渡效果  
-      .pageNav:hover {
-        // box-shadow: 0 0 10px #eee, 0 0 20px rgba(238, 238, 238, 0.575) inset;
-      }
+      
       //分页
       .pageNav {
         background-color: #fff;

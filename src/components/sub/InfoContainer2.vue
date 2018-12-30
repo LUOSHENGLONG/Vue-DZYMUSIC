@@ -380,7 +380,7 @@ import axios from 'axios'
       intoInfo(e, id, type) {
         e.preventDefault()
         // this.$router.go(0)
-        this.$router.push({name: `info2`,params: {id: id}})
+        this.$router.push({name: `info`,params: {id: id}})
         this.menu()
       },
       menu() {

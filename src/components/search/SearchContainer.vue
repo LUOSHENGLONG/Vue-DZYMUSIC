@@ -27,10 +27,10 @@ import EachContainer from '../sub/EachContainer.vue'
         console.log(this.keyword)
         axios.post("http://localhost:3001/search",{currentPage: this.currentPage, keyword: this.keyword})
         .then(result => {
-          this.data = result.data.data
-          this.count = result.data.count["count(id)"]
-          console.log("xxxxxxxxxxxxxxxxxssssssssssssssssssssss")
-          
+          if(result != null) {
+            this.data = result.data.data
+            this.count = result.data.count["count(id)"]
+          }
         })
       },
       setCurrentPage(e) {

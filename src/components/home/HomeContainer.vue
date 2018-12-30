@@ -27,14 +27,13 @@ import Navbar from '../navbar/NavbarContainer.vue'
 import Progress from '../progress/ProgressContainer.vue'
 import Bottom from '../bottom/BottomContainer.vue'
 
-
 import SynthesizerIndexContainer from '../synthesizer/SynthesizerIndexContainer.vue'
 import EffectsIndexContainer from '../effects/EffectsIndexContainer.vue'
 import SamplePackIndexContainer from '../samplepack/SamplePackIndexContainer.vue'
 import HostIndexContainer from '../host/HostIndexContainer.vue'
 import TutorialIndexContainer from '../tutorial/TutorialIndexContainer.vue'
 
-
+import axios from 'axios'
 
 export default {
   
@@ -46,23 +45,21 @@ export default {
       mySwiper: {}
     };
   },
+  mounted() {
+    this.getHomeData()
+  },
  
   methods: {
-    register() {
-      this.$http
-        .post(
-          "http://127.0.0.1:5000/api/register",
-          {
-            username: this.username,
-            password: this.password,
-            nickname: this.nickname
-          },
-          { emulateJSON: true }
-        )
+    getHomeData() {
+      axios.post("http://localhost:3001/homeData")
         .then(result => {
-          console.log(result);
-        });
+          if(result != null) {
+            localStorage.setItem("homeData",JSON.stringify(result.data))
+            this.$store.state.homeData = result.data
+          }
+        })
     }
+
   },
   components: {
     Swiper,

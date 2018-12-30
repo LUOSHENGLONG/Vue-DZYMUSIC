@@ -1,13 +1,13 @@
 <template>
    <div class="synthesizerContainer container">
     <section class="section-title techniques-title clearfix">
-      <h2>技术文章</h2>
-      <a href="modulearticle-index.htm" class="more" target="_blank">
+      <h2>{{type}}</h2>
+      <a href="#" @click="more($event)" class="more" target="_blank">
         更多文章 &gt;
       </a>
     </section>
     <section class="news_row">
-      <a href="modulenews-detailview-31658.htm" target="_blank" class="feature-news index-base-item">
+      <a href="#" @click="intoInfo($event,item.id)" target="_blank" class="feature-news index-base-item" v-for="item of data" :key="item.id">
         <div class="title-image-wrap">
           <div class="title-image" style="background-image: url(&quot;http://image.midifan.com/data/attach/album/2018/1220/9398_1545306132_thumb.png&quot;); background-size: cover;"></div>
           <div class="gradient"></div>
@@ -15,105 +15,14 @@
           <span class="comment right"></span>
         </div>
         <div class="content">
-          <h3 class="title">机器音再见，二次元歌姬活啦：Techno-Speech 使用最先进的 AI 技术合成高品质歌声</h3>
-          <p class="summary">Techno-Speech 公司与名古屋工业大学语音和语言处理实验室最近开发出了一种歌声合成技术，这个技术可以比以往更精确的再现人类的语音质量、独特特点和歌唱风格。</p>
+          <h3 class="title">{{ item.title }}</h3>
+          <p class="summary">{{ item.content }}</p>
         </div>
         <div class="text-gradient"></div>
       </a>
-      <a href="modulenews-detailview-31657.htm" target="_blank" class="feature-news index-base-item">
-        <div class="title-image-wrap">
-          <div class="title-image" style="background-image: url(&quot;//image.midifan.com/data/attach/album/2018/1220/9687_1545301995_thumb.jpg&quot;); background-size: cover;"></div>
-                <div class="gradient"></div>
-          <span class="time left">5 小时前</span>
-          <span class="comment right"></span>
-        </div>
-        <div class="content">
-          <h3 class="title">环保撸块即将实现，太阳能合成器已经成真</h3>
-          <p class="summary">作为硬件玩家，最美好的愿景也许就是随时随地撸块了。虽然有一些小型合成器支持电池供电，但模块系统目前并没有可行方案。今日在互联网上出现了一个太阳能发电的模块合成器原型，在不需要任何额外供电的情况下，这台 Sewn 合成器只需要阳光即可出声 —— 而且还是一台模拟合成器。</p>
-        </div>
-        <div class="text-gradient"></div>
-      </a>
-      <a href="modulenews-detailview-31651.htm" target="_blank" class="feature-news index-base-item">
-        <div class="title-image-wrap">
-          <div class="title-image" style="background-image: url(&quot;//image.midifan.com/data/attach/album/2018/1220/5320_1545291241_thumb.jpeg&quot;); background-size: cover;"></div>
-          <div class="title-logo" title="Lewitt"><img src="//www.midifan.com/ilogo/r/rode.gif"></div>			<div class="gradient"></div>
-          <span class="time left">5 小时前</span>
-          <span class="comment right"></span>
-        </div>
-        <div class="content">
-          <h3 class="title">Rode 发布 PodMic 动圈播客话筒</h3>
-          <p class="summary">PodMic 是一款 XLR 接口动圈话筒，可与 RodeCaster Pro 播客接口一起使用。可以说随着 PodMic 的推出，Rode 加深了在播客市场的根基。</p>
-        </div>
-        <div class="text-gradient"></div>
-      </a>
-      <a href="modulenews-detailview-31655.htm" target="_blank" class="feature-news index-base-item">
-        <div class="title-image-wrap">
-          <div class="title-image" style="background-image: url(&quot;//image.midifan.com/data/attach/album/2018/1220/6939_1545297023_thumb.jpg&quot;); background-size: cover;"></div>
-          <div class="title-logo" title="Lewitt"><img src="//www.midifan.com/ilogo/s/steinberg.gif"></div>			<div class="gradient"></div>
-          <span class="time left">5 小时前</span>
-          <span class="comment right"></span>
-        </div>
-        <div class="content">
-          <h3 class="title">中央音乐学院 Cubase 10 软件新技术应用研讨会圆满成功</h3>
-          <p class="summary">2018年12月13日下午，由雅马哈乐器音响(中国)投资有限公司主办、北京星王星文化传播有限公司总策划的2018 Cubase 10软件新技术应用交流研讨会在中央音乐学院主教学楼701礼堂隆重举行。</p>
-        </div>
-        <div class="text-gradient"></div>
-      </a>
+      
     </section>
-    <section class="news_row">
-      <a href="modulenews-detailview-31658.htm" target="_blank" class="feature-news index-base-item">
-        <div class="title-image-wrap">
-          <div class="title-image" style="background-image: url(&quot;http://image.midifan.com/data/attach/album/2018/1220/9398_1545306132_thumb.png&quot;); background-size: cover;"></div>
-          <div class="gradient"></div>
-          <span class="time left">4 小时前</span>
-          <span class="comment right"></span>
-        </div>
-        <div class="content">
-          <h3 class="title">机器音再见，二次元歌姬活啦：Techno-Speech 使用最先进的 AI 技术合成高品质歌声</h3>
-          <p class="summary">Techno-Speech 公司与名古屋工业大学语音和语言处理实验室最近开发出了一种歌声合成技术，这个技术可以比以往更精确的再现人类的语音质量、独特特点和歌唱风格。</p>
-        </div>
-        <div class="text-gradient"></div>
-      </a>
-      <a href="modulenews-detailview-31657.htm" target="_blank" class="feature-news index-base-item">
-        <div class="title-image-wrap">
-          <div class="title-image" style="background-image: url(&quot;//image.midifan.com/data/attach/album/2018/1220/9687_1545301995_thumb.jpg&quot;); background-size: cover;"></div>
-                <div class="gradient"></div>
-          <span class="time left">5 小时前</span>
-          <span class="comment right"></span>
-        </div>
-        <div class="content">
-          <h3 class="title">环保撸块即将实现，太阳能合成器已经成真</h3>
-          <p class="summary">作为硬件玩家，最美好的愿景也许就是随时随地撸块了。虽然有一些小型合成器支持电池供电，但模块系统目前并没有可行方案。今日在互联网上出现了一个太阳能发电的模块合成器原型，在不需要任何额外供电的情况下，这台 Sewn 合成器只需要阳光即可出声 —— 而且还是一台模拟合成器。</p>
-        </div>
-        <div class="text-gradient"></div>
-      </a>
-      <a href="modulenews-detailview-31651.htm" target="_blank" class="feature-news index-base-item">
-        <div class="title-image-wrap">
-          <div class="title-image" style="background-image: url(&quot;//image.midifan.com/data/attach/album/2018/1220/5320_1545291241_thumb.jpeg&quot;); background-size: cover;"></div>
-          <div class="title-logo" title="Lewitt"><img src="//www.midifan.com/ilogo/r/rode.gif"></div>			<div class="gradient"></div>
-          <span class="time left">5 小时前</span>
-          <span class="comment right"></span>
-        </div>
-        <div class="content">
-          <h3 class="title">Rode 发布 PodMic 动圈播客话筒</h3>
-          <p class="summary">PodMic 是一款 XLR 接口动圈话筒，可与 RodeCaster Pro 播客接口一起使用。可以说随着 PodMic 的推出，Rode 加深了在播客市场的根基。</p>
-        </div>
-        <div class="text-gradient"></div>
-      </a>
-      <a href="modulenews-detailview-31655.htm" target="_blank" class="feature-news index-base-item">
-        <div class="title-image-wrap">
-          <div class="title-image" style="background-image: url(&quot;//image.midifan.com/data/attach/album/2018/1220/6939_1545297023_thumb.jpg&quot;); background-size: cover;"></div>
-          <div class="title-logo" title="Lewitt"><img src="//www.midifan.com/ilogo/s/steinberg.gif"></div>			<div class="gradient"></div>
-          <span class="time left">5 小时前</span>
-          <span class="comment right"></span>
-        </div>
-        <div class="content">
-          <h3 class="title">中央音乐学院 Cubase 10 软件新技术应用研讨会圆满成功</h3>
-          <p class="summary">2018年12月13日下午，由雅马哈乐器音响(中国)投资有限公司主办、北京星王星文化传播有限公司总策划的2018 Cubase 10软件新技术应用交流研讨会在中央音乐学院主教学楼701礼堂隆重举行。</p>
-        </div>
-        <div class="text-gradient"></div>
-      </a>
-    </section>
+    
   </div>
 </template>
 <script>
@@ -123,9 +32,42 @@
 
       }
     },
+    props:["data","type"],
     methods: {
-      
+      more(e) {
+        e.preventDefault();
+        if(this.type === "合成器"){
+          this.$router.push({path: "/synth"})
+        }else if(this.type === "采样包") {
+          this.$router.push({path: "/sample"})
+        }else if(this.type === "效果器") {
+          this.$router.push({path: "/effects"})
+        }else if(this.type === "宿主") {
+          this.$router.push({path: "/host"})
+        }else if(this.type === "教程") {
+          this.$router.push({path: "/tutorial"})
+        }
+      },
+      intoInfo(e, id) {
+        e.preventDefault()
+        let typeName = ""
+        if(this.type === "合成器"){
+          typeName = "synthesizer"
+        }else if(this.type === "采样包") {
+          typeName = "samplePack"
+        }else if(this.type === "效果器") {
+          typeName = "effects"
+        }else if(this.type === "宿主") {
+          typeName = "host"
+        }else if(this.type === "教程") {
+          typeName = "tutorial"
+        }
+        this.$router.push({name: "info",params: {type: typeName,id: id}})
+      }
     },
+    mounted() {
+    }
+    ,
     components: {
     }
   }
@@ -141,7 +83,12 @@ a {
 }
 .news_row {
   margin-top: 20px;
+  .feature-news:last-child {
+    margin-right: 0;
+  }
   .feature-news:hover {
+    background-color: rgba(20, 8, 189, 0.02 );
+
     .gradient {
       background-color: rgba(20, 8, 189, 0.089);
     }
@@ -175,10 +122,10 @@ a {
     .title-image-wrap {
       position: relative;
       height: 32px;
-      padding-top: 180px;
+      padding-top: 200px;
       .title-image {
         width: 100%;
-        height: 180px;
+        height: 200px;
         position: absolute;
         top: 0;
         left: 0;
@@ -270,7 +217,7 @@ a {
 
 
 .section-title.techniques-title h2 {
-    border-bottom-color: rgb(221, 156, 16);
+    border-bottom-color: #337ab7;
 }
 .section-title h2 {
     font-size: 24px;
