@@ -28,7 +28,7 @@
 
                     <div class="form-group">
                         <div class="control-col">
-                            <button class="btn btn-primary btn-lg btn-login" type="button" name="bnt" @click="post()">登&nbsp;&nbsp;&nbsp;录</button>
+                            <button class="btn btn-primary btn-lg btn-login" type="button" name="bnt" ref="post" @click="post()">登&nbsp;&nbsp;&nbsp;录</button>
                             
                             <div class="rows-forget"><span class="pull-left">没有帐号？<a href="#" @click="goSignup($event)" class="zhuce-href">立即注册</a></span><a href="/reg/forget-pwd" target="_blank" class="forger-pas">忘记密码</a></div>
                         </div>
@@ -36,7 +36,7 @@
                 </form>
             </div>
             </div>
-            <div class="slogon">开发者零门槛加入&nbsp;&nbsp;快速集到现有产品</div>
+            <div class="slogon">1788 MUSIC 欢迎你的加入</div>
         </div>
   </div>
 </template>
@@ -101,8 +101,6 @@ export default {
                 setTimeout(() => {
                     this.cancel();
                 }, 1000);
-                console.log(this.$store.state.user)
-                console.log(this.$store.state.isLogin)
             }else {
                 this.message = "账号或密码错误,点击返回登录"
                 tip.style.display = "block"
@@ -329,9 +327,9 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 
 .slogon {
     border-top: #f1f1f1 solid 2px;
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
-    color: #b8b8b8;
+    color: #b1b1b1;
     background: #f7f7f7;
     margin-top: 20px;
     line-height: 40px;

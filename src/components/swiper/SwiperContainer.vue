@@ -3,7 +3,7 @@
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="item in img" :key="item.id">
-              <a href="#"><img :src="item.src" alt=""></a>
+              <a href="#"><img v-lazy="item.src" alt=""></a>
             </div>
             
         </div>

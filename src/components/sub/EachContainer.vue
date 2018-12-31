@@ -32,7 +32,7 @@
                         {{ item.content }}
                     </p> -->
                     <div class="imgDiv">
-                      <img class="media-object hidden-xs hidden-sm" :src="item.img" alt="...">
+                      <img class="media-object hidden-xs hidden-sm" v-lazy="item.img" alt="...">
                     </div>
                     <div class="titleDiv">
                       <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
@@ -318,6 +318,7 @@ a {
               color: rgba(0, 0, 0, 0.664);
               
               .imgDiv {
+                text-align: center;
                 img {
                   padding: 0 0 0 4px;
                   border-left: 5px solid #fff;
@@ -326,6 +327,8 @@ a {
                   height: 140px;
                   margin: 0px 10px 0px 6px;
                   vertical-align: middle;
+                  background-position: center;
+                  background-size: cover;
                 }
               
               }

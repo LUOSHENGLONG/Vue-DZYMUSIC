@@ -49,7 +49,7 @@
                 </form>
             </div>
         </div>
-        <div class="slogon">开发者零门槛加入&nbsp;&nbsp;快速集到现有产品</div>
+        <div class="slogon">1788 MUSIC 欢迎你的加入</div>
     </div>
 
   </div>
@@ -517,9 +517,9 @@ export default {
 
 .slogon {
     border-top: #f1f1f1 solid 2px;
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
-    color: #b8b8b8;
+    color: #b1b1b1;
     background: #f7f7f7;
     margin-top: 20px;
     line-height: 40px;

@@ -2,21 +2,34 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
+import VueLazyLoad from 'vue-lazyload'
 import axios from 'axios'
+import VueProgressBar from 'vue-progressbar'
+
 // 分页
 // import VuePaginate from 'vue-paginate'
 // Vue.use(VuePaginate)
 // import Clipboard from 'clipboard'
 Vue.use(VueResource)
 Vue.use(VueRouter)
+
+//图片懒加载
+Vue.use(VueLazyLoad,{
+  error:'./src/asset/icon/lazy.gif',
+  loading:'./src/asset/icon/lazy.gif'
+})
 // Vue.use(axios)
 // Vue.use(Clipboard)
 // import Paginate from 'vuejs-paginate'
 // Vue.component('paginate', Paginate)
+
+//分页插件
 import Paginate from 'vuejs-paginate'
 Vue.component('paginate', Paginate)
 
+// 复制到剪切板
 import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 
 //filter
 Vue.filter('typeFormat', function (dataStr) {
@@ -31,6 +44,11 @@ Vue.filter('typeFormat', function (dataStr) {
   }else if( dataStr === "tutorial") {
     return "教程"
   }
+})
+
+//filter
+Vue.filter('dateFormat', function (dataStr) {
+  
 })
 // 
 Vue.filter('colorFormat', function (dataStr) {
@@ -48,7 +66,6 @@ Vue.filter('colorFormat', function (dataStr) {
 })
 
 
-Vue.use(VueClipboard)
 import App from './App.vue'
 
 import './normalize.css'

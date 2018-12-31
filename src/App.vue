@@ -3,8 +3,8 @@
     <!-- 顶部栏 --> 
     <Navbar :navStatus="navStatus" @showLogin="showLoginDiv" @showSignup="showSignupDiv"></Navbar>
     <!--进度条-->
-    <Progress></Progress>
-
+    <!-- <Progress></Progress> -->
+    <!-- <vue-progress-bar></vue-progress-bar> -->
     <router-view></router-view>
     
     <!--底部 copyright-->
@@ -30,7 +30,7 @@ import './lib/pace/js/pace.min.js'
 
 import Swiper from './components/swiper/SwiperContainer.vue'
 import Navbar from './components/navbar/NavbarContainer.vue'
-import Progress from './components/progress/ProgressContainer.vue'
+// import Progress from './components/progress/ProgressContainer.vue'
 import Bottom from './components/bottom/BottomContainer.vue'
 import Login from './components/login/LoginContainer.vue'
 import Signup from './components/signup/SignupContainer.vue'
@@ -57,7 +57,7 @@ export default {
       isSignup: false,
       top: 0 ,
       navStatus: this.$store.state.isLogin,
-      
+      confirmLogin: this.$store.state.isLogin
     };
   },
   mounted() {
@@ -70,6 +70,7 @@ export default {
       this.auto()
     }
     
+    this.$store.commit("confirmLogin")
   }
   ,
   methods: {
@@ -190,7 +191,7 @@ export default {
   components: {
     Swiper,
     Navbar,
-    Progress,
+    //Progress,
     Bottom,
     Login,
     Signup,
@@ -200,7 +201,16 @@ export default {
     SamplePackIndexContainer,
     HostIndexContainer,
     TutorialIndexContainer,
-  }
+  },
+  watch: {
+    confirmLogin(newVal, oldVal) {
+      if(newVal === false) {
+        localStorage.removeItem("user")
+        localStorage.removeItem("token")
+        console.log("清除")
+      }
+    }
+  },
 };
 
 

@@ -27,8 +27,11 @@
                       请选择一个新照片进行上传编辑。
                       头像保存后，您可能需要刷新一下本页面(按F5键)，才能查看最新的头像效果
                   </p>
-                  <label for="exampleInputEmail1">修改头像</label>
-                  <input type="file" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                  <!-- <label for="exampleInputEmail1">修改头像</label>
+                  <input type="file" class="form-control" id="exampleInputEmail1" placeholder="Email"> -->
+                  <a class="btn" @click="toggleShow">设置头像</a>
+                  <my-upload field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="png" :size="size"></my-upload>
+                  <img :src="avatar">
                 </div>
                 <div class="mybtn">
                   <button type="submit" class="btn btn-primary">保存</button>
@@ -39,7 +42,7 @@
               <form>
                 <div class="form-group">
                   <label for="exampleInputEmail1">用户名 </label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" readonly unselectable="on">
+                  <input type="text" class="form-control" id="exampleInputEmacil1" placeholder="Email" readonly unselectable="on">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">性别</label>
@@ -55,15 +58,15 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">地区</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                  <input type="text" class="form-control" id="exampleInputEmaail1" placeholder="Email">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">手机号</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" maxlength="11" minlength="11">
+                  <input type="text" class="form-control" id="exampleInputEmasxil1" placeholder="Email" maxlength="11" minlength="11">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">邮箱地址</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                  <input type="text" class="form-control" id="exampleInputEmails1" placeholder="Email">
                 </div>
                 <div class="form-group mybtn">
                   <button type="submit" class="btn btn-primary">保存</button>
@@ -74,7 +77,7 @@
               <form>
                 <div class="form-group">
                   <label for="exampleInputEmail1">用户名 </label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" readonly unselectable="on">
+                  <input type="text" class="form-control" id="exampleInputEmail11" placeholder="Email" readonly unselectable="on">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">真实姓名</label>
@@ -98,11 +101,11 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">支付宝</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" maxlength="11" minlength="11">
+                  <input type="text" class="form-control" id="exampleInputEmail2" placeholder="Email" maxlength="11" minlength="11">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">QQ号码</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                  <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Email">
                 </div>
                 <div class="form-group mybtn">
                   <button type="submit" class="btn btn-primary">保存</button>
@@ -121,11 +124,15 @@
 import laydate from '../../lib/laydate/laydate.js'
 
 
+import myUpload from 'vue-image-crop-upload';
 
 export default {
   data() {
     return {
       minHeight: 0,
+      avatar: "",
+      show: false,
+      size:2.1
     }
   },
   mounted() {
@@ -139,6 +146,28 @@ export default {
       elem: '#birth' //指定元素
     });
   },
+  components: {
+    "my-upload": myUpload
+  },
+  methods: {
+      toggleShow() {
+        this.show = !this.show;
+      },
+      cropSuccess(imgDataUrl) {
+        //  imgDataUrl其实就是经过base64转码过的图片
+        this.avatar = imgDataUrl;
+        //console.log(imgDataUrl)//这里打印出来的是base64格式的资源，太长了
+        //base64转blob格式
+        let arr = imgDataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+          bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        let bdata = new Blob([u8arr], { type: mime })
+        console.log(new Blob([u8arr], { type: mime })) ;//这里打印base64转成blob的资源，根据自己的项目需求去转吧
+      }
+  }
+
 }
 </script>
 
@@ -157,7 +186,7 @@ export default {
 .setting {
   width: 100%;
   height: 100%;
-  margin: 15px 0;
+  margin: 0px 0;
   border-radius: 5px;
   .tagPage {
     height: 100%;

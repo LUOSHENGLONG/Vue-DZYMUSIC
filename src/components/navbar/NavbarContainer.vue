@@ -5,12 +5,7 @@
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
+        
         <router-link class="navbar-brand" to="/"><img class="headImg" src="../../asset/icon/sss11.png" alt=""></router-link>
       </div>
 
@@ -43,6 +38,9 @@
           </li>
           <li>
             <router-link to="/setting">设置</router-link>
+          </li>
+          <li>
+            <a href="#" @click="logout($event)">注销</a>
           </li>
         </ul>
         <ul v-if="!this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
@@ -107,6 +105,12 @@
             this.oldKeyword = this.keyword
           }
         
+      },
+      logout(e) {
+        e.preventDefault()
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+        this.$store.commit("confirmLogin")
       }
     },
     watch: {

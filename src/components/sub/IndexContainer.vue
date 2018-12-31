@@ -9,7 +9,9 @@
     <section class="news_row">
       <a href="#" @click="intoInfo($event,item.id)" target="_blank" class="feature-news index-base-item" v-for="item of data" :key="item.id">
         <div class="title-image-wrap">
-          <div class="title-image" style="background-image: url(&quot;http://image.midifan.com/data/attach/album/2018/1220/9398_1545306132_thumb.png&quot;); background-size: cover;"></div>
+          <div class="title-image">
+            <img v-lazy="item.img" alt="">
+          </div>
           <div class="gradient"></div>
           <span class="time left">4 小时前</span>
           <span class="comment right"></span>
@@ -83,21 +85,25 @@ a {
 }
 .news_row {
   margin-top: 20px;
-  .feature-news:last-child {
+  .feature-news:nth-child(5),.feature-news:nth-child(10) {
     margin-right: 0;
   }
   .feature-news:hover {
-    background-color: rgba(20, 8, 189, 0.02 );
-
+    background-color: rgba(192, 188, 250, 0.005);
+    border-color: rgba(192, 188, 250, 0.005);
     .gradient {
       background-color: rgba(20, 8, 189, 0.089);
     }
+    .title {
+      color: #663a9e;
+    }
   }
   .feature-news {
+    border: 1px solid #fff;
     margin-bottom: 20px;
     display: inline-block;
-    width: 24.25%;
-    height: 360px;
+    width: 19.20%;
+    height: 376px;
     background-color: white;
     position: relative;
     margin-right: 1%;
@@ -122,15 +128,21 @@ a {
     .title-image-wrap {
       position: relative;
       height: 32px;
-      padding-top: 200px;
+      padding-top: 180px;
       .title-image {
         width: 100%;
-        height: 200px;
+        height: 180px;
         position: absolute;
         top: 0;
         left: 0;
         background-size: cover;
         background-position: center;
+        overflow: hidden;
+        text-align: center;
+        img {
+          background-position: center;
+          background-size: cover;
+        }
       }
       .title-logo {
         position: absolute;
@@ -156,7 +168,7 @@ a {
     }
     .content {
       color: #444444;
-      padding: 15px 16px 0;
+      padding: 15px 8px 0;
       overflow: hidden;
       height: 205px;
       .title {
@@ -197,10 +209,7 @@ a {
       background-repeat: repeat-x;
     }
   }
-  .feature-news:nth-child(4){
-    margin-right: -10px;
-
-  }
+  
   .index-base-item {
     position: relative;
     float: left;

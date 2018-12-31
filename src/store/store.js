@@ -33,6 +33,19 @@ const mutations = {
       localStorage.setItem("rightData2",JSON.stringify(state.rightData2))
     }))
   },
+  confirmLogin(state) {
+    const token = localStorage.getItem("token")
+    axios.post("http://localhost:3001/confirmLogin",{token: token})
+    .then(result => {
+      console.log(result.data)
+      state.isLogin = result.data.isLogin
+      if(state.isLogin === false){
+        localStorage.removeItem("user")
+        localStorage.removeItem("token")
+      }
+    })
+  }
+  ,
   getHomeData(state) {
     
   }
