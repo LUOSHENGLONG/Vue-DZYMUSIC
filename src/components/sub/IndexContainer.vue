@@ -13,7 +13,7 @@
             <img v-lazy="item.img" alt="">
           </div>
           <div class="gradient"></div>
-          <span class="time left">4 小时前</span>
+          <span class="time left">{{item.releaseTime | dateFormat}}</span>
           <span class="comment right"></span>
         </div>
         <div class="content">

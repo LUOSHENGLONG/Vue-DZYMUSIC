@@ -19,6 +19,7 @@ import InfoContainer from './components/sub/InfoContainer.vue'
 import Info2Container from './components/sub/InfoContainer2.vue'
 import SearchContainer from './components/search/SearchContainer.vue'
 import Search2Container from './components/search/Search2Container.vue'
+import CommentContainer from './components/comment/CommentContainer.vue'
 
 
 

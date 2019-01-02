@@ -47,6 +47,7 @@ export default {
   },
   mounted() {
     this.getHomeData()
+    this.menu()
   },
  
   methods: {
@@ -58,7 +59,10 @@ export default {
             this.$store.state.homeData = result.data
           }
         })
-    }
+    },
+    menu() {
+      window.scrollTo(0,0);
+    },
 
   },
   components: {

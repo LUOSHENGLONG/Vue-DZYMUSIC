@@ -49,7 +49,7 @@
                 <div class="info hidden-xs hidden-sm">
                   <ul class="message">
                     <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
-                    <li><span class="glyphicon glyphicon-time"></span>两天前</li>
+                    <li><span class="glyphicon glyphicon-time"></span>{{ item.releaseTime | dateFormat }}</li>
                     <li><span class="glyphicon glyphicon-eye-open"></span>120浏览</li>
                     <li>
                       <a href="#" @click="like($event)">
@@ -101,7 +101,8 @@
       </div>
       <!-- 右侧数据排行 -->
       <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
-        <div class="mediaRight">
+        <!-- 1.下载排行 -->
+        <div class="mediaRight" ref="downloadRank">
           <div class="list-group">
             <div class="right-title">
               <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
@@ -119,8 +120,8 @@
             </ul>
           </div>
         </div>
-
-        <div class="mediaRight">
+        <!-- 2.受欢迎排行 -->
+        <div class="mediaRight" ref="likeRank">
           <div class="list-group">
             <div class="right-title">
               <span class="hot-logo glyphicon glyphicon-sort-by-order hidden-sm" style="color: rgb(102, 58, 158);"></span>
@@ -166,6 +167,7 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
       
     },
     methods: {
+      
       intoInfo(e, id, type) {
         e.preventDefault()
         this.$router.push({path: `/${type}/info/${id}`})

@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 import VueLazyLoad from 'vue-lazyload'
 import axios from 'axios'
 import VueProgressBar from 'vue-progressbar'
-
+import moment from 'moment' //设置中文
 // 分页
 // import VuePaginate from 'vue-paginate'
 // Vue.use(VuePaginate)
@@ -16,7 +16,7 @@ Vue.use(VueRouter)
 //图片懒加载
 Vue.use(VueLazyLoad,{
   error:'./src/asset/icon/lazy.gif',
-  loading:'./src/asset/icon/lazy.gif'
+  loading:'./src/asset/icon/lazyEach.gif'
 })
 // Vue.use(axios)
 // Vue.use(Clipboard)
@@ -47,8 +47,21 @@ Vue.filter('typeFormat', function (dataStr) {
 })
 
 //filter
-Vue.filter('dateFormat', function (dataStr) {
+Vue.filter('dateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
   
+  moment.locale('zh-cn') //设置中文显示
+  // return moment().startOf('day').fromNow()
+  // return moment.duration(10, "minutes").humanize()
+  // console.log(new Date())
+  // const time = moment(new Date()).format(pattern)
+  return moment(dataStr).startOf('hour').fromNow();
+
+})
+
+Vue.filter('userId', function(dataStr) {
+  
+  
+
 })
 // 
 Vue.filter('colorFormat', function (dataStr) {

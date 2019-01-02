@@ -31,11 +31,10 @@
         </form>
         <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
           <li>
-            <img src="../../images/tx.jpg" alt="..." class="img-circle">
+            <img @click="goUser"  :src="navAvatar" alt =".." class="img-circle">
+            <!-- <i class="fa fa-user-circle img-circle" style="font-size: 26px; color: #337ab7;cursor: pointer"></i> -->
           </li>
-          <li>
-            <router-link to="/user">用户名</router-link>
-          </li>
+          
           <li>
             <router-link to="/setting">设置</router-link>
           </li>
@@ -73,7 +72,8 @@
       return {
         keyword: "",
         switch: 0,
-        oldKeyword: ""
+        oldKeyword: "",
+        navAvatar: ""
       }
     },
     props: {
@@ -82,7 +82,11 @@
       }
     }
     ,
-    
+    mounted() {
+      if( localStorage.getItem("user") != null) {
+        this.navAvatar = JSON.parse(localStorage.getItem("user")).avatar
+      }
+    },
     methods: {
       showLogin(e) {
         e.preventDefault();
@@ -94,16 +98,16 @@
       },
       search() {
         if(this.keyword.trim() !== "" || this.keyword.trim() !== null ){
-            if(this.switch % 2 === 0) {
-              this.$router.push({name: 'search', params: {keyword: this.keyword}})
-            }else {
-              this.$router.push({name: 'search2', params: {keyword: this.keyword}})
-            }
-            if(this.keyword !== this.oldKeyword) {
-              this.switch ++
-            }
-            this.oldKeyword = this.keyword
+          if(this.switch % 2 === 0) {
+            this.$router.push({name: 'search', params: {keyword: this.keyword}})
+          }else {
+            this.$router.push({name: 'search2', params: {keyword: this.keyword}})
           }
+          if(this.keyword !== this.oldKeyword) {
+            this.switch ++
+          }
+          this.oldKeyword = this.keyword
+        }
         
       },
       logout(e) {
@@ -111,6 +115,9 @@
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         this.$store.commit("confirmLogin")
+      },
+      goUser() {
+        this.$router.push({path: "user"})
       }
     },
     watch: {
@@ -132,6 +139,7 @@
   width: 30px;
   height: 30px;
   margin: 10px 0;
+  cursor: pointer;
 }
 .form-control:focus {
     border-color: rgb(109, 109, 109);
