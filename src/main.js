@@ -78,6 +78,9 @@ Vue.filter('colorFormat', function (dataStr) {
   }
 })
 
+// 
+
+
 
 import App from './App.vue'
 
@@ -88,7 +91,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
 
 import 'swiper/dist/css/swiper.min.css'
-
+import '@fortawesome/fontawesome-free/css/all.css'
 import router from './router.js'
 
 

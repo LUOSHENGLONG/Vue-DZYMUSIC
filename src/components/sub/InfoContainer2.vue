@@ -10,8 +10,8 @@
       <div class="left col-sm-9 col-md-9 col-lg-9"  v-if="hackReset">
         <!-- 导航栏 -->
         <ol class="breadcrumb">
-          <li><a href="#"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</a></li>
-          <li><a href="#">合成器</a></li>
+          <li><router-link to="/"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</router-link></li>
+          <li><router-link :to="`/`+infoData.type">{{infoData.type | typeFormat}}</router-link></li>
           <li class="active">{{ infoData.title }}</li>
         </ol>
         <section class="main-content">
@@ -20,18 +20,49 @@
           </div>
           <div class="main-info">
             <ul class="message">
-              <li><span class="glyphicon glyphicon-user"></span>{{ infoData.issuer }}</li> 
-              <li><span class="glyphicon glyphicon-time"></span>{{ infoData.releaseTime }}</li>
-              <li><span class="glyphicon glyphicon-eye-open"></span>{{ infoData.look }}浏览</li>
-              <li>
+              <li><span class="fas fa-user-edit"></span>{{ infoData.issuer }}</li> 
+              <li><span class="fas fa-clock"></span>{{ infoData.releaseTime }}</li>
+              <li><span class="fas fa-eye"></span>{{ infoData.look }}浏览</li>
+              <!-- <li>
                 <a href="#" @click="like($event)">
                 <span ref="likeSpan" :class="isLike"></span>{{ infoData.like }}收藏
                 </a>
-              </li>
-              <li>
+              </li> -->
+              <!-- <li>
                 <span class="qrcode glyphicon glyphicon-qrcode"></span>
+              </li> -->
+              <li>
+                
               </li>
             </ul>
+            <button 
+              id="favorite1"
+              @click="like()" 
+              @mouseover="showFavoriteTips1" 
+              @mouseout="hiddenFavoriteTips1" 
+              v-if="!isFavorite" 
+              class="emptyStar far fa-star" 
+              title=""
+              data-toggle="like"
+              data-placement="bottom"
+              data-content="点击收藏"
+              >
+            </button>
+            <button 
+              id="favorite2"
+              @click="cancelLike()" 
+              @mouseover="showFavoriteTips2" 
+              @mouseout="hiddenFavoriteTips2" 
+              v-if="isFavorite" 
+              class="fullStar fas fa-star"
+              title=""
+              data-toggle="like"
+              data-placement="bottom"
+              data-content="取消收藏"
+              >
+            </button>
+            
+            <!-- <span ref="favoriteTips" style="float: right;margin: 10px;font-size: 16px;color: #337ab7;display: none"> 点击收藏 </span> -->
           </div>
           <div class="post-content mdf_connect">
             
@@ -151,7 +182,7 @@
           </div>
         </div>
       </div>
-      
+      <div class="wrap" ref="tips">{{ tips }}</div>
     </div>
 </template>
 <script>
@@ -169,11 +200,12 @@ import axios from 'axios'
         isRed: "black",
         scrollTitleInterval: {},
         clipboard: {},
-        
+        tips: "",
         id: this.$route.params.id,
         hackReset: true,
         rightData1: JSON.parse(localStorage.getItem("rightData1")|| []),
         rightData2: JSON.parse(localStorage.getItem("rightData2")|| []),
+        isFavorite: false,
       }
     },
     
@@ -181,13 +213,116 @@ import axios from 'axios'
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
       })
+      $(function () {
+        $('[data-toggle="like"]').tooltip()
+      })
       const copybtn = this.$refs.btnTips1
       this.clipboard = new Clipboard(copybtn);
       this.menu()
       this.getInfoData()
-
+      this.getFavorite()
     },
     methods: {
+      showFavoriteTips1() {
+        $('#favorite1').popover('show');
+        
+      },
+      hiddenFavoriteTips1() {
+        $('#favorite1').popover('hide');
+      },
+      showFavoriteTips2() {
+        $('#favorite2').popover('show');
+        
+      },
+      hiddenFavoriteTips2() {
+        $('#favorite2').popover('hide');
+      },
+      like() {
+        //未登录操作
+        if(localStorage.getItem("user") === null || this.$store.state.isLogin === false) {
+          this.tips = "请登录后操作"
+          this.$refs.tips.style.display = "block"
+          setTimeout(() => {
+            this.$refs.tips.style.display = "none"
+          }, 2000);
+          return
+        }
+        function formatDateTime(date) {  
+          var y = date.getFullYear();  
+          var m = date.getMonth() + 1;  
+          m = m < 10 ? ('0' + m) : m;  
+          var d = date.getDate();  
+          d = d < 10 ? ('0' + d) : d;  
+          var h = date.getHours();  
+          h=h < 10 ? ('0' + h) : h;  
+          var minute = date.getMinutes();  
+          minute = minute < 10 ? ('0' + minute) : minute;  
+          var second=date.getSeconds();  
+          second=second < 10 ? ('0' + second) : second;  
+          return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
+        };
+        
+        const mydate = new Date()
+        function getUUID() {
+          return "comments"+mydate.getDay()+ mydate.getHours()+ mydate.getMinutes()+mydate.getSeconds()+mydate.getMilliseconds()+ Math.round(Math.random() * 10000);
+        }
+        axios.post("http://localhost:3001/favorite",
+        {
+          id: getUUID(),
+          articleId: this.id,
+          userId: JSON.parse(localStorage.getItem("user")).id,
+          createTime: formatDateTime(mydate)
+        })
+        .then(result => {
+          $('#favorite1').popover('hide');
+          this.getFavorite()
+        })
+
+      },
+      cancelLike() {
+        //未登录操作
+        if(localStorage.getItem("user") === null || this.$store.state.isLogin === false) {
+          this.tips = "请登录后操作"
+          this.$refs.tips.style.display = "block"
+          setTimeout(() => {
+            this.$refs.tips.style.display = "none"
+          }, 2000);
+          return
+        }
+        //时间初始化
+        function formatDateTime(date) {  
+          var y = date.getFullYear();  
+          var m = date.getMonth() + 1;  
+          m = m < 10 ? ('0' + m) : m;  
+          var d = date.getDate();  
+          d = d < 10 ? ('0' + d) : d;  
+          var h = date.getHours();  
+          h=h < 10 ? ('0' + h) : h;  
+          var minute = date.getMinutes();  
+          minute = minute < 10 ? ('0' + minute) : minute;  
+          var second=date.getSeconds();  
+          second=second < 10 ? ('0' + second) : second;  
+          return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
+        };
+        
+        const mydate = new Date()
+        //UUID
+        function getUUID() {
+          return "comments"+mydate.getDay()+ mydate.getHours()+ mydate.getMinutes()+mydate.getSeconds()+mydate.getMilliseconds()+ Math.round(Math.random() * 10000);
+        }
+        axios.post("http://localhost:3001/cancelFavorite",
+        {
+          articleId: this.id,
+          userId: JSON.parse(localStorage.getItem("user")).id
+        })
+        .then(result => {
+          $('#favorite2').popover('hide');
+          this.getFavorite()
+        })
+
+
+      }
+      ,
       intoInfo(e, id, type) {
         e.preventDefault()
         // this.$router.go(0)
@@ -201,9 +336,21 @@ import axios from 'axios'
         axios.post("http://localhost:3001/info",{id: this.id})
         .then(result => {
           this.infoData = result.data.data
+          localStorage.setItem("article",JSON.stringify(result.data.data))
         })
-      }
-      ,
+      },
+      getFavorite() {
+        if( localStorage.getItem("user") !== null) {
+          axios.post("http://localhost:3001/getFavorite",{articleId: this.id,userId: JSON.parse(localStorage.getItem("user")).id})
+          .then(result => {
+            if(parseInt(result.data.isFavorite) === 1) {
+              this.isFavorite = true
+            } else {
+              this.isFavorite = false
+            }
+          })
+        }
+      },
       // 复制提取码按钮
       showAndhideTips1() {
         const value = this.$refs.tqm.textContent
@@ -211,7 +358,7 @@ import axios from 'axios'
         $('#btnTips1').popover('show');
         setTimeout(() => {
           $('#btnTips1').popover('hide');
-        }, 2000);
+        }, 1000);
       },
       // 复制解压密码
       showAndhideTips2() {
@@ -222,7 +369,7 @@ import axios from 'axios'
 
         setTimeout(() => {
           $('#btnTips2').popover('hide');
-        }, 2000);
+        }, 1000);
       }
       ,
       label(e) {
@@ -245,8 +392,6 @@ import axios from 'axios'
       
     },
     watch: {
-      
-      
     },  
     components: {
       CommentContainer
@@ -310,6 +455,8 @@ button.active[data-v-a15ca838] {
         padding: 0;
         margin: 10px 0;
         display: inline-block;
+        
+        
         li {
           margin-right: 10px;
           list-style: none;
@@ -323,15 +470,16 @@ button.active[data-v-a15ca838] {
             display: inline-block;
             font-size: 16px;
             color: rgba(0, 0, 0, 0.7);
+            
             span {
-              font-size: 14px;
+              font-size: 20px;
               padding-left: 5px;
               padding-right: 3px;
               color: rgba(0, 0, 0, 0.5);
             }
           }
           span {
-            font-size: 14px;
+            font-size: 20px;
             padding-left: 5px;
             padding-right: 3px;
           }
@@ -790,7 +938,42 @@ img {
 
 
 .fa {
-      font: normal normal normal 16px/1 FontAwesome;
+  font: normal normal normal 16px/1 FontAwesome;
+}
+
+.wrap{
+  position: fixed;
+  left: 50%;
+  top:50%;
+  background: rgba(0,0,0,.35);
+  padding: 10px;
+  border-radius: 5px;
+  transform: translate(-50%,-50%);
+  color:#fff;
+  display: none;
+}
+
+.emptyStar {
+  float: right;
+  margin: 10px;
+  margin-left: 0;
+  font-size: 30px;
+  background: none;
+  border: none;
+}
+
+.fullStar {
+  float: right;
+  margin: 10px;
+  margin-left: 0;
+  font-size: 30px;
+  color: #337ab7;
+  background: none;
+  border: none;
+}
+
+button {
+  outline: 0;
 }
 </style>
 

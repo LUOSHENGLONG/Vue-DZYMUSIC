@@ -41,64 +41,77 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="profile">
-              <div class="left col-sm-9 col-md-9 col-lg-9">
-        
-                <div class="mediaLeft">
-                  
-                  <div class="media" v-for="item of data" :key="item.id">
+              <div class="userLike container hidden-xs ">
+                <div class="leftLike leftLike-first col-md-11 col-sm-11 col-xs-11 col-lg-11">
+                  <form action="#" class="form-search">
+                    <select name="sel" id="sel" class="form-control">
+                      <option value="synth">全站</option>
+                      <option value="synth">合成器</option>
+                      <option value="synth">采样包</option>
+                      <option value="synth">效果器</option>
+                      <option value="synth">教程</option>
+                      <option value="synth">宿主</option>
+                    </select>
+                    
+                    <input type="text" placeholder="请输入搜索内容" name="search"  class="form-control">
+                    <button class="btn btn-primary btn-search">搜索</button>
+                    <div class="divEdit hidden-sm">
+                     <button class="btn btn-danger btn-batch" @click="editBatch($event)">批量操作</button>
+                     <button ref="btnCancel" class="btn btn-danger btn-cancal" @click="cancal($event)">取消</button>
+
+                    </div>
+                  </form>
+                </div>
+
+                <div class="rightEdit col-md-1 col-sm-1 col-xs-1 col-lg-1">
+                  <button ref="btnEdit" class="btn-edit btn btn-default" disabled>&nbsp;操作&nbsp;</button>
+                  <button ref="btnDel" class="btn-del btn btn-danger" @click="bacthDel()">&nbsp;删除&nbsp;</button>
+                </div>
+              </div>
+
+              <div class="userLike container" v-for="item of data" :key="item.id">
+                <div class="leftLike col-md-11 col-sm-11 col-xs-11 col-lg-11">
+                  <div class="media">
                     <div class="media-body">
                       <div class="media-left media-middle">
-                        <div class="Content">
-                          <router-link  :to="`/`+item.type+`/info/`+item.id">
-                            
-                            <div class="imgDiv">
-                              <img class="media-object hidden-xs hidden-sm" v-lazy="item.img" alt="...">
-                            </div>
-                            <div class="titleDiv">
-                              <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
-                              <h4 class="media-heading">{{item.id}}---{{ item.title }}</h4>
-                            </div>
-                            <div class="contentDiv">
-                              <p class="pDiv hidden-xs hidden-sm">
-                                {{ item.content }}
-                              </p>
-                            </div>
-                          </router-link>
-
-                        </div>
-                        <div class="info hidden-xs hidden-sm">
-                          <ul class="message">
+                        <a href="#">
+                          <h4 class="media-heading">
+                            {{ item.title }}
+                          </h4>
+                          <div class="xhx"></div>
+                          <img class="media-object hidden-xs hidden-sm" src="../../images/lunbotu1.jpg" alt="...">
+                          <p class="hidden-xs hidden-sm">
+                          简介我们周围都是幽灵，诡计和魔法！“EDM 万圣节”是由来自Big EDM团队的熟练哥布林和吸血鬼组成的神秘包。
+                          包含超过 500 MB 的内容和糖果以及超过 280 个文件。在这个产品中你会发现 8 个令人震惊的构造套件（提供 MIDI、预置）
+                          和 80 多个可怕的鼓采样以及旋律采样。Sylenth1、Spire和Serum的预置让这个包更加恐怖
+                          </p>
+                        </a>
+                        <div class="info hidden-xs hidden-sm hidden-md">
+                          <ul class="jilu">
                             <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
-                            <li><span class="glyphicon glyphicon-time"></span>{{ item.releaseTime | dateFormat }}</li>
-                            <li><span class="glyphicon glyphicon-eye-open"></span>120浏览</li>
-                            <li>
-                              <a href="#" @click="like($event)">
-                              <span ref="likeSpan" :class="isLike"></span>{{item.like}}收藏
-                              </a>
-                            </li>
+                            <li><span class="glyphicon glyphicon-time"></span>两天前</li>
+                            <li><span class="glyphicon glyphicon-eye-open"></span> 120浏览 </li>
+                            <li><a href="#"><span class="glyphicon glyphicon-heart-empty"></span>59收藏</a></li>
                           </ul>
                         </div>
+                        
+                      </div>
                     </div>
-                    </div>
-                  </div>
-                  <div ref="noResult" class="noResult" style="width: 100%; height:400px;display: none">
-                    <img src="../../asset/icon/noresult.png" alt="" style="width: 100%; height:400px;">
-                  </div>
-                  <!-- 分页 -->
-                  <div ref="paginate" class="pageNav" id="pageNav">
-                    <paginate
-                      :page-count="Math.ceil(PageCount / 10)"
-                      :click-handler="page"
-                      :prev-text="'Prev'"
-                      :next-text="'Next'"
-                      :container-class="'pagination'"
-                      >
-                    </paginate>
-                    
                   </div>
                 </div>
-      </div>
-              
+
+                <div class="rightEdit col-md-1 col-sm-1 col-xs-1 col-lg-1">
+                  <form action="#" class="edit" ref="formEdit">
+                    <!-- <input id="color-input-red" type="checkbox" name="color-input-red" value="#f0544d" /> -->
+                    <!-- <label  for="color-input-red" class="glyphicon glyphicon-remove-circle"></label > -->
+                    <!-- <button type="button" class="glyphicon glyphicon-remove-circle" data-toggle="tooltip" data-placement="bottom" title="删除"></button> -->
+                    <input ref="btnDelbat" type="button" class="btn-delbat btn btn-danger" value="删除" @click="delOne(item.id)">
+                    <input ref="btnBat"  name="check" type="checkbox" class="btn-delbat btn btn-danger" :id="item.id" value="删除" :checked="batchData.indexOf(item.id)>=0" @click="batData(item.id)">
+                    <label ref="btnLab" :for="item.id" class="glyphicon glyphicon-ok-circle"></label>
+                  </form>
+                </div>
+              </div>
+
               
             </div>
             
@@ -111,7 +124,7 @@
 
 <script>
 import laydate from '../../lib/laydate/laydate.js'
-import EachContainer from '../sub/EachContainer.vue'
+
 laydate.render({
   elem: '#birth' //指定元素
 });
@@ -415,6 +428,28 @@ ul.jilu {
   
 }
 
+// 焦点hover 过渡效果  start
+.media:hover {
+  box-shadow: 0 0 10px #eee inset, 0 0 10px #ccc;
+}
+
+.media:hover .xhx {
+  background-color: #337ab7;
+  transform: translateX(0%);
+  transition: all 0.5s ease;
+}
+
+.media:hover img {
+  transform: scale(1.03,1.03);
+  transition: all 1s ease;
+  
+}
+
+.media:hover{
+  form.edit {
+    background-color: #f8f8f8;
+  }
+}
 
 .row {
   margin: 0 auto;
@@ -425,189 +460,107 @@ ul.jilu {
   }
 }
 
-.left {
-    padding: 0;
-    padding-right: 10px;
-    .mediaLeft {
-      .media {
-        background-color: #fff;
-        padding-bottom: 0;
-        border: 1px solid #eee;
-        border-bottom: none;
+.userLike {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  padding-bottom: 0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  .leftLike.leftLike-first {
+    text-align: center;
+    .row {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      div {
+        width: 100%;
+        height: 100%;
         margin: 0;
-        .media-body {
-          position: relative;
+        padding: 0;
+        div {
+          width: auto;
           height: 100%;
-          padding-bottom: 10px;
-          .media-left {
-            
-            padding: 0;
-            .Content:hover {
-              .media-heading {
-                color: rgb(43, 101, 151);
-              }
-            }
-            
-            //发布内容详细信息 发布标题 内容 图片
-            .Content:hover {
-              .imgDiv {
-                img {
-                  border-left: 5px solid #337ab7;
-                  opacity: 0.8;
-                }
-              }
-              .titleDiv {
-                .media-heading {
-                  color: rgb(47, 103, 151);
-                }
-              }
-            }
-            .Content {
-              width: 100%;
-              height: 100%;
-              text-decoration: none;
-              color: rgba(0, 0, 0, 0.664);
-              
-              .imgDiv {
-                text-align: center;
-                img {
-                  padding: 0 0 0 4px;
-                  border-left: 5px solid #fff;
-                  float: left;
-                  width: 220px;
-                  height: 140px;
-                  margin: 0px 10px 0px 6px;
-                  vertical-align: middle;
-                  background-position: center;
-                  background-size: cover;
-                }
-              
-              }
-              .titleDiv {
-                margin: 10px 10px 4px 10px;
-                .label {
-                  font-size: 100%;
-                  float: left;
-                  width: 58px;
-                  height: 22px;
-                  margin-top: 1px;
-                  line-height: 16px;
-                }
-                .media-heading {
-                  display: inline;
-                  padding-top: 0;
-                  padding: 15px 10px 0px 8px;
-                  padding-bottom: 4px;
-                  color: #428BD1;
-                  font-size: 22px;
-                  font-weight: 700;
-                  line-height: 22px;
-                }
-              }
-              .contentDiv {
-                .pDiv {
-                  padding: 0;
-                  font-size: 16px;
-                  display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;
-                  margin-right: 15px;
-                }
-              }
-              
-              
-            }
-            //发布详细信息 发布人 发布时间 收藏数 
-            .info {
-              width: 100%;
-              height: 100%;
-              .message {
-                text-align: right;
-                vertical-align: middle;
-                padding: 0 10px;
-                padding-bottom: 0;
-                margin-bottom: 3px;
-                position: absolute;
-                right: 15px;
-                bottom: 0px;
-                li {
-                  list-style: none;
-                  display: inline-block;
-                  width: 90px;
-                  height: 25px;
-                  text-align: center;
-                  color: rgba(0, 0, 0, 0.5);
-                  font-size: 14px;
-                  a {
-                    display: inline-block;
-                    font-size: 14px;
-                    color: rgba(0, 0, 0, 0.5);
-                    span {
-                      font-size: 14px;
-                      padding-left: 5px;
-                      padding-right: 3px;
-                      color: rgba(0, 0, 0, 0.5);
-                    }
-                  }
-                  span {
-                    font-size: 14px;
-                    padding-left: 5px;
-                    padding-right: 3px;
-                  }
-                }
-              }             
-            }
-            p {
-              margin: 10px;
-              padding-left: 200px;
-              color: rgba(0, 0, 0, 0.664);
-            }
-            
-          }  
-        }
-        
-      }
-      
-      //分页
-      .pageNav {
-        background-color: #fff;
-        text-align: center;
-        border: 1px solid rgba(204, 204, 204, 0.397);
-        .pagination {
-          padding: 0;
-          margin: 15px 0;
-          text-align: right;
-          vertical-align: middle;
-          padding: 0 10px;
-          padding-bottom: 0;
-          li {
-            height: 40px;
-            width: 50px;
-            padding: 0 3px;
-            list-style: none;
-            display: inline-block;
-            text-align: center;
-            color: rgba(0, 0, 0, 0.5);
-            font-size: 14px;
-            
-            a {
-              display: inline-block;
-              width: 100%;
-              height: 100%;
-              border-radius: 5px;
-              font-size: 18px;
-              text-align: center;
-
-              span {
-                font-size: 18px;
-                padding: 0;
-                margin-top: 3px;
-              }
-            }
+          input {
+            width: 100%;
+            height: 100%;
           }
         }
       }
-
     }
   }
+  .leftLike {
+    padding: 0;
+    .form-search {
+      float: right;
+      width: 100%;
+      vertical-align: bottom;
+      select {
+        display: inline-block;
+        width: auto;
+        padding: 0 2%;
+        margin: 3px 0;
+        text-align: center;
+        text-align-last: center;
+        option {
+          text-align: center;
+          padding: 0 0 20px 0;
+        }
+      }
+      input {
+        margin: 3px 0;
+        display: inline-block;
+        width: auto;
+      }
+      button.btn-search {
+        margin-top: -2px;
+      }
+      div.divEdit {
+        float: right;
+        width: auto;
+        
+        margin-top: 4px;
+        button.btn-batch {
+          margin-right: 5px;
+        }
+        button.btn-cancal {
+          float: right;
+          display: none;
+        }
+      }
+    }
+  }
+  .rightEdit {
+    width: 10%;
+    height: 100%;
+    text-align:center;
+    
+    form.edit {
+      padding: 0;
+      text-align: center;
+      //display: none;
+      button {
+        background-color: #fff;
+        border-radius: 50%;
+        border: none;
+        font-size: 36px;
+        padding: 0;
+
+      }
+      button:focus {
+        border: none;
+        outline: none;
+      }
+      button:hover {
+        color: #d43f3a;
+      }
+    }
+    button.btn-del {
+      display: none;
+    }
+  }
+}
 
 #color-input-red +label{
   display: none;

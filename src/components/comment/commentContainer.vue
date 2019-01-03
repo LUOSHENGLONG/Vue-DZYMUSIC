@@ -71,10 +71,10 @@
               </a>
               <div class="replay-con">
                 <div class="user">
-                  <a href="#" target="_blank" class="name vip-red-name" :ref="`commentName`+4" >{{ reply.nickname  }}</a>
+                  <a href="#" target="_blank" class="name vip-red-name" :ref="`commentName`+4" >{{ reply.fromNickname  }}</a>
                   
                   <span class="text-con" v-if="reply.reply_type === 0">{{ reply.content }}</span>
-                  <span class="text-con" v-if="reply.reply_type === 1"> <a href="#">@{{ reply.to_uid }}</a> : {{ reply.content }}</span>
+                  <span class="text-con" v-if="reply.reply_type === 1"> <a href="#">@{{ reply.nickname }}</a> : {{ reply.content }}</span>
                 </div>
                 <div class="info">
                   <span class="time">{{ reply.createTime }}</span>
@@ -82,7 +82,7 @@
                     <i class="fa fa-thumbs-o-up"></i>
                     <span :ref="`commentLikeCount`+4">24</span>
                   </span>
-                  <span @click="replyToReply(item.id, reply.nickname, reply.from_uid)" class="reply btn-hover">回复</span>
+                  <span @click="replyToReply(item.id, reply.fromNickname, reply.from_uid)" class="reply btn-hover">回复</span>
                   <div class="operation btn-hover btn-hide-re" style="display: none">
                     <div  @click="showOpera(4)" class="spot"><i class="fa fa-ellipsis-v"></i></div>
                     <div @mouseleave="hiddenOpera(4)" :ref="`operaList`+4" class="opera-list" style="display: none;">
@@ -96,6 +96,7 @@
             </div>
             
           </div>
+          
           <!-- //回复@回复评论区 -->
           <div class="comment-send" :ref="item.id" >
             <div class="user-face">
@@ -176,7 +177,6 @@ export default {
     reply(id, nickname) {
       //未登录
       if( this.$store.state.isLogin === false ){
-        console.log("请登录")
         this.tips = "请登录后评论"
         $(this.$refs.tips).css("display","block")
         setTimeout(() => {
@@ -195,7 +195,6 @@ export default {
     replyToReply(id, replyNickname ,fromId) {
       //未登录
       if( this.$store.state.isLogin === false ){
-        console.log("请登录")
         this.tips = "请登录后评论"
         $(this.$refs.tips).css("display","block")
         setTimeout(() => {
@@ -219,7 +218,6 @@ export default {
     SendComment() {
       //未登录
       if( this.$store.state.isLogin === false ){
-        console.log("请登录")
         this.tips = "请登录后评论"
         $(this.$refs.tips).css("display","block")
         setTimeout(() => {
@@ -237,8 +235,6 @@ export default {
         // 获取评论文章id this.topicId
         // 获取当前评论时间 new Date()
         // 2019-01-02 09:29:59 格式化日期
-        console.log(this.topicType)
-        console.log("0--------------------------------------0")
         function formatDateTime(date) {  
           var y = date.getFullYear();  
           var m = date.getMonth() + 1;  
@@ -277,7 +273,6 @@ export default {
     getComment() {
       axios.post("http://localhost:3001/getComment",{id: this.topicId})
         .then(result => {
-          console.log(result)
           this.commentsData = result.data.comments
           this.replysData = result.data.replys
 
@@ -292,7 +287,6 @@ export default {
     sendReply(id,toId) {
       
       if( this.$store.state.isLogin === false ){
-        console.log("请登录")
         this.tips = "请登录后评论"
         $(this.$refs.tips).css("display","block")
         setTimeout(() => {
@@ -319,8 +313,6 @@ export default {
         function getUUID() {
           return "comments"+mydate.getDay()+ mydate.getHours()+ mydate.getMinutes()+mydate.getSeconds()+mydate.getMilliseconds()+ Math.round(Math.random() * 10000);
         }
-        console.log(id)
-        console.log(this.replyType)
         axios.post("http://localhost:3001/sendReply",
           {
             id: getUUID(),
@@ -329,11 +321,13 @@ export default {
             replyType: this.replyType,
             content: this.replyComment,
             fromUid: JSON.parse(localStorage.getItem("user")).id,
+            fromNickname: JSON.parse(localStorage.getItem("user")).nickname,
             toUid: this.toUid,
             createTime: formatDateTime(new Date()),
           })
           .then(result => {
             this.getComment()
+            $(this.$refs[id]).css("display","none")
         })
       this.replyComment = ""
       }
@@ -814,5 +808,17 @@ export default {
   transform: translate(-50%,-50%);
   color:#fff;
   display: none;
+}
+
+.con {
+  overflow: hidden;
+}
+
+.showAllReply {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 12px;
+  margin: 0 20px;
 }
 </style>
