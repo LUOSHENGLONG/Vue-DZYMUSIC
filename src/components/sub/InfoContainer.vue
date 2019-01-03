@@ -10,8 +10,8 @@
       <div class="left col-sm-9 col-md-9 col-lg-9"  v-if="hackReset">
         <!-- 导航栏 -->
         <ol class="breadcrumb">
-          <li><a href="#"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</a></li>
-          <li><a href="#">合成器</a></li>
+          <li><router-link to="/"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</router-link></li>
+          <li><router-link :to="`/`+infoData.type">{{infoData.type | typeFormat}}</router-link></li>
           <li class="active">{{ infoData.title }}</li>
         </ol>
         <section class="main-content">
@@ -30,6 +30,9 @@
               </li>
               <li>
                 <span class="qrcode glyphicon glyphicon-qrcode"></span>
+              </li>
+              <li>
+                <i class="fa fa-star" style="width:50px;height:50px;"></i>
               </li>
             </ul>
           </div>

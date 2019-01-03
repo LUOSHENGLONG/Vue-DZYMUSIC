@@ -13,7 +13,7 @@
     <div class="comment-sendDiv">
       <div class="comment-send ">
         <div class="user-face">
-          <img class="user-head" :src="CommentAvatar">
+          <img class="user-head" v-lazy="CommentAvatar">
         </div>
         <div class="textarea-container">
           <i class="ipt-arrow"></i>
@@ -29,7 +29,7 @@
       <div class="list-item reply-wrap">
         <div class="user-face">
           <a href="#" target="_blank">
-          <img :src="item.avatar" alt="">
+          <img v-lazy="item.avatar" alt="">
           </a>
           
           <div class="hot-follow" style="display: none">
@@ -67,7 +67,7 @@
           <div class="replay-box" v-for="reply of filter(item.id)" :key="reply.id">
             <div class="replay-item reply-wrap">
               <a href="#" target="_blank" class="reply-face">
-                <img class="reply-face-img" :src="reply.avatar" alt="">
+                <img class="reply-face-img" v-lazy="reply.avatar" alt="">
               </a>
               <div class="replay-con">
                 <div class="user">
@@ -99,11 +99,11 @@
           <!-- //回复@回复评论区 -->
           <div class="comment-send" :ref="item.id" >
             <div class="user-face">
-              <img class="user-head" :src="CommentAvatar">
+              <img class="user-head" v-lazy="CommentAvatar">
             </div>
             <div class="textarea-container">
               <i class="ipt-arrow"></i>
-              <textarea v-model="replyComment" :ref="`text`+item.id" cols="80" name="msg" rows="5" placeholder="" class="ipt-txt"></textarea>
+              <textarea v-model="replyComment" :ref="`text`+item.id" cols="80" name="msg" rows="5" maxlength="1000" placeholder="" class="ipt-txt"></textarea>
               <button type="botton" @click="sendReply(item.id, item.from_uid)" class="comment-submit">发表评论</button>
             </div>
           </div>
@@ -138,7 +138,9 @@ export default {
     
     if( localStorage.getItem('user') != null) {
       this.CommentAvatar = JSON.parse(localStorage.getItem('user')).avatar
-    }
+    }else {
+        this.navAvatar = "./src/images/tx.jpg"
+      }
   },
   methods: {
     // 点击按钮显示加入黑名单 举报 div
@@ -797,8 +799,6 @@ export default {
     .textarea-container {
       font-size: 18px;
       .textarea {
-      
-
       }
     }
   }

@@ -339,11 +339,15 @@ a {
                 .label {
                   font-size: 100%;
                   float: left;
+                  width: 58px;
+                  height: 22px;
+                  margin-top: 1px;
+                  line-height: 16px;
                 }
                 .media-heading {
                   display: inline;
                   padding-top: 0;
-                  padding: 15px 10px 0px 10px;
+                  padding: 15px 10px 0px 8px;
                   padding-bottom: 4px;
                   color: #428BD1;
                   font-size: 22px;

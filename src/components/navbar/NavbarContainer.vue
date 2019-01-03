@@ -14,12 +14,12 @@
         <ul class="nav navbar-nav">
           <!--  class="active" -->
           <li><router-link to="/">首页 <span class="sr-only">(current)</span></router-link></li>
-          <li><router-link to="/synth">合成器</router-link></li>
+          <li><router-link to="/synthesizer">合成器</router-link></li>
           <li><router-link to="/effects">效果器</router-link></li>
-          <li><router-link to="/sample">采样包</router-link></li>
+          <li><router-link to="/samplePack">采样包</router-link></li>
           <li><router-link to="/host">宿主</router-link></li>
           <li><router-link to="/tutorial">教程</router-link></li>
-          <li><router-link to="/more">更多</router-link></li>
+          <li><router-link to="/last">更多</router-link></li>
          
         </ul>
         <form class="navbar-form navbar-left hidden-sm hidden-md hidden-xs">
@@ -31,16 +31,22 @@
         </form>
         <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
           <li>
-            <img @click="goUser"  :src="navAvatar" alt =".." class="img-circle">
+            <img @click="goUser"  v-lazy="navAvatar" alt =".." class="img-circle">
             <!-- <i class="fa fa-user-circle img-circle" style="font-size: 26px; color: #337ab7;cursor: pointer"></i> -->
           </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ nickname }} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><router-link to="/user">个人资料</router-link></li>
+              <li><router-link to="/setting">设置</router-link></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" @click="logout($event)">注销</a></li>
+            </ul>
+          </li>
+          <li>
+            
+          </li>
           
-          <li>
-            <router-link to="/setting">设置</router-link>
-          </li>
-          <li>
-            <a href="#" @click="logout($event)">注销</a>
-          </li>
         </ul>
         <ul v-if="!this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
           
@@ -73,7 +79,8 @@
         keyword: "",
         switch: 0,
         oldKeyword: "",
-        navAvatar: ""
+        navAvatar: "",
+        nickname: ""
       }
     },
     props: {
@@ -85,7 +92,8 @@
     mounted() {
       if( localStorage.getItem("user") != null) {
         this.navAvatar = JSON.parse(localStorage.getItem("user")).avatar
-      }
+        this.nickname = JSON.parse(localStorage.getItem("user")).nickname
+      } 
     },
     methods: {
       showLogin(e) {
@@ -115,6 +123,7 @@
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         this.$store.commit("confirmLogin")
+        this.$router.go(0)
       },
       goUser() {
         this.$router.push({path: "user"})
@@ -154,7 +163,15 @@
     background-color: #fff;
    
 }
-
+ul {
+  margin: 0;
+}
+.dropdown {
+  a {
+    margin-right: 0;
+    padding-right: 0;
+  }
+}
 ul li {
   font-size: 16px;
   a {
@@ -163,7 +180,9 @@ ul li {
     margin-bottom: 6px;
     border-bottom: 3px solid rgba(255, 255, 255, 0.9);
     color: #34495ed5 !important;
+    
   }
+  
   a:hover {
     border-bottom: 3px solid #337ab7;
   }
@@ -183,6 +202,39 @@ ul li {
 }
 .navbar-brand {
   padding: 10px;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
+    background-color: #fff;
+    color: #555;
+}
+ul li {
+  text-align: center;
+}
+
+.dropdown-menu {
+  margin-right: -1px;
+  min-width: 106px;
+  .divider {
+    margin: 2px 0;
+  }
+  li {
+    a {
+      border: 0;
+      margin: 0;
+      padding: 4px 0;
+    }
+    a:hover {
+      border: 0;
+      color: #337ab7;
+    }
+  }
+  
+}
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
+    text-decoration: none;
+    color: #262626;
+    background-color: #fff;
 }
 </style>
 

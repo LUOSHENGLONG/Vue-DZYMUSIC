@@ -245,7 +245,7 @@ div.popContainer{
     z-index: 999;
 }
 .all {
-  overflow-x: hidden;
+  // overflow-x: hidden;
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity 1s;

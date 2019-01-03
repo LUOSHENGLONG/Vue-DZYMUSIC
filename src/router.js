@@ -20,6 +20,7 @@ import Info2Container from './components/sub/InfoContainer2.vue'
 import SearchContainer from './components/search/SearchContainer.vue'
 import Search2Container from './components/search/Search2Container.vue'
 import CommentContainer from './components/comment/CommentContainer.vue'
+import LastContainer from './components/last/LastContainer.vue'
 
 
 
@@ -27,9 +28,9 @@ import CommentContainer from './components/comment/CommentContainer.vue'
 var router = new VueRouter({
   routes: [
     {path: '/', component: HomeContainer},
-    {path: '/synth', component: SynthesizerContainer},
+    {path: '/synthesizer', component: SynthesizerContainer},
     {path: '/effects', component: EffectsContainer},
-    {path: '/sample', component: SamplePackContainer},
+    {path: '/samplePack', component: SamplePackContainer},
     {path: '/host', component: HostContainer},
     {path: '/tutorial', component: TutorialContainer},
     {path: '/synthindex', component: SynthesizerIndexContainer},
@@ -40,6 +41,7 @@ var router = new VueRouter({
     {path: '/setting', component: SettingContainer},
     {path: '/login', component: LoginContainer},
     {path: '/each', component: EachContainer},
+    {path: '/last', component: LastContainer},
     {path: '/search/:keyword', component: SearchContainer, name:"search"},
     {path: '/search/:keyword', component: Search2Container, name:"search2"},
     {path: '/:type/info/:id', component: InfoContainer, name:"info"},

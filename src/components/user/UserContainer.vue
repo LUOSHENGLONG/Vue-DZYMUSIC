@@ -18,19 +18,19 @@
               <form class="form-userInfo">
                 <div class="form-group">
                   <label for="userName">用户名</label>
-                  <input type="text" class="form-control" id="userName" placeholder="Email" disabled>
+                  <input type="text" class="form-control" id="userName" :placeholder="userData.nickname" disabled>
                 </div>
                 <div class="form-group">
                   <label for="email">邮箱</label>
-                  <input type="text" class="form-control" id="email" placeholder="Email" disabled>
+                  <input type="text" class="form-control" id="email" :placeholder="userData.email" disabled>
                 </div>
                 <div class="form-group">
                   <label for="phone">手机号</label>
-                  <input type="text" class="form-control" id="phone" placeholder="Email" disabled>
+                  <input type="text" class="form-control" id="phone" :placeholder="userData.phone = null ? '未填写': 'xx'" disabled>
                 </div>
                 <div class="form-group">
                   <label for="createTime">注册时间</label>
-                  <input type="text" class="form-control" id="createTime" placeholder="Email" disabled>
+                  <input type="text" class="form-control" id="createTime" :placeholder="userData.phone" disabled>
                 </div>
                 <div class="form-group">
                   <label for="status">实名状态</label>
@@ -151,13 +151,20 @@ export default {
         }
         ],
       batchData: [],
-      minHeight: 0
+      minHeight: 0,
+      userData: {}
     }
   },
   mounted() {
     this.minHeight = document.documentElement.clientHeight - 754
     window.onresize = () =>　{
       this.minHeight = document.documentElement.clientHeight - 754
+    }
+
+    if( localStorage.getItem("user") != null) {
+      this.userData = JSON.parse(localStorage.getItem("user"))
+    } else {
+      this.$router.push({path: '/'})
     }
   },
   methods: {

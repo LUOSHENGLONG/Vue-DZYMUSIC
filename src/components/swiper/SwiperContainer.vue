@@ -2,7 +2,7 @@
   <div class="container hidden-xs hidden-sm">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="item in img" :key="item.id">
+            <div class="swiper-slide" v-for="item of img" :key="item.id">
               <a href="#"><img v-lazy="item.src" alt=""></a>
             </div>
             
@@ -11,8 +11,8 @@
         <div class="swiper-pagination"></div>
         3
         <!-- 如果需要导航按钮 -->
-        <div class="swiper-button-prev" @click="prev()"></div>
-        <div class="swiper-button-next" @click="next()"></div>
+        <div class="swiper-button-prev swiper-button-white"></div>
+        <div class="swiper-button-next swiper-button-white"></div>
         
         <!-- 如果需要滚动条 -->
         <!-- <div class="swiper-scrollbar"></div> -->
@@ -30,37 +30,41 @@
       
       mySwiper: {},
       img:[
-        {id:1,src:'src/images/lunbotu1.jpg'},
-        {id:2,src:'src/images/lunbotu2.jpg'},
-        {id:3,src:'src/images/lunbotu3.jpg'}]
+        {id:1,src:'src/images/lbt1.jpg'},
+        {id:2,src:'src/images/lbt2.jpg'},
+        {id:3,src:'src/images/lbt3.jpg'},
+        {id:4,src:'src/images/lbt4.jpg'}]
     };
   },
   mounted() {
     var mySwiper = new Swiper('.swiper-container', {
-      speed:300,
-      autoplay:true,
-      loop:true,
+      speed: 300,
+      autoplay: true,
+      loop: false,
       pagination: {
         el: '.swiper-pagination',
-        hideOnClick :false
+        hideOnClick :false,
+        clickable :true,
       },
       mousewheel: true,
       keyboard : true,
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
+        
       },
+      
     })
     this.mySwiper = mySwiper
   },
   methods: {
-    prev() {
-      this.mySwiper.slidePrev();
-    },
-    next() {
-      this.mySwiper.slideNext();
+    // prev() {
+    //   this.mySwiper.slidePrev();
+    // },
+    // next() {
+    //   this.mySwiper.slideNext();
 
-    }
+    // }
   }
 };
 </script>
@@ -71,7 +75,7 @@
 }
 .swiper-container {
     width: 100%;
-    height: 400px;
+    height: 600px;
     margin-bottom: 20px;
     z-index: 0;
     
@@ -81,8 +85,11 @@
 }
 .swiper-slide img {
   width: 100%;
+  height: 100%;
 }
 
-
+.swiper-pagination-bullet {
+  background: #fff !important;
+}
 </style>
 

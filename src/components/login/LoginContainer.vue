@@ -101,6 +101,7 @@ export default {
                 setTimeout(() => {
                     this.cancel();
                 }, 1000);
+                this.$router.go(0)
             }else {
                 this.message = "账号或密码错误,点击返回登录"
                 tip.style.display = "block"
