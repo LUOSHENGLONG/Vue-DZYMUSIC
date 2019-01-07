@@ -31,7 +31,9 @@
         </form>
         <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
           <li>
-            <img @click="goUser"  v-lazy="navAvatar" alt =".." class="img-circle">
+            <router-link to="/user" style="padding: 0;margin: 0;border: 0;">
+              <img id="imgSrc" v-lazy="navAvatar" alt =".." class="img-circle">
+            </router-link>
             <!-- <i class="fa fa-user-circle img-circle" style="font-size: 26px; color: #337ab7;cursor: pointer"></i> -->
           </li>
           <li class="dropdown">
@@ -44,7 +46,7 @@
             </ul>
           </li>
           <li>
-            
+            <router-link to="/uploadImages" class="contribute">&nbsp;投稿&nbsp;</router-link>
           </li>
           
         </ul>
@@ -105,7 +107,11 @@
         this.$emit('showSignup')
       },
       search() {
+        if(this.keyword.trim() === "") {
+          return
+        }
         if(this.keyword.trim() !== "" || this.keyword.trim() !== null ){
+          this.keyword = this.keyword.replace(/\s+/g,"")
           if(this.switch % 2 === 0) {
             this.$router.push({name: 'search', params: {keyword: this.keyword}})
           }else {
@@ -125,9 +131,7 @@
         this.$store.commit("confirmLogin")
         this.$router.go(0)
       },
-      goUser() {
-        this.$router.push({path: "user"})
-      }
+      
     },
     watch: {
       keyword(newVal, oldVal) {
@@ -168,7 +172,6 @@ ul {
 }
 .dropdown {
   a {
-    margin-right: 0;
     padding-right: 0;
   }
 }
@@ -190,7 +193,7 @@ ul li {
 .progress {
     height: 3px;
     margin-bottom: 0;
-    border-radius: 4px;
+    border-radius: 2px;
     border: 0;
 
     background-color: #f8f8f8;
@@ -208,12 +211,21 @@ ul li {
     background-color: #fff;
     color: #555;
 }
+
+.navbar-default .navbar-nav>li>a.contribute:hover, .navbar-default .navbar-nav>li>a.contribute:focus {
+    color: #333;
+    margin-right: 0;
+    background-color: #7645b8;
+    color: #fff !important;
+    border: 0;
+    transition: all 1s ease;
+}
 ul li {
   text-align: center;
 }
 
 .dropdown-menu {
-  margin-right: -1px;
+  margin-right: 9px;
   min-width: 106px;
   .divider {
     margin: 2px 0;
@@ -228,13 +240,31 @@ ul li {
       border: 0;
       color: #337ab7;
     }
+    
   }
   
+  
 }
-.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
-    text-decoration: none;
-    color: #262626;
-    background-color: #fff;
+// .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
+//     text-decoration: none;
+//     color: #262626;
+//     background-color: rgb(124, 120, 120);
+// }
+
+
+.contribute {
+  margin-right: 0;
+  background-color: #337ab7;
+  color: #fff !important;
+  border-radius: 4px;
+  border: 0;
+}
+.contribute:hover {
+  margin-right: 0;
+  background-color: #337ab7;
+  color: #fff !important;
+  border-radius: 4px;
+  border: 0;
 }
 </style>
 

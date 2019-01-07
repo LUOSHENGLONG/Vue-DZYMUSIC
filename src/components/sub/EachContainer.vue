@@ -19,7 +19,7 @@
             <div class="media-body">
               <div class="media-left media-middle">
                 <div class="Content">
-                  <router-link  :to="`/`+item.type+`/info/`+item.id">
+                  <router-link target="_blank" :to="`/`+item.type+`/info/`+item.id">
                     <!-- <h4 class="media-heading">
                       <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -48,14 +48,10 @@
                 </div>
                 <div class="info hidden-xs hidden-sm">
                   <ul class="message">
-                    <li><span class="glyphicon glyphicon-user"></span>发布人</li> 
-                    <li><span class="glyphicon glyphicon-time"></span>{{ item.releaseTime | dateFormat }}</li>
-                    <li><span class="glyphicon glyphicon-eye-open"></span>120浏览</li>
-                    <li>
-                      <a href="#" @click="like($event)">
-                      <span ref="likeSpan" :class="isLike"></span>{{item.like}}收藏
-                      </a>
-                    </li>
+                    <li><span class="fas fa-user-edit"></span>发布人</li> 
+                    <li><span class="fas fa-clock"></span>{{ item.releaseTime | dateFormat }}</li>
+                    <li><span class="fas fa-eye"></span>120浏览</li>
+                    
                   </ul>
                 </div>
             </div>
@@ -102,7 +98,7 @@
       <!-- 右侧数据排行 -->
       <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
         <!-- 1.下载排行 -->
-        <div class="mediaRight" ref="downloadRank">
+        <!-- <div class="mediaRight" ref="downloadRank">
           <div class="list-group">
             <div class="right-title">
               <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
@@ -119,9 +115,9 @@
               
             </ul>
           </div>
-        </div>
+        </div> -->
         <!-- 2.受欢迎排行 -->
-        <div class="mediaRight" ref="likeRank">
+        <!-- <div class="mediaRight" ref="likeRank">
           <div class="list-group">
             <div class="right-title">
               <span class="hot-logo glyphicon glyphicon-sort-by-order hidden-sm" style="color: rgb(102, 58, 158);"></span>
@@ -138,7 +134,8 @@
               
             </ul>
           </div>
-        </div>
+        </div> -->
+        <RightContainer></RightContainer>
       </div>
       
       
@@ -146,6 +143,8 @@
     </div>
 </template>
 <script>
+import RightContainer from './RightContainer.vue'
+
 import paginate from "../../asset/jPaginate/jquery.paginate.js"
   export default {
     data() {
@@ -214,6 +213,7 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
       }
     },
     components: {
+      RightContainer
     },
     watch: {
       data(newVal, oldVal) {
@@ -305,6 +305,7 @@ a {
                 img {
                   border-left: 5px solid #337ab7;
                   opacity: 0.8;
+                  transition: all 1s ease;
                 }
               }
               .titleDiv {
@@ -375,7 +376,7 @@ a {
                 vertical-align: middle;
                 padding: 0 10px;
                 padding-bottom: 0;
-                margin-bottom: 3px;
+                margin-bottom: 0px;
                 position: absolute;
                 right: 15px;
                 bottom: 0px;

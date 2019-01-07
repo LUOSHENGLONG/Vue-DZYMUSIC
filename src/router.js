@@ -16,11 +16,13 @@ import SettingContainer from './components/setting/SettingContainer.vue'
 import LoginContainer from './components/login/LoginContainer.vue'
 import EachContainer from './components/sub/EachContainer.vue'
 import InfoContainer from './components/sub/InfoContainer.vue'
+import RightContainer from './components/sub/RightContainer.vue'
 import Info2Container from './components/sub/InfoContainer2.vue'
 import SearchContainer from './components/search/SearchContainer.vue'
 import Search2Container from './components/search/Search2Container.vue'
 import CommentContainer from './components/comment/CommentContainer.vue'
 import LastContainer from './components/last/LastContainer.vue'
+import UploadImagesContainer from './components/uploadImages/UploadImagesContainer.vue'
 
 
 
@@ -41,6 +43,7 @@ var router = new VueRouter({
     {path: '/setting', component: SettingContainer},
     {path: '/login', component: LoginContainer},
     {path: '/each', component: EachContainer},
+    {path: '/uploadImages', component: UploadImagesContainer},
     {path: '/last', component: LastContainer},
     {path: '/search/:keyword', component: SearchContainer, name:"search"},
     {path: '/search/:keyword', component: Search2Container, name:"search2"},

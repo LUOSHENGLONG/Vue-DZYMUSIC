@@ -31,7 +31,7 @@
                   <input type="file" class="form-control" id="exampleInputEmail1" placeholder="Email"> -->
                   <a class="btn" @click="toggleShow">设置头像</a>
                   <my-upload field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="png" :size="size"></my-upload>
-                  <img :src="avatar">
+                  <img id="showImg" :src="avatar">
                 </div>
                 <div class="mybtn">
                   <button type="submit" class="btn btn-primary">保存</button>
@@ -122,8 +122,7 @@
 
 <script>
 import laydate from '../../lib/laydate/laydate.js'
-
-
+import axios from 'axios'
 import myUpload from 'vue-image-crop-upload';
 
 export default {
@@ -155,16 +154,27 @@ export default {
       },
       cropSuccess(imgDataUrl) {
         //  imgDataUrl其实就是经过base64转码过的图片
-        this.avatar = imgDataUrl;
-        //console.log(imgDataUrl)//这里打印出来的是base64格式的资源，太长了
+        // this.avatar = imgDataUrl;
+        console.log(imgDataUrl)//这里打印出来的是base64格式的资源，太长了
         //base64转blob格式
         let arr = imgDataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1],
           bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
         while (n--) {
           u8arr[n] = bstr.charCodeAt(n);
         }
-        let bdata = new Blob([u8arr], { type: mime })
+        const blob = new Blob([u8arr], { type: mime })
         console.log(new Blob([u8arr], { type: mime })) ;//这里打印base64转成blob的资源，根据自己的项目需求去转吧
+        $("#showImg").attr("src",URL.createObjectURL(blob))
+        let userId = this.$store.state.user.id
+        if( localStorage.getItem("user") != null) {
+          userId = JSON.parse(localStorage.getItem("user")).id
+        }
+        
+        axios.post("http://localhost:3001/avatar",{userId: userId, blob: blob})
+        .then(result => {
+          console.log(result.data)
+        })
+        console.log(blob)
       }
   }
 
@@ -175,7 +185,7 @@ export default {
 
 @import'../../lib/laydate/theme/default/laydate.css';
 .container {
-  padding: 10px 0;
+  padding: 0;
 }
 .rightBorder {
   padding: 0;

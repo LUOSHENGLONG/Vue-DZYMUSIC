@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import VueLazyLoad from 'vue-lazyload'
+import VueCropper from 'vue-cropper'
 import axios from 'axios'
 import VueProgressBar from 'vue-progressbar'
 import moment from 'moment' //设置中文
@@ -12,6 +13,7 @@ import moment from 'moment' //设置中文
 // import Clipboard from 'clipboard'
 Vue.use(VueResource)
 Vue.use(VueRouter)
+Vue.use(VueCropper)
 
 //图片懒加载
 Vue.use(VueLazyLoad,{

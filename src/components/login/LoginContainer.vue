@@ -125,9 +125,9 @@ export default {
   watch: {
       username( newVal, oldVal) {
         
-        //正则 邮箱验证
-        const phoneConfirm = new RegExp("(^1[3,4,5,6,7,9,8][0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$)")
         //正则 手机号码验证
+        const phoneConfirm = new RegExp("(^1[3,4,5,6,7,9,8][0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$)")
+        //正则 邮箱验证
         const emailConfirm = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/
         //验证邮箱不匹配
         if( !emailConfirm.test(newVal) ) {
@@ -194,6 +194,10 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
     font-size: 14px;
     .form-box {
         padding: 0 30px;
+        .cancel:hover {
+            transform: rotate(-360deg);
+            transition: all .5s ease;
+        }
         .cancel {
             position: absolute;
             right: 10px;
@@ -327,6 +331,9 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 
 
 .slogon {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
     border-top: #f1f1f1 solid 2px;
     font-size: 14px;
     text-align: center;

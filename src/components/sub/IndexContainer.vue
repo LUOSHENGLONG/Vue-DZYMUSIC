@@ -7,7 +7,8 @@
       </a>
     </section>
     <section class="news_row">
-      <a href="#" @click="intoInfo($event,item.id)" target="_blank" class="feature-news index-base-item" v-for="item of data" :key="item.id">
+      <!-- <a href="#" @click="intoInfo($event,item.id)" target="_blank" class="feature-news index-base-item" v-for="item of data" :key="item.id"> -->
+      <router-link :to="`/`+item.type+`/info/`+item.id" target="_blank" class="feature-news index-base-item" v-for="item of data" :key="item.id">
         <div class="title-image-wrap">
           <div class="title-image">
             <img v-lazy="item.img" alt="">
@@ -21,7 +22,7 @@
           <p class="summary">{{ item.content }}</p>
         </div>
         <div class="text-gradient"></div>
-      </a>
+      </router-link>
       
     </section>
     
@@ -65,6 +66,7 @@
           typeName = "tutorial"
         }
         this.$router.push({name: "info",params: {type: typeName,id: id}})
+        
       }
     },
     mounted() {

@@ -423,9 +423,9 @@ body, textarea, input, select, section, li, p {
   font-family: "Glyphicons Halflings" !important;
 }
 //去除点击button outline轮廓
-button[data-v-a15ca838], 
-button[data-v-a15ca838]:focus, 
-button.active[data-v-a15ca838] {
+button, 
+button:focus, 
+button.active {
     outline: none;
 }
 

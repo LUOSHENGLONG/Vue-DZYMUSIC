@@ -28,7 +28,7 @@
     <div class="comment-list" v-for="item of commentsData" :key="item.id">
       <div class="list-item reply-wrap">
         <div class="user-face">
-          <a href="#" target="_blank">
+          <a href="javascript:void(0);" target="_blank">
           <img v-lazy="item.avatar" alt="">
           </a>
           
@@ -39,13 +39,13 @@
 
         <div class="con">
           <div class="user">
-            <a href="#" target="_blank" :ref="`commentName`+3" class="name vip-red-name">{{ item.nickname }}</a>
+            <a href="javascript:void(0);" target="_blank" :ref="`commentName`+3" class="name vip-red-name">{{ item.nickname }}</a>
             <p class="text">{{ item.content }}</p>
           </div>
           <div class="info">
             <span class="floor">#123</span>
             <span class="plad">
-              来自<a href="#" target="_blank">网页客户端</a>
+              来自<a href="javascript:void(0);" target="_blank">网页客户端</a>
             </span>
             <span class="time">{{ item.createTime }}</span>
             <span :ref="`like`+3" @click="commentLike(3)" class="like " style="display: none">
@@ -66,15 +66,15 @@
           
           <div class="replay-box" v-for="reply of filter(item.id)" :key="reply.id">
             <div class="replay-item reply-wrap">
-              <a href="#" target="_blank" class="reply-face">
+              <a href="javascript:void(0);" target="_blank" class="reply-face">
                 <img class="reply-face-img" v-lazy="reply.avatar" alt="">
               </a>
               <div class="replay-con">
                 <div class="user">
-                  <a href="#" target="_blank" class="name vip-red-name" :ref="`commentName`+4" >{{ reply.fromNickname  }}</a>
+                  <a href="javascript:void(0);" target="_blank" class="name vip-red-name" :ref="`commentName`+4" >{{ reply.fromNickname  }}</a>
                   
                   <span class="text-con" v-if="reply.reply_type === 0">{{ reply.content }}</span>
-                  <span class="text-con" v-if="reply.reply_type === 1"> <a href="#">@{{ reply.nickname }}</a> : {{ reply.content }}</span>
+                  <span class="text-con" v-if="reply.reply_type === 1"> <a href="javascript:void(0);">@{{ reply.nickname }}</a> : {{ reply.content }}</span>
                 </div>
                 <div class="info">
                   <span class="time">{{ reply.createTime }}</span>
@@ -466,7 +466,7 @@ export default {
             height: 24px;
             padding: 0;
             color: #fff;
-            font-size: 12px;
+            font-size: 14px;
             background-color: #337ab7;
             border: none;
             border-radius: 4px;
@@ -483,7 +483,7 @@ export default {
         border-top: 1px solid #e5e9ef;
         //------------------ user ------------------
         .user {
-          font-size: 12px;
+          font-size: 14px;
           font-weight: 700;
           line-height: 18px;
           padding-bottom: 4px;
@@ -510,7 +510,7 @@ export default {
         .info {
           color: #99a2aa;
           line-height: 26px;
-          font-size: 12px;
+          font-size: 14px;
           .floor {
 
           }
@@ -820,5 +820,8 @@ export default {
   left: 0;
   font-size: 12px;
   margin: 0 20px;
+}
+a {
+  text-decoration: none;
 }
 </style>

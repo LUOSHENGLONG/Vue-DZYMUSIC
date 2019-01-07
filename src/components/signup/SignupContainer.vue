@@ -2,7 +2,7 @@
   <div ref="loginContainer" class="login-container container">
     <div ref="loginForm" class="login-form">
         <div class="form-box">
-            <span class="cancel glyphicon glyphicon-remove" @click="cancel()"></span>
+            <span ref="cancel" class="cancel glyphicon glyphicon-remove" @click="cancel()"></span>
             <div class="form-title-top">注册</div>
             <span class="span-title">使用邮箱/手机注册</span>
             <div class="form-bd">
@@ -32,7 +32,7 @@
                     <div class="form-group">
                         <!-- <label class="col-xs-12 control-label" for="password">密码</label> -->
                         <div class="control-col rel">
-                            <input type="text" class="form-control" id="CAPTCHA" name="passwd" placeholder="请输入验证码" maxlength="16" v-model="CAPTCHA" ref="CAPTCHA">
+                            <input type="text" autocomplete="off" class="form-control" id="CAPTCHA" name="passwd" placeholder="请输入验证码" maxlength="16" v-model="CAPTCHA" ref="CAPTCHA">
                             <button ref="btnCAPTCHA" type="button" class="btn-CAPTCHA btn btn-default" @click="sendCode($event)">发送验证码</button>
                             <span class="glyphicon glyphicon-remove error-tips CAPTCHA-error-tips"></span>
                             <span class="glyphicon glyphicon-ok success-tips CAPTCHA-success-tips"></span>
@@ -42,6 +42,7 @@
                         <div class="control-col">
                             <button ref="summit()" class="btn btn-success btn-lg btn-login" type="button" name="bnt" @click="summit()">注&nbsp;&nbsp;&nbsp;册</button>
                             <div ref="errorTip" @click="hiddenErrorTip" class="errorTip">邮箱或手机号码已注册 点击返回</div>
+                            <div ref="successTip"  class="errorTip">注册成功 正在跳转到登录页</div>
                             <div class="rows-forget"><span class="pull-left">已注册？<a href="#" @click="goLogin($event)" class="zhuce-href">立即登录</a></span><a href="/reg/forget-pwd" target="_blank" class="forger-pas">忘记密码</a></div>
                         </div>
                     </div>
@@ -77,6 +78,7 @@ export default {
     
   },
   methods: {
+    
     cancel() {
       this.$emit("cancel")
     },
@@ -179,10 +181,11 @@ export default {
             // 注册成功    
             }else {
                 console.log("注册成功")
-                this.$refs.errorTip.style.background = "#337ab7"
+                this.$refs.successTip.style.background = "#337ab7"
+                this.$refs.successTip.style.cursor = "#default"
                 this.$refs.email.style.border = "1px solid #eee"
-                $(this.$refs.errorTip).text('注册成功 正在跳转到登录页')
-                this.$refs.errorTip.style.display = "block"
+                $(this.$refs.successTip).text('注册成功 正在跳转到登录页')
+                this.$refs.successTip.style.display = "block"
                 setTimeout(() => {
                     this.goLogin();
                 }, 1500);
@@ -268,8 +271,8 @@ export default {
         }
     },
     password( newVal, oldVal ) {
-        //正则 密码验证
-        const passwordConfirm = /^[a-zA-Z][a-zA-Z0-9_]{5,20}$/
+        //正则 密码验证 同时包含字母和数字
+        const passwordConfirm = new RegExp("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$")
         if( !passwordConfirm.test(newVal)){
         //验证不匹配 密码格式错误
             this.$refs.passwordSuccessTips.style.visibility = "hidden"
@@ -334,6 +337,10 @@ export default {
     font-size: 14px;
     .form-box {
         padding: 0 60px;
+        .cancel:hover {
+            transform: rotate(-360deg);
+            transition: all .5s ease;
+        }
         .cancel {
             position: absolute;
             right: 10px;
@@ -516,6 +523,9 @@ export default {
 }
 
 .slogon {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
     border-top: #f1f1f1 solid 2px;
     font-size: 14px;
     text-align: center;
