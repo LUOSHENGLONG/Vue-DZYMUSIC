@@ -1,6 +1,6 @@
 <template>
   <div class="dzyTop">
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0 4px 20px #eee;">
 
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -26,7 +26,7 @@
           <div class="form-group">
             <input ref="keyword" v-model="keyword" type="text" class="form-control" placeholder="请输入搜索内容">
           </div>
-          <button @click="search()" type="button" class="btn btn-primary">搜索</button>
+          <button @click="search()" type="button" class="btn btn-primary" style="background-color: #47b39d;">搜索</button>
           
         </form>
         <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
@@ -82,7 +82,7 @@
         switch: 0,
         oldKeyword: "",
         navAvatar: "",
-        nickname: ""
+        nickname: this.$store.state.user.nickname
       }
     },
     props: {
@@ -138,7 +138,8 @@
         if(newVal !== oldVal) {
           
         }
-      }
+      },
+      
     }
     
   }
@@ -175,6 +176,8 @@ ul {
     padding-right: 0;
   }
 }
+
+
 ul li {
   font-size: 16px;
   a {
@@ -185,9 +188,15 @@ ul li {
     color: #34495ed5 !important;
     
   }
+  a.contribute {
+    margin-top: 8px; 
+    height: 34px;
+    line-height: 24px;
+    letter-spacing: 2px;
+  }
   
   a:hover {
-    border-bottom: 3px solid #337ab7;
+    border-bottom: 3px solid #47b39d;
   }
 }
 .progress {
@@ -215,7 +224,7 @@ ul li {
 .navbar-default .navbar-nav>li>a.contribute:hover, .navbar-default .navbar-nav>li>a.contribute:focus {
     color: #333;
     margin-right: 0;
-    background-color: #7645b8;
+    background-color: #47b39d;
     color: #fff !important;
     border: 0;
     transition: all 1s ease;
@@ -238,7 +247,7 @@ ul li {
     }
     a:hover {
       border: 0;
-      color: #337ab7;
+      color: #47b39d;
     }
     
   }
@@ -254,17 +263,33 @@ ul li {
 
 .contribute {
   margin-right: 0;
-  background-color: #337ab7;
+  background-color: #47b39d;
   color: #fff !important;
   border-radius: 4px;
   border: 0;
 }
 .contribute:hover {
   margin-right: 0;
-  background-color: #337ab7;
+  background-color: #47b39d;
   color: #fff !important;
   border-radius: 4px;
   border: 0;
+}
+.btn,
+.btn:focus,
+.btn:hover,
+.btn.active,
+.btn-primary,
+.btn-primary:focus,
+.btn-primary:hover,
+.btn-primary.active {
+  border-color: #47b39d !important;
+  outline: 0;
+}
+
+.nav .open>a, .nav .open>a:hover, .nav .open>a:focus {
+    background-color: #eee;
+    border-color: #47b39d;
 }
 </style>
 

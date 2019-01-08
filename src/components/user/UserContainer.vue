@@ -6,38 +6,60 @@
         <div class="rightBorder col-md-2 col-sm-2 col-xs-2 col-lg-2 hidden-xs">
           
           <ul class="homeInfo nav nav-tabs" role="tablist">
-            <p class="title"><span class="glyphicon glyphicon-user"></span> 设置</p>
-            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">个人信息</a></li>
-            <li @click="showFavorite()" role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">收藏夹</a></li>
+            <p class="title"><i class="fas fa-user-circle"></i> 用户中心</p>
+            <li role="presentation" class="active">
+              <a href="#home" aria-controls="home" role="tab" data-toggle="tab">
+                <i class="far fa-user-circle" style="font-size:18px"></i> 
+                个人信息
+              </a>
+            </li>
+            <li @click="showFavorite()" role="presentation">
+              <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
+                <i class="fas fa-star-half-alt" style="font-size:18px"></i> 
+                &nbsp;&nbsp;收藏夹&nbsp;&nbsp;
+              </a>
+            </li>
           </ul>
         </div>
         <!-- Tab panes -->
         <div class="Tab col-md-10 col-sm-10 col-xs-10 col-lg-10">
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="home">
-              <form class="form-userInfo">
-                <div class="form-group">
-                  <label for="userName">用户名</label>
-                  <input type="text" class="form-control" id="userName" :placeholder="userData.nickname" disabled>
+              
+              <div class="personal-info-row">
+                <div class="info-left input-group input-group-lg">
+                  <span class="input-group-addon" id="nickname">用户名</span>
+                  <input v-model="nickname" type="text" class="nickname form-control" maxlength="16" :placeholder="userData.nickname" aria-describedby="sizing-addon1">
+                  <div ref="exitName" class="exitName">用户名已存在</div>
                 </div>
-                <div class="form-group">
-                  <label for="email">邮箱</label>
-                  <input type="text" class="form-control" id="email" :placeholder="userData.email" disabled>
+
+                <div class="info-right input-group input-group-lg">
+                  <span class="input-group-addon" id="sizing-addon1">邮箱</span>
+                  <input type="text" class="form-control" disabled :placeholder="userData.email" aria-describedby="sizing-addon1">
+                  <span class="input-group-addon" id="sizing-addon1">不可编辑</span>
                 </div>
-                <div class="form-group">
-                  <label for="phone">手机号</label>
-                  <input type="text" class="form-control" id="phone" :placeholder="userData.phone === '' ? '未填写': 'xx'" disabled>
+              </div>
+              <div class="personal-info-row">
+                <div class="info-left input-group input-group-lg">
+                  <span class="input-group-addon" id="sizing-addon1">注册时间</span>
+                  <input type="text" class="form-control" disabled :placeholder="userData.createTime" aria-describedby="sizing-addon1">
+                  <span class="input-group-addon" id="sizing-addon1">不可编辑</span>
                 </div>
-                <div class="form-group">
-                  <label for="createTime">注册时间</label>
-                  <input type="text" class="form-control" id="createTime" :placeholder="userData.createTime" disabled>
+
+                <div class="info-right input-group input-group-lg">
+                  <span class="input-group-addon" id="sizing-addon1">实名状态</span>
+                  <input type="text" class="form-control" placeholder="未实名" disabled aria-describedby="sizing-addon1">
+                  <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
+                    <button  class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即实名</button>
+                  </span>
+                  
                 </div>
-                <div class="form-group">
-                  <label for="status">实名状态</label>
-                  <input type="text" class="form-control" id="status" placeholder="未实名" disabled>
-                </div>
-                
-              </form>
+              </div>
+
+            <div class="mybtn">
+              <button type="button" @click="savePerInfo" class="btn btn-success" style="background-color: #4fc08d;">更新</button>
+            </div>
+              
             </div>
 
             <div role="tabpanel" class="tab-pane" id="profile">
@@ -113,7 +135,9 @@ export default {
       minHeight: 0,
       userData: {},
       PageCount: 1,
-      currentPage: 1
+      currentPage: 1,
+      nickname: "",
+      oldNickname: "",
     }
   },
   mounted() {
@@ -131,6 +155,57 @@ export default {
     this.getLikeData()
   },
   methods: {
+    savePerInfo() {
+      if( this.nickname.trim() != "") {
+        if( this.oldNickname === this.nickname ) {
+          $(".exitName").text("用户名已存在")
+          $(".exitName").css("background-color","#ef5b54")
+          $(".exitName").css("display","block")
+          $(".nickname").focus()
+          $(".exitName").animate({"opacity":0},3000, ()=> {
+            $(".exitName").css("display","none")
+            $(".exitName").animate({"opacity":1},100)
+          })
+          
+          return
+        }
+        this.oldNickname = this.nickname
+        axios.post("http://localhost:3002/updateNickname",
+        {
+          nickname: this.nickname,
+          userId: this.userData.id
+        })
+        .then(result => {
+          console.log(result.data)
+          console.log(result.data.code === 0)
+          if (result.data.code === 0) {
+            this.userData = result.data.user[0]
+            localStorage.setItem("user",JSON.stringify(this.userData))
+            this.$store.state.user = this.userData
+            this.$router.go(0)
+            
+            this.$refs.exitName.textContent = result.data.success
+            this.$refs.exitName.style.backgroundColor = "rgb(79, 192, 141)"
+            this.$refs.exitName.style.display = "block"
+            $(".exitName").animate({"opacity":0},3000, ()=> {
+              $(".exitName").css("display","none")
+              $(".exitName").animate({"opacity":1},100)
+            })
+          }
+          if (result.data.code === 1) {
+            $(".exitName").text(result.data.error)
+            $(".exitName").css("background-color","#ef5b54")
+            $(".exitName").css("display","block")
+            $(".nickname").focus()
+            $(".exitName").animate({"opacity":0},3000, ()=> {
+              $(".exitName").css("display","none")
+              $(".exitName").animate({"opacity":1},100)
+            })
+
+          }
+      })
+      }
+    },
     page(e) {
       this.currentPage = e
       this.getLikeData()
@@ -279,7 +354,7 @@ export default {
 @import'../../lib/laydate/theme/default/laydate.css';
 .container {
   padding: 0;
-  // min-width: 1200px;
+  min-width: 1200px;
   
 }
 .Tab {
@@ -296,18 +371,24 @@ export default {
     ul.homeInfo {
       display: block;
       border: 0;
+      width: 180px;
+      margin-top: 36px;
       background-color: #fff;
-      border: 1px solid rgba(204, 204, 204, 0.425);
+      // border: 1px solid rgba(204, 204, 204, 0.425);
       li:hover {
         background-color: rgba(204, 204, 204, 0.425);
         color: #fff;
       }  
       li {
+        width: 180px;
         display: block;
         float: none;
         transform: translateX(0);
         transform: translateY(0);
         transition: all 0.5s ease;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 4px;
         a {
           border: 0;
           margin: 10pxpx;
@@ -321,7 +402,7 @@ export default {
         }
       }
       li.active {
-        background-color: #337ab7;
+        background-color: #47b39d;
         a {
           color: #eee;
         }
@@ -330,25 +411,29 @@ export default {
   }
 }
 .title {
-  span {
-  }
+  font-size: 18px !important;
+  color: #fff;
+  
   font-size: 18px;
   padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
+  // text-align: center;
+  // border-bottom: 1px solid #ddd;
+  span {
+  }
 }
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
     color: #fff;
     cursor: default;
-    background-color:  #337ab7;
-    border: 1px solid #ddd;
+    background-color:  #47b39d;
+    // border: 1px solid #ddd;
     border-bottom-color: transparent;
 }
 
 .tab-pane {
   width: 100%;
   padding: 20px;
-  border: 1px solid #eee;
+  margin-top: 16px;
+  // border: 1px solid #eee;
   background-color: #fff;
   
 }
@@ -480,7 +565,7 @@ ul.jilu {
 /*当input框为选中状态时，lable标签的样式，其中在css选择时，“：”表示当前input框的值，即checked；
       该部分主要对显示的“对号”的大限居中方式，显示颜色进行了设置*/
 .btn-delbat:checked +label::before{
-  color: #337ab7;
+  color: #47b39d;
   font-size: 36px;
   margin: 0;
 
@@ -497,7 +582,7 @@ ul.jilu {
 /*当input框为选中状态时，lable标签的样式，其中在css选择时，“：”表示当前input框的值，即checked；
       该部分主要对显示的“对号”的大限居中方式，显示颜色进行了设置*/
 .btn-delbat:checked +label::before{
-  color: #337ab7;
+  color: #47b39d;
   font-size: 36px;
   margin: 0;
 
@@ -621,7 +706,7 @@ form.form-search {
   right: 0;
   bottom: 5px;
   font-size: 30px;
-  color: #337ab7;
+  color: #47b39d;
   background: none;
   border: none;
 }
@@ -669,4 +754,133 @@ button.active {
     }
   }
 }
+
+.personal-info-row {
+  margin-bottom: 30px;
+  display: flex;
+  flex: 2;
+  input[disabled="disabled"] {
+    background-color: #fff;
+    cursor: default;
+    
+  }
+  .info-left {
+    flex: 1;
+    width: 49%;
+    margin-right: 2%;
+    box-shadow: 0 5px 20px #eee;
+    position: relative;
+    span {
+      width: 110px;
+    }
+  }
+  .info-right {
+    flex: 1;
+    width: 49%;
+    box-shadow: 0 5px 20px #eee;
+    span {
+      width: 110px;
+    }
+  }
+}
+.btn,.btn:hover,.btn-success:hover,.btn.active {
+  border: 0;
+  border-radius: 20px;
+}
+
+.mybtn {
+  width: 100%;
+  text-align: center;
+  margin-top: 200px;
+  margin-bottom: 0;
+  button {
+    width: 150px;
+    height: 40px;
+  
+  }
+}
+.exitName {
+  background-color: #ef5b54;
+  color: #fff;
+  position: absolute;
+  display: none;
+  z-index: 99;
+  right: 0;
+  top: 0;
+  height: 46px;
+  font-size: 18px;
+  padding: 10px;
+}
+
+
+
+@keyframes rotate{
+  0%{
+    transform: translateX(2px);
+  }
+  50%{
+    transform:  translateX(6px);
+  }
+  100%{
+    transform: translateX(12px);
+  }
+}
+
+@keyframes bgc{
+  0%{
+    background-color: #462446;
+    opacity: 0.8;
+    border-radius: 10px;
+    letter-spacing: 8px;
+  }
+  50%{
+    background-color: #eb6b56;
+    opacity: 0.5;
+    border-radius: 25px;
+    letter-spacing: 4px;
+
+  }
+  100%{
+    background-color: #47b39d;
+    opacity: 0.8;
+    border-radius: 40px;
+    letter-spacing: 8px;
+  }
+}
+
+@keyframes overturn {
+  0%{
+    transform: rotateY(0deg) scale(1.01);
+    }
+  50%{
+    transform: rotateY(180deg) scale(1.05);
+  }
+  100%{
+    transform: rotateY(360deg) scale(1.1);
+  }
+}
+.active {
+  i {
+    transition: 0.5s;
+    animation: overturn 2s linear infinite alternate;  /*开始动画后无限循环，用来控制rotate*/
+  }
+  .fa-image, .fa-plus {
+    animation: none;
+  }
+}
+//  .fa-cog {
+//   transform: rotate(18000deg);
+//   transition: all 100s ease;
+// }
+
+.fas.fa-user-circle{
+  transition: 0.5s;
+  animation: rotate 2s linear infinite alternate;  /*开始动画后无限循环，用来控制rotate*/
+}
+
+.title{
+  transition: 0.5s;
+  animation: bgc 4s linear infinite alternate;  /*开始动画后无限循环，用来控制rotate*/
+}
+
 </style>

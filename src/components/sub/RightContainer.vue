@@ -7,9 +7,9 @@
               <p class="hot-title">&nbsp;最新文章</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of rightData1" :key="item.id">
-                <div class="zhx"></div>
-                <p class="rank-num hidden-sm hidden-md">&nbsp;{{ index+1 }}. </p>
+              <li v-for="(item) of rightData1" :key="item.id">
+                <!-- <div class="zhx"></div> -->
+                <!-- <p class="rank-num hidden-sm hidden-md">&nbsp;{{ index+1 }}. </p> -->
                 <!-- <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item"> -->
                 <router-link :to="`/`+item.type+`/info/`+item.id" id="rankA" ref="rankA" href="#"  class="list-group-item">
                   <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
@@ -27,9 +27,9 @@
               <p class="hot-title">&nbsp;下载热度</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of rightData2" :key="item.id">
-                <div class="zhx"></div>
-                <p class="rank-num hidden-sm hidden-md">&nbsp;{{ index+1 }}. </p>
+              <li v-for="(item) of rightData2" :key="item.id">
+                <!-- <div class="zhx"></div> -->
+                <!-- <p class="rank-num hidden-sm hidden-md">&nbsp;{{ index+1 }}. </p> -->
                 <!-- <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item"> -->
                 <router-link :to="`/`+item.type+`/info/`+item.id" ref="rankA" href="#"  class="list-group-item">
                   <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
@@ -65,18 +65,14 @@ export default {
       const rankTitle = "rankTitle" + type + id
       const title = this.$refs[rankTitle]
       const aWidth = $("#rankA").width()
-      const width = $(title).width()-aWidth+50
+      const width = $(title).width()-aWidth+60
       $(title).animate({left: -width+"px"},2000);
     },
   }
 }
 </script>
 <style lang="scss" scoped>
-@media (min-width: 1200px) {
-  a {
-    width: 84%;
-  }
-}
+
  //页面右边显示排行情况
   .right {
     padding: 0;
@@ -91,7 +87,7 @@ export default {
         margin-bottom: 1px;
         background-color: #fff;
         .right-title {
-          background-color: #F7F7F7;
+          background-color: #FdFdFd;
           border-bottom: 1px solid #eaeaea;
           .hot-logo, .hot-title,.last-article {
             font-size: 22px;
@@ -121,7 +117,7 @@ export default {
           font-weight: 700;
         }
         .rightUl {
-          padding: 0 15px 15px 10px;
+          padding: 0 15px 15px 5px;
           margin-bottom: 15px;
           li:last-child a{
             border-bottom: 1px solid #fff;
@@ -183,7 +179,7 @@ export default {
               line-height: 20px;
               left: 5px;
               top: 10px;
-              width: 90%;
+              width: 100%;
               height: 40px;;
               overflow:hidden;
               background-color: #fff;

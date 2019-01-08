@@ -50,7 +50,7 @@
                   <ul class="message">
                     <li><span class="fas fa-user-edit"></span>发布人</li> 
                     <li><span class="fas fa-clock"></span>{{ item.releaseTime | dateFormat }}</li>
-                    <li><span class="fas fa-eye"></span>120浏览</li>
+                    <li><span class="fas fa-window-maximize"></span>476MB</li>
                     
                   </ul>
                 </div>
@@ -86,8 +86,8 @@
             <paginate
               :page-count="Math.ceil(PageCount / 10)"
               :click-handler="page"
-              :prev-text="'Prev'"
-              :next-text="'Next'"
+              :prev-text="'上一页'"
+              :next-text="'下一页'"
               :container-class="'pagination'"
               >
             </paginate>
@@ -266,6 +266,7 @@ a {
   
   .breadcrumb {
     border: 1px solid #eee;
+    background-color: #fdfdfd;
     border-bottom: 0;
     margin: 0;
     border-radius: 0;
@@ -303,7 +304,7 @@ a {
             .Content:hover {
               .imgDiv {
                 img {
-                  border-left: 5px solid #337ab7;
+                  // border-left: 5px solid #337ab7;
                   opacity: 0.8;
                   transition: all 1s ease;
                 }
@@ -474,7 +475,7 @@ a {
         margin-bottom: 1px;
         background-color: #fff;
         .right-title {
-          background-color: #F7F7F7;
+          background-color: #FdFdFd;
           border-bottom: 1px solid #eaeaea;
           .hot-logo, .hot-title,.last-article {
             font-size: 22px;
