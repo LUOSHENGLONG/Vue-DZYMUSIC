@@ -30,7 +30,8 @@
                 <div class="info-left input-group input-group-lg">
                   <span class="input-group-addon" id="nickname">用户名</span>
                   <input v-model="nickname" type="text" class="nickname form-control" maxlength="16" :placeholder="userData.nickname" aria-describedby="sizing-addon1">
-                  <div ref="exitName" class="exitName">用户名已存在</div>
+                  <!-- <div ref="exitName" class="exitName">用户名已存在</div> -->
+                  <span ref="exitName" class="exitName input-group-addon" id="sizing-addon1">可编辑</span>
                 </div>
 
                 <div class="info-right input-group input-group-lg">
@@ -170,7 +171,7 @@ export default {
           return
         }
         this.oldNickname = this.nickname
-        axios.post("http://localhost:3002/updateNickname",
+        axios.post("http://localhost:3001/updateNickname",
         {
           nickname: this.nickname,
           userId: this.userData.id
@@ -179,31 +180,27 @@ export default {
           console.log(result.data)
           console.log(result.data.code === 0)
           if (result.data.code === 0) {
-            this.userData = result.data.user[0]
-            localStorage.setItem("user",JSON.stringify(this.userData))
+            // this.userData = result.data.user[0]
+            // localStorage.setItem("user",JSON.stringify(this.userData))
+            let tempDate = JSON.parse(localStorage.getItem("user"))
+            tempDate.nickname = result.data.nickname
+            localStorage.setItem("user",JSON.stringify(tempDate))
+            this.userData = tempDate
             this.$store.state.user = this.userData
             this.$router.go(0)
-            
             this.$refs.exitName.textContent = result.data.success
-            this.$refs.exitName.style.backgroundColor = "rgb(79, 192, 141)"
-            this.$refs.exitName.style.display = "block"
-            $(".exitName").animate({"opacity":0},3000, ()=> {
-              $(".exitName").css("display","none")
-              $(".exitName").animate({"opacity":1},100)
-            })
           }
           if (result.data.code === 1) {
-            $(".exitName").text(result.data.error)
-            $(".exitName").css("background-color","#ef5b54")
-            $(".exitName").css("display","block")
-            $(".nickname").focus()
-            $(".exitName").animate({"opacity":0},3000, ()=> {
-              $(".exitName").css("display","none")
-              $(".exitName").animate({"opacity":1},100)
-            })
-
+            this.$refs.exitName.textContent = result.data.error
+            this.$refs.exitName.style.color = "#a94442"
+            setTimeout(() => {
+              this.$refs.exitName.textContent = "可编辑"
+              this.$refs.exitName.style.color = "#555"
+            }, 2000);
           }
       })
+      }else {
+          $(".nickname").focus()
       }
     },
     page(e) {
@@ -238,15 +235,6 @@ export default {
         .then(result => {
           this.data = result.data.likeData
           this.PageCount = result.data.count.count
-          // if( this.PageCount % 6 == 0) {
-          //   console.log("this.PageCount % 6")
-          //   console.log(this.PageCount % 6)
-          //   if( this.currentPage > 1) {
-          //     this.currentPage = --this.currentPage
-          //     this.page(this.currentPage)
-          //   }
-          // }
-          console.log(result.data.count.count)
         })
       } else {
         this.$router.push({path: '/'})
@@ -799,18 +787,19 @@ button.active {
   
   }
 }
-.exitName {
-  background-color: #ef5b54;
-  color: #fff;
-  position: absolute;
-  display: none;
-  z-index: 99;
-  right: 0;
-  top: 0;
-  height: 46px;
-  font-size: 18px;
-  padding: 10px;
-}
+// .exitName {
+//   // background-color: #ef5b54;
+//   // border-color: #ef5b54;
+//   // color: #fff;
+//   position: absolute;
+//   // display: none;
+//   z-index: 99;
+//   right: 0;
+//   top: 0;
+//   height: 46px;
+//   font-size: 18px;
+//   padding: 10px;
+// }
 
 
 

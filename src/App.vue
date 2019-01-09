@@ -62,11 +62,11 @@ export default {
   },
   mounted() {
     window.onresize = () => {
+      // 浏览器大小改变时 登陆 注册 DIV left top 值改变是其在整个窗口保持居中
       this.auto()
-      console.log(document.documentElement.clientHeight)
-    
     },
     window.onscroll = () => {
+      // 浏览器滚动时 登陆 注册 DIV left top 值改变是其在整个窗口保持居中
       this.auto()
     }
     

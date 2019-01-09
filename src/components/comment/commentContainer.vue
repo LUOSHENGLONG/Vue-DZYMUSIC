@@ -29,7 +29,7 @@
       <div class="list-item reply-wrap">
         <div class="user-face">
           <a href="javascript:void(0);" target="_blank">
-          <img v-lazy="item.avatar" alt="">
+          <img v-lazy="`http://localhost:3001`+item.avatar" alt="">
           </a>
           
           <div class="hot-follow" style="display: none">
@@ -67,7 +67,7 @@
           <div class="replay-box" v-for="reply of filter(item.id)" :key="reply.id">
             <div class="replay-item reply-wrap">
               <a href="javascript:void(0);" target="_blank" class="reply-face">
-                <img class="reply-face-img" v-lazy="reply.avatar" alt="">
+                <img class="reply-face-img" v-lazy="`http://localhost:3001`+reply.fromAvatar" alt="">
               </a>
               <div class="replay-con">
                 <div class="user">
@@ -138,7 +138,7 @@ export default {
     this.getComment()
     
     if( localStorage.getItem('user') != null) {
-      this.CommentAvatar = JSON.parse(localStorage.getItem('user')).avatar
+      this.CommentAvatar = `http://localhost:3001` + JSON.parse(localStorage.getItem('user')).avatar
     }else {
         this.navAvatar = "./src/images/tx.jpg"
       }
@@ -322,6 +322,7 @@ export default {
             content: this.replyComment,
             fromUid: JSON.parse(localStorage.getItem("user")).id,
             fromNickname: JSON.parse(localStorage.getItem("user")).nickname,
+            fromAvatar: JSON.parse(localStorage.getItem("user")).avatar,
             toUid: this.toUid,
             createTime: formatDateTime(new Date()),
           })
@@ -492,7 +493,7 @@ export default {
           .text {
             line-height: 20px;
             padding: 2px 0;
-            font-size: 14px;
+            font-size: 16px;
             text-shadow: none;
             overflow: hidden;
             word-wrap: break-word;
@@ -633,7 +634,7 @@ export default {
               margin-left: 6px;
               .user {
                 .text-con {
-                  font-size: 14px;
+                  font-size: 16px;
                   font-weight: 400;
                   margin-left: 10px;
                 }
@@ -694,7 +695,7 @@ export default {
                     box-shadow: 0 0 5px rgba(0,0,0,.2);
                     border-radius: 4px;
                     color: #222;
-                    font-size: 14px;
+                    font-size: 16px;
                     padding: 10px 0;
                     z-index: 999;
                     ul {

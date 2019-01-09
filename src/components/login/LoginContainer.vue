@@ -3,34 +3,47 @@
     <div class="login-form">
         <div class="form-box">
             <span class="cancel glyphicon glyphicon-remove" @click="cancel()"></span>
-            <div class="form-title-top">登录</div>
-            <span class="span-title">使用邮箱/手机登录</span>
+            <div class="form-title-top">登 录</div>
+            <span class="span-title">使用邮箱 / 手机登录</span>
             <div class="form-bd">
                 <form id="fm" action="/auth/login" method="post" class="form-horizontal" enctype="application/x-www-form-urlencoded">
                     <div class="form-group">
                         <!-- <label class="col-xs-12 control-label" for="username">邮箱 / 手机</label> -->
                         <div class="control-col rel">
-                            <input type="text" class="form-control" maxlength="32" v-model="username" name="username" id="username" placeholder="请输入邮箱 / 手机" value="">
+                            <input type="text" class="form-control" autocomplete="off" maxlength="32" v-model="username" name="username" id="username" placeholder="请输入邮箱 / 手机" value="">
                             <b class="abs-icon"><img src="../../images/people-icon.png" alt=""></b>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-group-second">
                         <!-- <label class="col-xs-12 control-label" for="password">密码</label> -->
                         <div class="control-col rel">
                             <input type="password" class="form-control" id="password" v-model="password" name="passwd" placeholder="请输入账号密码" maxlength="16">
                             <b class="abs-icon"><img src="../../images/password-icon.png" alt=""></b>
                         </div>
                     </div>
+                    
+                    <div class="autoLogin" style="height:30px;text-align: left;font-size: 14px;margin: 0 auto;">
+                        <i class="fa fa-check-square-o" style="font-size: 20px;"></i>
+                        <span style="margin: 10px;text-align: top;">记住密码并自动登录</span> 
+                    </div>
 
                     <transition name="fade">
-                        <div ref="TipsDiv" @click="tips" class="tipsDiv alert alert-danger alert-dismissible fade in">{{ message }}</div>
+                        <div ref="TipsDiv" class="tipsDiv alert alert-danger alert-dismissible fade in">{{ message }}</div>
                     </transition>
-
+    
                     <div class="form-group">
                         <div class="control-col">
+                            
                             <button class="btn btn-primary btn-lg btn-login" type="button" name="bnt" ref="post" @click="post()">登&nbsp;&nbsp;&nbsp;录</button>
                             
-                            <div class="rows-forget"><span class="pull-left">没有帐号？<a href="#" @click="goSignup($event)" class="zhuce-href">立即注册</a></span><a href="/reg/forget-pwd" target="_blank" class="forger-pas">忘记密码</a></div>
+                            <div class="rows-forget">
+                                <span class="pull-left">
+                                    
+                                    没有帐号？
+                                    <a href="#" @click="goSignup($event)" class="zhuce-href">立即注册</a>
+                                </span>
+                                <a href="/reg/forget-pwd" target="_blank" class="forger-pas">忘记密码</a>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -46,7 +59,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
-        message: "账号或密码错误,点击返回登录",
+        message: "账号或密码错误,2秒后返回登录",
         confirmLogin: false,
         loginTimes: 0 ,
         username: '',
@@ -76,7 +89,7 @@ export default {
             tip.style.display = "block"
             window.setTimeout(()=> {
                 tip.style.display = "none"
-            },3000)
+            },2000)
             return
         }
         
@@ -103,15 +116,19 @@ export default {
                 }, 1000);
                 this.$router.go(0)
             }else {
-                this.message = "账号或密码错误,点击返回登录"
+                this.message = "账号或密码错误,2秒后返回登录"
                 tip.style.display = "block"
                 window.setTimeout(()=> {
                     tip.style.display = "none"
-                },3000)
+                },2000)
             }
         })
         .catch( err => {
-            console.log(err)
+            this.message = "连续五次登入错误,请15分钟后再试"
+            tip.style.display = "block"
+            window.setTimeout(()=> {
+                tip.style.display = "none"
+            },5000)
         })
 
         
@@ -194,10 +211,7 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
     font-size: 14px;
     .form-box {
         padding: 0 30px;
-        .cancel:hover {
-            transform: rotate(-360deg);
-            transition: all .5s ease;
-        }
+        
         .cancel {
             position: absolute;
             right: 10px;
@@ -207,7 +221,7 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
         }
         .form-title-top {
             font-size: 20px;
-            color: #3668b4;
+            color: rgb(25, 161, 134);
             text-align: center;
             margin-bottom: 5px;
         }
@@ -257,6 +271,7 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
                     color: #fff;
                     cursor: pointer;
                 }
+                
                 .form-group {
                     margin: 0 0 15px;
                     .rel {
@@ -288,8 +303,9 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
                         font-size: 14px;
                     }
                     .btn-primary {
-                        background-color: #337ab7;
-                        border-color: #337ab7;
+                        background-color: rgb(62, 175, 153);
+                        border-color: rgb(62, 175, 153);
+                        outline: 0;
                     }
                     .btn-lg, .btn-group-lg > .btn {
                         padding: 10px 16px;
@@ -304,7 +320,7 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
                         .pull-left {
                             float: left !important;
                             a {
-                                color: #428bca;
+                                color: rgb(58, 165, 144);
                                 text-decoration: none;
                             }
                         }
@@ -318,7 +334,9 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
                         color: #676a6c;
                     }
                 }
-                
+                .form-group-second {
+                    margin-bottom: 5px;
+                }
             }
         }
     }
@@ -337,7 +355,7 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
     border-top: #f1f1f1 solid 2px;
     font-size: 14px;
     text-align: center;
-    color: #b1b1b1;
+    color: #666;
     background: #f7f7f7;
     margin-top: 20px;
     line-height: 40px;

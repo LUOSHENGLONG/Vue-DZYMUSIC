@@ -3,8 +3,8 @@
     <div ref="loginForm" class="login-form">
         <div class="form-box">
             <span ref="cancel" class="cancel glyphicon glyphicon-remove" @click="cancel()"></span>
-            <div class="form-title-top">注册</div>
-            <span class="span-title">使用邮箱/手机注册</span>
+            <div class="form-title-top">注 册</div>
+            <span class="span-title">使用邮箱 / 手机注册</span>
             <div class="form-bd">
                 <form id="fm" action="/auth/login" method="post" class="form-horizontal" enctype="application/x-www-form-urlencoded">
                     <div class="form-group first-group">
@@ -14,7 +14,7 @@
                             <b class="abs-icon first-abs-icon"><img src="../../images/people-icon.png" alt=""></b>
                             <span ref="emailErrorTips" class="glyphicon glyphicon-remove error-tips email-error-tips" @mouseout="hiddenEmailErrorDiv()" @mouseover="showEmailErrorDiv()"></span>
                             <span ref="emailSuccessTips" class="glyphicon glyphicon-ok success-tips email-success-tips"></span>
-                            <div ref="emailTipsDiv" class="tipsDiv alert alert-danger alert-dismissible fade in">{{ message }}</div>
+                            <div ref="emailTipsDiv" class="tipsDiv alert alert-danger alert-dismissible fade in">{{ emailMessage }}</div>
 
                         </div>
                     </div>
@@ -26,14 +26,15 @@
                             <b class="abs-icon"><img src="../../images/password-icon.png" alt=""></b>
                             <span ref="passwordErrorTips" class="glyphicon glyphicon-remove error-tips password-error-tips" @mouseout="hiddenPasswordErrorDiv()" @mouseover="showPasswordErrorDiv()"></span>
                             <span ref="passwordSuccessTips" class="glyphicon glyphicon-ok success-tips password-success-tips"></span>
-                            <div ref="passwordTipsDiv" class="tipsDiv alert alert-danger alert-dismissible fade in">{{ message }}</div>
+                            <div ref="passwordTipsDiv" class="tipsDiv alert alert-danger alert-dismissible fade in">{{ phoneMessage }}</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <!-- <label class="col-xs-12 control-label" for="password">密码</label> -->
                         <div class="control-col rel">
-                            <input type="text" autocomplete="off" class="form-control" id="CAPTCHA" name="passwd" placeholder="请输入验证码" maxlength="16" v-model="CAPTCHA" ref="CAPTCHA">
-                            <button ref="btnCAPTCHA" type="button" class="btn-CAPTCHA btn btn-default" @click="sendCode($event)">发送验证码</button>
+                            <input type="text" autocomplete="off" class="form-control" id="CAPTCHA" name="passwd" placeholder="请输入验证码" maxlength="4" v-model="CAPTCHA" ref="CAPTCHA">
+                            <div class="showCapthcha" @click="sendCode" style="float: right;"></div>
+                            <!-- <button ref="btnCAPTCHA" type="button" class="btn-CAPTCHA btn btn-default" @click="sendCode($event)">发送验证码</button> -->
                             <span class="glyphicon glyphicon-remove error-tips CAPTCHA-error-tips"></span>
                             <span class="glyphicon glyphicon-ok success-tips CAPTCHA-success-tips"></span>
                         </div>
@@ -57,7 +58,7 @@
 </template>
 <script>
 import axios from 'axios'
-
+import md5 from 'js-md5';
 export default {
     
   data() {
@@ -66,16 +67,17 @@ export default {
         password: "",
         CAPTCHA: "",
         message: "",
+        emailMessage:"",
+        phoneMessage:"",
         isRegister: false,
         confirmEmailOrPhone: false,
         confirmPassword: false,
         confirmCAPTCHA: false,
-        CAPTCHANum1: 0,
-        CAPTCHANum2: 0,
+        CAPTCHAMD5: ""
     }
   },
   mounted() {
-    
+    this.sendCode(0)
   },
   methods: {
     
@@ -88,79 +90,55 @@ export default {
         }
         this.$emit("login")
     },
-    sendCode(e) {
-        e.preventDefault();
-        if(this.confirmEmailOrPhone === false) {
-            const email = this.$refs.email
-            this.message = "请输入正确的邮箱地址或手机号码"
-            $(email).focus();
-            this.showEmailErrorDiv();
-            window.setTimeout( () => {
-                this.hiddenEmailErrorDiv()
-            },3000)
-            return
-        }
-
-        if(this.confirmPassword === false) {
-            $(this.$refs.password).focus();
-            this.showPasswordErrorDiv();
-            this.message = "密码必须包含字母和数字且不低于八位数"
-            window.setTimeout( () => {
-                this.hiddenPasswordErrorDiv()
-            },3000)
-            
-            return
-        }
-        console.log("可以发送验证码")
-        
-        this.CAPTCHANum1 = Math.floor(Math.random()*9)+1
-        this.CAPTCHANum2 = Math.floor(Math.random()*9)+1
-        const bnt = this.$refs.btnCAPTCHA
-        $(bnt).text(this.CAPTCHANum1 + ` + ` + this.CAPTCHANum2 +` = ?`)
-        
-        //发送验证码后禁用button 120秒后才能再次发送
-        
-        //$(bnt).attr("disabled",true)
-        // let i = 120
-
-        // const timeOut = window.setInterval(() => {
-        //     $(bnt).text(`已发送 `+ i-- +`秒`)
-        // },1000)
-
-        // window.setTimeout( () => {
-        //     window.clearInterval(timeOut)
-        //     $(bnt).attr("disabled",false)
-        //     $(bnt).text(`发送验证码`)
-
-        // },121000)
-
+    sendCode() {
+        // 发送请求拿到验证码
+        axios.post("http://localhost:3001/getCAPTCHA")
+        .then( result => {
+            // result 装载着验证码相关信息
+            this.CAPTCHAMD5 = result.data.text
+            // 清空子元素
+            $(".showCapthcha").empty()
+            // 添加验证码元素svg
+            $(".showCapthcha").append(result.data.data)
+        })
     },
     //提交注册
     summit() {
         if(this.confirmEmailOrPhone === false) {
             const email = this.$refs.email
             $(email).focus();
+            email.style.border = "1px solid #c9302c"
             this.showEmailErrorDiv();
             window.setTimeout( () => {
                 this.hiddenEmailErrorDiv()
+                email.style.border = "1px solid #e1e1e1"
             },3000)
             return
         }
 
         if(this.confirmPassword === false) {
+            const password = this.$refs.password
             $(this.$refs.password).focus();
             this.showPasswordErrorDiv();
+            password.style.border = "1px solid #c9302c"
             
             window.setTimeout( () => {
                 this.hiddenPasswordErrorDiv()
+                password.style.border = "1px solid #e1e1e1"
             },3000)
             
             return
         }
 
-        if( parseInt(this.CAPTCHA ) !== (this.CAPTCHANum1 + this.CAPTCHANum2)){
+        console.log(this.CAPTCHAMD5)
+
+        console.log(md5(`music` + this.CAPTCHA.toLowerCase()) )
+        if( md5(`music` + this.CAPTCHA.toLowerCase()) !== this.CAPTCHAMD5){
             $(this.$refs.CAPTCHA).focus();
-            this.$refs.CAPTCHA.style.border = "1px solid red"
+            this.$refs.CAPTCHA.style.border = "1px solid #c9302c"
+            setTimeout(() => {
+                this.$refs.CAPTCHA.style.border = "1px solid #e1e1e1"
+            }, 1500);
             console.log(false)
             return 
         }
@@ -177,7 +155,10 @@ export default {
                 this.$refs.email.style.border = "1px solid #c9302c"
                 setTimeout(() => {
                     this.$refs.errorTip.style.display = "none"
+                    this.$refs.email.style.border = "1px solid #e1e1e1"
                 }, 2000);
+                // 重新发送验证码
+                this.sendCode()
             // 注册成功    
             }else {
                 console.log("注册成功")
@@ -239,14 +220,14 @@ export default {
                 //邮箱和手机号码都不正确
                 this.$refs.emailSuccessTips.style.visibility = "hidden"
                 this.$refs.emailErrorTips.style.visibility = "visible"
-                this.message = "邮箱或手机号码格式错误"
+                this.emailMessage = "邮箱或手机号码格式错误"
                 this.confirmEmailOrPhone = false
                 this.isRegister = false
             }else {
                 //手机号码格式正确
                 this.$refs.emailSuccessTips.style.visibility = "visible"
                 this.$refs.emailErrorTips.style.visibility = "hidden"
-                this.message = ""
+                this.emailMessage = ""
                 //设置是否可以注册提交
                 this.isRegister = true
                 this.confirmEmailOrPhone = true
@@ -256,7 +237,7 @@ export default {
         //邮箱格式正确
             this.$refs.emailErrorTips.style.visibility = "hidden"
             this.$refs.emailSuccessTips.style.visibility = "visible"
-            this.message = ""
+            this.emailMessage = ""
             //设置是否可以注册提交
             this.isRegister = true
             this.confirmEmailOrPhone = true
@@ -267,7 +248,7 @@ export default {
             this.$refs.emailSuccessTips.style.visibility = "hidden"
             this.isRegister = false
             this.confirmEmailOrPhone = false
-            this.message = "表单未完整填写"
+            this.emailMessage = "表单未完整填写"
         }
     },
     password( newVal, oldVal ) {
@@ -277,7 +258,7 @@ export default {
         //验证不匹配 密码格式错误
             this.$refs.passwordSuccessTips.style.visibility = "hidden"
             this.$refs.passwordErrorTips.style.visibility = "visible"
-            this.message = "密码必须包含字母和数字且不低于八位数"
+            this.phoneMessage = "密码必须包含字母和数字且不低于八位数"
             //设置是否可以注册提交
             this.isRegister = false
             this.confirmPassword = false    
@@ -285,7 +266,7 @@ export default {
         //密码格式正确 必须包含字母和数字 不少于8位数
             this.$refs.passwordErrorTips.style.visibility = "hidden"
             this.$refs.passwordSuccessTips.style.visibility = "visible"
-            this.message = ""
+            this.phoneMessage = ""
             //设置是否可以注册提交
             this.isRegister = true
             this.confirmPassword = true    
@@ -294,7 +275,7 @@ export default {
         if(newVal === "" || newVal.length === 0) {
             this.$refs.passwordErrorTips.style.visibility = "hidden"
             this.$refs.passwordSuccessTips.style.visibility = "hidden"
-            this.message = "表单未完整填写"
+            this.phoneMessage = "表单未完整填写"
             this.isRegister = false
             this.confirmPassword = false  
         }
@@ -337,10 +318,7 @@ export default {
     font-size: 14px;
     .form-box {
         padding: 0 60px;
-        .cancel:hover {
-            transform: rotate(-360deg);
-            transition: all .5s ease;
-        }
+        
         .cancel {
             position: absolute;
             right: 10px;
@@ -350,7 +328,7 @@ export default {
         }
         .form-title-top {
             font-size: 20px;
-            color: #3668b4;
+            color: rgb(25, 161, 134);
             text-align: center;
             margin-bottom: 5px;
         }
@@ -398,7 +376,14 @@ export default {
                     .rel {
                         position: relative;
                         #CAPTCHA {
-                            max-width: 150px;
+                            max-width: 120px;
+                            float: left;
+                        }
+                        .showCapthcha {
+                            position: absolute;
+                            right: 0;
+                            top: -10px;
+                            cursor: pointer;
                         }
                         .form-control {
                             border: 1px solid #e1e1e1;
@@ -466,7 +451,7 @@ export default {
                         .pull-left {
                             float: left !important;
                             a {
-                                color: #428bca;
+                                color: rgb(58, 165, 144);
                                 text-decoration: none;
                             }
                         }
@@ -503,7 +488,10 @@ export default {
     }
 }
 
-
+.btn-success , .btn-success.active, .btn-success:focus{
+    border-color: rgb(62, 175, 153);
+    background-color: rgb(62, 175, 153);
+}
 
 .errorTip {
     width: 278px;

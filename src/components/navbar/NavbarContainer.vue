@@ -1,6 +1,6 @@
 <template>
   <div class="dzyTop">
-    <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0 4px 20px #eee;">
+    <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0 4px 10px #bbb;">
 
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -46,7 +46,7 @@
             </ul>
           </li>
           <li>
-            <router-link to="/uploadImages" class="contribute">&nbsp;投稿&nbsp;</router-link>
+            <router-link to="/contribute" class="contribute">&nbsp;投稿&nbsp;</router-link>
           </li>
           
         </ul>
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 
   export default {
@@ -93,9 +94,12 @@
     ,
     mounted() {
       if( localStorage.getItem("user") != null) {
-        this.navAvatar = JSON.parse(localStorage.getItem("user")).avatar
+        this.navAvatar = `http://localhost:3001` + JSON.parse(localStorage.getItem("user")).avatar
         this.nickname = JSON.parse(localStorage.getItem("user")).nickname
+        
       } 
+
+      let fr = new FileReader()
     },
     methods: {
       showLogin(e) {

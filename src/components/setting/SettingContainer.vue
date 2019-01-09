@@ -6,7 +6,7 @@
         <div class="rightBorder col-md-2 col-sm-2 col-xs-2 col-lg-2 hidden-xs">
           
           <ul class="settingInfo nav nav-tabs" role="tablist">
-            <p class="title"><i class="fas fa-cog"></i> 设置</p>
+            <p class="title"><i class="fas fa-cog"></i> 设置&nbsp;</p>
             <li role="presentation" class="active">
               <a href="#home" aria-controls="home" role="tab" data-toggle="tab">
                 <i class="far fa-user-circle" style="font-size:18px"></i> 
@@ -54,7 +54,7 @@
                   </p> -->
                   <div class="currentAvatar">
                     <div class="uploadAvatar">
-                      <label for="examplexxxs">
+                      <label  @click="toggleShow">
                         <i class="fas fa-image"></i>
                         <i class="fas fa-plus"></i>
                         <span>选择图片</span>
@@ -66,11 +66,10 @@
                       <p>当前我的头像</p>
                     </div>
                   </div>
-                  <!-- <a class="btn" @click="toggleShow">设置头像</a>
+                  <!-- <a class="btn" @click="toggleShow">设置头像</a> -->
                   <my-upload field="img" @crop-success="cropSuccess" id="examplexxxs" v-model="show" :width="200" :height="200" img-format="png" :size="size"></my-upload>
-                  <img id="showImg" :src="avatar"> -->
                 </div>
-                <p ref="uploadTips" style="text-align:center;color:#999">请选择图片上传：大小180 * 180像素支持JPG、PNG等格式，图片需小于2M</p>
+                <p ref="uploadTips" style="text-align:center;color:#999">请选择图片上传：大小180 * 180像素支持JPG、PNG等格式，图片需小于10M</p>
 
                 <div class="mybtn">
                   <button type="button" @click="uploadAvatar" class="btn btn-success">更新</button>
@@ -173,7 +172,8 @@ export default {
       avatar: "",
       show: false,
       size:2.1,
-      formData: {}
+      formData: {},
+      isUpload: false
     }
   },
   mounted() {
@@ -187,7 +187,7 @@ export default {
       elem: '#birth' //指定元素
     });
     if( localStorage.getItem("user") != null) {
-      this.avatar = JSON.parse(localStorage.getItem("user")).avatar
+      this.avatar = `http://localhost:3001` + JSON.parse(localStorage.getItem("user")).avatar
       console.log(this.avatar)
     }
 
@@ -199,20 +199,24 @@ export default {
       imgSrc() {
         this.formData = new FormData();
         const file = $("#examplexxxs")[0].files[0]
-        if(file.type.indexOf("image/") === -1) {
+        // 图片格式、大小验证
+        if(file.type.indexOf("image/") === -1 || Math.ceil(parseInt(file.size)/1024) > 2048) {
           console.log("请上传图片类型文件")
           this.$refs.uploadTips.style.color = "#a94442"
           setTimeout(() => {
             this.$refs.uploadTips.style.color = "#999"
           }, 2000);
+          this.isUpload = false
           return
         }
+        
         let finalFile = {}
         imageConversion.compressAccurately(file,100).then(res => {
           console.log(res)
           // 得到Blob对象
           finalFile = res
-          $("#showImg").attr("src",URL.createObjectURL(finalFile))
+          let imgUrl = URL.createObjectURL(finalFile)
+          $("#showImg").attr("src",imgUrl)
           // 将Blob对象转成base64
           blobToDataURL(finalFile, result => {
             console.log("resultresultresultresult")
@@ -221,11 +225,14 @@ export default {
             console.log(finalFile)
             
             this.formData.append('file',finalFile);
-
+            this.formData.append('id',JSON.parse(localStorage.getItem("user")).id);
+            this.formData.append('imgUrl',imgUrl);
+            this.formData.append('avatar',this.avatar.substring(this.avatar.lastIndexOf("/")));
+            this.isUpload = true
           })
         })
          
- 
+
         function blobToDataURL(blob, callback) {
           let a = new FileReader();
           a.onload = function (e) { callback(e.target.result); }
@@ -240,24 +247,37 @@ export default {
           }
           return new File([u8arr], filename, {type:mime});
         }
-
-
          
       },
       uploadAvatar() {
-        $.ajax({
-          url : 'http://localhost:3002/fileUpload',
-          type : 'POST',
-          data : this.formData,
-          processData: false,
-          contentType: false, 
-          success : function(ret){
-              console.log(ret); 
-          },
-          error : function(ret){
+        if( this.isUpload === true ) {
+          let userData = JSON.parse(localStorage.getItem("user"))
+          $.ajax({
+            url : 'http://localhost:3001/fileUpload',
+            async: false,
+            type : 'POST',
+            data : this.formData,
+            processData: false,
+            contentType: false, 
+            success : function(ret){
+              
+              userData.avatar = ret.avatar
+              localStorage.setItem("user", JSON.stringify(userData))
+              console.log(ret.avatar)
+            },
+            error : function(ret){
               console.log(ret);
-          } 
-        })
+            } 
+          })
+          this.$store.state.user = userData
+          this.$router.go(0)
+
+        } else {
+          this.$refs.uploadTips.style.color = "#a94442"
+          setTimeout(() => {
+            this.$refs.uploadTips.style.color = "#999"
+          }, 2000);
+        }
       },
       toggleShow() {
         this.show = !this.show;
@@ -265,28 +285,57 @@ export default {
       cropSuccess(imgDataUrl) {
         //  imgDataUrl其实就是经过base64转码过的图片
         // this.avatar = imgDataUrl;
-        console.log(imgDataUrl)//这里打印出来的是base64格式的资源，太长了
+        //console.log(imgDataUrl) //这里打印出来的是base64格式的资源，太长了
         //base64转blob格式
         let arr = imgDataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1],
           bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
         while (n--) {
           u8arr[n] = bstr.charCodeAt(n);
         }
-        const blob = new Blob([u8arr], { type: mime })
+        let blob = new Blob([u8arr], { type: mime })
         console.log(new Blob([u8arr], { type: mime })) ;//这里打印base64转成blob的资源，根据自己的项目需求去转吧
         $("#showImg").attr("src",URL.createObjectURL(blob))
-        let userId = this.$store.state.user.id
-        if( localStorage.getItem("user") != null) {
-          userId = JSON.parse(localStorage.getItem("user")).id
-        }
-        const formData = new FormData()
-        formData.append("userId", userId)
-        formData.append("blob", blob)
-        axios.post("http://localhost:3001/upload",{userId: userId, blob: blob})
-        .then(result => {
-          console.log(result.data)
+
+        let finalFile = {}
+        
+        this.formData = new FormData()
+
+        imageConversion.compressAccurately(blob,100).then(res => {
+          console.log(res)
+          // 得到Blob对象
+          finalFile = res
+          let imgUrl = URL.createObjectURL(finalFile)
+          $("#showImg").attr("src",imgUrl)
+          // 将Blob对象转成base64
+          blobToDataURL(finalFile, result => {
+            console.log("resultresultresultresult")
+            // 将base64转出file
+            finalFile = dataURLtoFile(result,"1.png")
+            console.log(finalFile)
+            
+            this.formData.append('file',finalFile);
+            this.formData.append('id',JSON.parse(localStorage.getItem("user")).id);
+            this.formData.append('imgUrl',imgUrl);
+            this.formData.append('avatar',this.avatar.substring(this.avatar.lastIndexOf("/")));
+            this.isUpload = true
+          })
         })
-        console.log(blob)
+         
+
+        function blobToDataURL(blob, callback) {
+          let a = new FileReader();
+          a.onload = function (e) { callback(e.target.result); }
+          a.readAsDataURL(blob);
+        }
+
+        function dataURLtoFile(dataurl, filename) {//将base64转换为文件
+          var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+              bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+          while(n--){
+              u8arr[n] = bstr.charCodeAt(n);
+          }
+          return new File([u8arr], filename, {type:mime});
+        }
       }
   }
 
@@ -364,7 +413,7 @@ export default {
   border-radius: 10px;
   box-shadow: 2px 1px 10px #aaa;
   padding: 8px;
-  // text-align: center;
+  text-align: center;
   vertical-align: middle;
   // border-bottom: 1px solid #ddd;
   span {
@@ -528,20 +577,17 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset;}
     background-color: #462446;
     opacity: 0.8;
     border-radius: 10px;
-    letter-spacing: 15px;
   }
   50%{
     background-color: #eb6b56;
     opacity: 0.5;
     border-radius: 25px;
-    letter-spacing: 12px;
 
   }
   100%{
     background-color: #47b39d;
     opacity: 0.8;
     border-radius: 40px;
-    letter-spacing: 10px;
   }
 }
 
@@ -586,5 +632,9 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset;}
 }
 .btn-success:hover {
   background-color: #51ce95 !important;
+}
+
+.vicp-wrap {
+  display: none !important;
 }
 </style>

@@ -118,7 +118,7 @@ export default {
         }
         .rightUl {
           padding: 0 15px 15px 5px;
-          margin-bottom: 15px;
+          margin-bottom: 0px;
           li:last-child a{
             border-bottom: 1px solid #fff;
           }

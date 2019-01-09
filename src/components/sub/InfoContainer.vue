@@ -9,7 +9,7 @@
       <!-- 详细内容 -->
       <div class="left col-sm-9 col-md-9 col-lg-9"  v-if="hackReset">
         <!-- 导航栏 -->
-        <ol class="breadcrumb">
+        <ol class="breadcrumb" style="background-color: #fdfdfd;">
           <li><router-link to="/"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</router-link></li>
           <li><router-link :to="`/`+infoData.type">{{infoData.type | typeFormat}}</router-link></li>
           <li class="active">{{ infoData.title }}</li>
@@ -144,7 +144,7 @@
       <!-- 右侧数据排行 -->
       <!-- 最新文章 -->
       <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
-        <div class="mediaRight">
+        <!-- <div class="mediaRight">
           <div class="list-group">
             <div class="right-title">
               <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
@@ -180,13 +180,16 @@
               
             </ul>
           </div>
-        </div>
+        </div> -->
+        <RightContainer></RightContainer>
+
       </div>
       <div class="wrap" ref="tips">{{ tips }}</div>
     </div>
 </template>
 <script>
 import CommentContainer from '../comment/CommentContainer.vue'
+import RightContainer from './RightContainer.vue'
 
 import Clipboard from 'clipboard';
 import axios from 'axios'
@@ -394,7 +397,8 @@ import axios from 'axios'
     watch: {
     },  
     components: {
-      CommentContainer
+      CommentContainer,
+      RightContainer
     }
   }
 </script>
@@ -819,7 +823,7 @@ button.active {
               line-height: 20px;
               left: 5px;
               top: 10px;
-              width: 83%;
+              width: 100%;
               height: 40px;;
               overflow:hidden;
               background-color: #fff;
