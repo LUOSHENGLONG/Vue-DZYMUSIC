@@ -6,16 +6,16 @@
         <div class="rightBorder col-md-2 col-sm-2 col-xs-2 col-lg-2 hidden-xs">
           
           <ul class="homeInfo nav nav-tabs" role="tablist">
-            <p class="title"><i class="fas fa-user-circle"></i> 用户中心</p>
+            <!-- <p class="title"><i class="fas fa-user-circle"></i> 用户中心</p> -->
             <li role="presentation" class="active">
               <a href="#home" aria-controls="home" role="tab" data-toggle="tab">
-                <i class="far fa-user-circle" style="font-size:18px"></i> 
-                个人信息
+                <i class="far fa-user-circle" style="font-size:24px;vertical-align: -2px;"></i> 
+                &nbsp;个人信息
               </a>
             </li>
             <li @click="showFavorite()" role="presentation">
               <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
-                <i class="fas fa-star-half-alt" style="font-size:18px"></i> 
+                <i class="fas fa-star-half-alt" style="font-size:24px;vertical-align: -2px;"></i> 
                 &nbsp;&nbsp;收藏夹&nbsp;&nbsp;
               </a>
             </li>
@@ -35,16 +35,18 @@
                 </div>
 
                 <div class="info-right input-group input-group-lg">
-                  <span class="input-group-addon" id="sizing-addon1">邮箱</span>
-                  <input type="text" class="form-control" disabled :placeholder="userData.email" aria-describedby="sizing-addon1">
-                  <span class="input-group-addon" id="sizing-addon1">不可编辑</span>
+                  <span class="input-group-addon" id="sizing-addon1">密保设置</span>
+                  <input type="text" class="form-control" disabled placeholder="未设置" aria-describedby="sizing-addon1">
+                  <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
+                    <button  class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即设置</button>
+                  </span>
                 </div>
               </div>
               <div class="personal-info-row">
                 <div class="info-left input-group input-group-lg">
-                  <span class="input-group-addon" id="sizing-addon1">注册时间</span>
-                  <input type="text" class="form-control" disabled :placeholder="userData.createTime" aria-describedby="sizing-addon1">
-                  <span class="input-group-addon" id="sizing-addon1">不可编辑</span>
+                  <span class="input-group-addon" id="sizing-addon1">邮箱</span>
+                  <input type="text" class="form-control" disabled :placeholder="userData.email" aria-describedby="sizing-addon1">
+                  <span class="input-group-addon" id="sizing-addon1">未验证</span>
                 </div>
 
                 <div class="info-right input-group input-group-lg">
@@ -52,6 +54,41 @@
                   <input type="text" class="form-control" placeholder="未实名" disabled aria-describedby="sizing-addon1">
                   <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
                     <button  class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即实名</button>
+                  </span>
+                  
+                </div>
+              </div>
+
+              <div class="personal-info-row">
+                <div class="info-left input-group input-group-lg">
+                  <span class="input-group-addon" id="sizing-addon1">手机号码</span>
+                  <input type="text" class="form-control" disabled :placeholder="userData.phone | hiddenPhone" aria-describedby="sizing-addon1">
+                  <span class="input-group-addon" id="sizing-addon1">未验证</span>
+                </div>
+
+                <div class="info-right input-group input-group-lg">
+                  <span class="input-group-addon" id="sizing-addon1">QQ绑定</span>
+                  <input type="text" class="form-control" placeholder="未绑定" disabled aria-describedby="sizing-addon1">
+                  <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
+                    <button  class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即绑定</button>
+                  </span>
+                  
+                </div>
+              </div>
+
+              <div class="personal-info-row">
+                <div class="info-left input-group input-group-lg">
+                  <span class="input-group-addon" id="sizing-addon1">注册时间</span>
+                  <input type="text" class="form-control" disabled :placeholder="userData.createTime" aria-describedby="sizing-addon1">
+                  <span class="input-group-addon" id="sizing-addon1">不可编辑</span>
+                  
+                </div>
+
+                <div class="info-right input-group input-group-lg">
+                  <span class="input-group-addon" id="sizing-addon1">微博绑定</span>
+                  <input type="text" class="form-control" placeholder="未绑定" disabled aria-describedby="sizing-addon1">
+                  <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
+                    <button  class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即绑定</button>
                   </span>
                   
                 </div>
@@ -92,16 +129,16 @@
                   >
                 </button>
               </div>
-              <div ref="noResult" class="noResult" style="width: 100%; height:400px;display: none">
-                <img src="../../asset/icon/noresult.png" alt="" style="width: 100%; height:400px;">
+              <div ref="noResult" class="noResult" style="width: 100%; height:400px;display: none;margin-top: 50px;text-align: center;">
+                <img src="../../images/empty.png" alt="" style="">
               </div>
               <!-- 分页 -->
               <div ref="paginate" class="pageNav" id="pageNav">
                 <paginate
                   :page-count="Math.ceil(PageCount / 6)"
                   :click-handler="page"
-                  :prev-text="'Prev'"
-                  :next-text="'Next'"
+                  :prev-text="`上一页`"
+                  :next-text="`下一页`"
                   :container-class="'pagination'"
                   >
                 </paginate>
@@ -374,7 +411,7 @@ export default {
         transform: translateX(0);
         transform: translateY(0);
         transition: all 0.5s ease;
-        border-radius: 20px;
+        border-radius: 40px;
         overflow: hidden;
         margin-top: 4px;
         a {
@@ -694,7 +731,7 @@ form.form-search {
   right: 0;
   bottom: 5px;
   font-size: 30px;
-  color: #47b39d;
+  color: #337ab7;
   background: none;
   border: none;
 }
@@ -709,6 +746,7 @@ button.active {
 .pageNav {
   background-color: #fff;
   text-align: center;
+  margin-top: 30px;
   .pagination {
     padding: 0;
     text-align: right;
@@ -760,6 +798,7 @@ button.active {
     position: relative;
     span {
       width: 110px;
+      cursor: default;
     }
   }
   .info-right {
@@ -779,7 +818,7 @@ button.active {
 .mybtn {
   width: 100%;
   text-align: center;
-  margin-top: 200px;
+  margin-top: 100px;
   margin-bottom: 0;
   button {
     width: 150px;
@@ -834,18 +873,19 @@ button.active {
     opacity: 0.8;
     border-radius: 40px;
     letter-spacing: 8px;
+    
   }
 }
 
 @keyframes overturn {
   0%{
-    transform: rotateY(0deg) scale(1.01);
+    transform: rotateY(0deg);
     }
   50%{
-    transform: rotateY(180deg) scale(1.05);
+    transform: rotateY(180deg);
   }
   100%{
-    transform: rotateY(360deg) scale(1.1);
+    transform: rotateY(360deg);
   }
 }
 .active {

@@ -144,16 +144,17 @@
       <!-- 右侧数据排行 -->
       <!-- 最新文章 -->
       <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
-        <!-- <div class="mediaRight">
+        <div class="mediaRight">
           <div class="list-group">
             <div class="right-title">
               <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
               <p class="hot-title">&nbsp;最新文章</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of rightData1" :key="item.id">
-                <div class="zhx"></div>
-                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
+              <!-- <li v-for="(item, index) of rightData1" :key="item.id"> -->
+              <li v-for="(item) of rightData1" :key="item.id">
+                <!-- <div class="zhx"></div> -->
+                <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
                 <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
                 </a>
@@ -170,9 +171,10 @@
               <p class="hot-title">&nbsp;下载热度</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of rightData2" :key="item.id">
-                <div class="zhx"></div>
-                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
+              <!-- <li v-for="(item, index) of rightData2" :key="item.id"> -->
+              <li v-for="(item) of rightData2" :key="item.id">
+                <!-- <div class="zhx"></div> -->
+                <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
                 <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
                 </a>
@@ -180,8 +182,8 @@
               
             </ul>
           </div>
-        </div> -->
-        <RightContainer></RightContainer>
+        </div>
+        <!-- <RightContainer @switch="intoInfo(id)"></RightContainer> -->
 
       </div>
       <div class="wrap" ref="tips">{{ tips }}</div>
@@ -731,7 +733,7 @@ button.active {
         margin-bottom: 15px;
         background-color: #fff;
         .right-title {
-          background-color: #F7F7F7;
+          background-color: #fdfdfd;
           border-bottom: 1px solid #eaeaea;
           .hot-logo, .hot-title,.last-article {
             font-size: 22px;

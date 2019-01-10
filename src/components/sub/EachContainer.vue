@@ -11,7 +11,7 @@
       <div class="left col-sm-9 col-md-9 col-lg-9">
         
         <div class="mediaLeft">
-          <ol class="breadcrumb">
+          <ol class="breadcrumb" ref="breadcrumb">
             <li><router-link to="/"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</router-link></li>
             <li class="active">{{navType}}</li>
           </ol>
@@ -58,8 +58,8 @@
             </div>
           </div>
           
-          <div ref="noResult" class="noResult" style="width: 100%; height:400px;display: none">
-            <img src="../../asset/icon/noresult.png" alt="" style="width: 100%; height:400px;">
+          <div ref="noResult" class="noResult" style="width: 100%; height:400px;display: none;text-align: center;margin-top: 40px;">
+            <img src="../../images/empty.png" alt="">
           </div>
           <!-- 分页 -->
           <div ref="paginate" class="pageNav" id="pageNav">

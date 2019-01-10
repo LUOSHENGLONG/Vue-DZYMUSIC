@@ -31,23 +31,109 @@
         </form>
         <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
           <li>
-            <router-link to="/user" style="padding: 0;margin: 0;border: 0;">
-              <img id="imgSrc" v-lazy="navAvatar" alt =".." class="img-circle">
+            <router-link to="/contribute" class="contribute">
+            &nbsp;<i class="fas fa-edit" style="font-size: 18px"></i>
+            <span style="font-size: 16px">投稿&nbsp;</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/user" style="padding: 0;margin: 0 4px;border: 0;">
+              <img id="imgSrc" v-lazy="navAvatar" alt =".." class="img-circle" >
             </router-link>
             <!-- <i class="fa fa-user-circle img-circle" style="font-size: 26px; color: #337ab7;cursor: pointer"></i> -->
           </li>
+          
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ nickname }} <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="margin-right: 0;">{{ nickname }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><router-link to="/user">个人资料</router-link></li>
-              <li><router-link to="/setting">设置</router-link></li>
+              <li class="dropdown-info">
+                <router-link to="/user">
+                  <div class="dropdown-info-left">
+                    <img :src="navAvatar" alt =".." class="img-info-circle">
+                  </div>
+                  <div class="dropdown-info-right">
+                    <p>{{ nickname }} </p>
+                    <p>{{ emailOrPhone }}</p>
+                  </div>
+
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/user">
+                  <i class="fas fa-user-circle" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>个人中心</span>
+                  <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
+              
+              <li>
+                <router-link to="/setting">
+                  <i class="fas fa-cog" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>资料设置</span>
+                  <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
+              
+              
+              <li>
+                <router-link to="/setting">
+                  <i class="fab fa-weixin" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>微信公众号</span>
+                  <i class="fa fa-qrcode" style="font-size: 24px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/setting">
+                  <i class="fab fa-weibo" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>官方微博</span>
+                  <i class="fas fa-link" style="font-size: 20px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/setting">
+                  <i class="fab fa-facebook-square" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>&nbsp;Facebook</span>
+                  <i class="fas fa-link" style="font-size: 20px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/setting">
+                  <i class="fab fa-instagram" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>&nbsp;Instagram</span>
+                  <i class="fas fa-link" style="font-size: 20px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/setting">
+                  <i class="fab fa-youtube" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>Youtube</span>
+                  <i class="fas fa-link" style="font-size: 20px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/setting">
+                  <i class="fas fa-comment-alt" style="margin-right: 22px;font-size: 22px;vertical-align: -3px;"></i>
+                  <span>发送反馈</span>
+                  <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/setting">
+                  <i class="fas fa-question-circle" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>帮助</span>
+                  <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
               <li role="separator" class="divider"></li>
-              <li><a href="#" @click="logout($event)">注销</a></li>
+              <li>
+                <a href="#" @click="logout($event)">
+                  <i class="fas fa-sign-out-alt" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>注销</span>
+                </a>
+              </li>
             </ul>
           </li>
-          <li>
-            <router-link to="/contribute" class="contribute">&nbsp;投稿&nbsp;</router-link>
-          </li>
+          
           
         </ul>
         <ul v-if="!this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
@@ -83,7 +169,8 @@ import axios from 'axios'
         switch: 0,
         oldKeyword: "",
         navAvatar: "",
-        nickname: this.$store.state.user.nickname
+        nickname: this.$store.state.user.nickname,
+        emailOrPhone: "",
       }
     },
     props: {
@@ -94,9 +181,14 @@ import axios from 'axios'
     ,
     mounted() {
       if( localStorage.getItem("user") != null) {
-        this.navAvatar = `http://localhost:3001` + JSON.parse(localStorage.getItem("user")).avatar
-        this.nickname = JSON.parse(localStorage.getItem("user")).nickname
-        
+        const user = JSON.parse(localStorage.getItem("user"))
+        this.navAvatar = `http://localhost:3001` + user.avatar
+        this.nickname = user.nickname
+        if(user.email.trim() != "" || user.email !=null) {
+          this.emailOrPhone = user.email
+        } else {
+          this.emailOrPhone = user.phone
+        }
       } 
 
       let fr = new FileReader()
@@ -152,6 +244,7 @@ import axios from 'axios'
 <style lang="scss" scoped>
 .container {
   padding: 0;
+  position: relative;
 }
 .img-circle {
   width: 30px;
@@ -193,9 +286,9 @@ ul li {
     
   }
   a.contribute {
-    margin-top: 8px; 
-    height: 34px;
-    line-height: 24px;
+    margin-top: 6px; 
+    height: 38px;
+    line-height: 28px;
     letter-spacing: 2px;
   }
   
@@ -227,7 +320,6 @@ ul li {
 
 .navbar-default .navbar-nav>li>a.contribute:hover, .navbar-default .navbar-nav>li>a.contribute:focus {
     color: #333;
-    margin-right: 0;
     background-color: #47b39d;
     color: #fff !important;
     border: 0;
@@ -237,17 +329,44 @@ ul li {
   text-align: center;
 }
 
+
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
+    text-decoration: none;
+    color: #262626;
+    background-color: #f5f5f5;
+}
+.dropdown-menu>li>a:first-child:hover, .dropdown-menu>li>a:first-child:focus {
+    text-decoration: none;
+    color: #262626;
+    background-color: none;
+}
+
 .dropdown-menu {
-  margin-right: 9px;
-  min-width: 106px;
+  border: none;
+  padding: 0;
+  width: 300px;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  
   .divider {
     margin: 2px 0;
   }
   li {
+      margin: 6px 0;
     a {
+      height: 40px;
       border: 0;
-      margin: 0;
+      margin: 0 auto;
       padding: 4px 0;
+      color: #333 !important;
+      line-height: 40px;
+      padding: 0 26px;
+      text-align: left;
+      font-size: 16px;
+      span {
+
+      }
     }
     a:hover {
       border: 0;
@@ -255,7 +374,43 @@ ul li {
     }
     
   }
-  
+  li.dropdown-info {
+    margin: 0;
+    padding: 6px 20px;
+    background-color: rgba(238, 238, 238, 0.582);
+    text-align: center;
+    position: relative;
+    height: 72px;
+    overflow: hidden;
+    a {
+      line-height: 20px;
+    }
+    .dropdown-info-left {
+      position: absolute;
+      left: 20px;
+      top: 16px;
+      img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+      }
+    }
+    .dropdown-info-right {
+      text-align: left;
+      position: absolute;
+      overflow: hidden;
+      left: 78px;
+      top: 18px;
+      p:first-child {
+        margin: 0;    
+        font-weight: 700;
+      }
+      p:last-child {
+        font-size: 14px;
+        width: 200px;
+      }
+    }
+  }
   
 }
 // .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
@@ -266,19 +421,19 @@ ul li {
 
 
 .contribute {
-  margin-right: 0;
+  margin-right: 20px;
   background-color: #47b39d;
   color: #fff !important;
   border-radius: 4px;
   border: 0;
 }
-.contribute:hover {
-  margin-right: 0;
-  background-color: #47b39d;
-  color: #fff !important;
-  border-radius: 4px;
-  border: 0;
-}
+// .contribute:hover {
+//   background-color: #47b39d;
+//   margin-right: 20px;
+//   color: #fff !important;
+//   border-radius: 4px;
+//   border: 0;
+// }
 .btn,
 .btn:focus,
 .btn:hover,

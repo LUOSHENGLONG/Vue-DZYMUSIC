@@ -48,6 +48,15 @@ Vue.filter('typeFormat', function (dataStr) {
   }
 })
 
+//hiddenPhone
+Vue.filter('hiddenPhone', function (dataStr) {
+  if(dataStr === "" || dataStr === null){
+    return "未填写"
+  }else {
+    return dataStr.substring(0,3)+`****`+dataStr.substring(7,11)
+  }
+})
+
 //filter
 Vue.filter('dateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
   

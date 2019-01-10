@@ -30,10 +30,10 @@
               <li v-for="(item) of rightData2" :key="item.id">
                 <!-- <div class="zhx"></div> -->
                 <!-- <p class="rank-num hidden-sm hidden-md">&nbsp;{{ index+1 }}. </p> -->
-                <!-- <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item"> -->
-                <router-link :to="`/`+item.type+`/info/`+item.id" ref="rankA" href="#"  class="list-group-item">
+                <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
+                <!-- <router-link :to="`/`+item.type+`/info/`+item.id" ref="rankA" href="#" class="list-group-item"> -->
                   <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
-                </router-link>
+                </a>
               </li>
               
             </ul>
@@ -48,12 +48,14 @@ export default {
       scrollTitleInterval: {},
       rightData1: JSON.parse(localStorage.getItem("rightData1") || []),
       rightData2: JSON.parse(localStorage.getItem("rightData2") || []),
+
     }
   },
   methods: {
     intoInfo(e, id, type) {
       e.preventDefault()
-      this.$router.push({path: `/${type}/info/${id}`})
+      // this.$router.push({path: `/${type}/info/${id}`})
+      this.$emit("switch",id)
     },
     stopScroll(id,type) {
       const rankTitle = "rankTitle" + type + id

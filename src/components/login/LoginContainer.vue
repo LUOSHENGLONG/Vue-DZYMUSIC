@@ -17,14 +17,19 @@
                     <div class="form-group form-group-second">
                         <!-- <label class="col-xs-12 control-label" for="password">密码</label> -->
                         <div class="control-col rel">
-                            <input type="password" class="form-control" id="password" v-model="password" name="passwd" placeholder="请输入账号密码" maxlength="16">
+                            <input type="password" class="form-control" id="password" @keyup.enter="post" v-model="password" name="passwd" placeholder="请输入账号密码" maxlength="16">
                             <b class="abs-icon"><img src="../../images/password-icon.png" alt=""></b>
                         </div>
                     </div>
                     
                     <div class="autoLogin" style="height:30px;text-align: left;font-size: 14px;margin: 0 auto;">
-                        <i class="fa fa-check-square-o" style="font-size: 20px;"></i>
-                        <span style="margin: 10px;text-align: top;">记住密码并自动登录</span> 
+                        <span style="margin: 10px 0;text-align: top;float:left;color: #666;">
+                            <i class="far fa-flag" style="font-size: 14px;margin-right: 6px;"></i>
+                            记住密码 自动登录 
+                            <i class="fa fa-sign-in" style="font-size: 16px;margin-left: 20px;"></i>
+                        </span>
+                        <i ref="toggleOn" v-if="!toggle" @click="toggleSwitch" class="fa fa-toggle-off" style="color:#bbb;font-size: 28px;float:right;margin-top:6px;cursor:pointer"></i>
+                        <i ref="toggleOff" v-if="toggle" @click="toggleSwitch" class="fa fa-toggle-on" style="font-size: 28px;float:right;margin-top:6px;cursor:pointer;color: rgb(79, 192, 141);"></i>
                     </div>
 
                     <transition name="fade">
@@ -34,7 +39,7 @@
                     <div class="form-group">
                         <div class="control-col">
                             
-                            <button class="btn btn-primary btn-lg btn-login" type="button" name="bnt" ref="post" @click="post()">登&nbsp;&nbsp;&nbsp;录</button>
+                            <button class="btn btn-primary btn-lg btn-login" type="button" name="bnt" ref="post" @click="post()" >登&nbsp;&nbsp;&nbsp;录</button>
                             
                             <div class="rows-forget">
                                 <span class="pull-left">
@@ -63,13 +68,17 @@ export default {
         confirmLogin: false,
         loginTimes: 0 ,
         username: '',
-        password: ''
+        password: '',
+        toggle: false,
     }
   },
   mounted() {
     
   },
   methods: {
+    toggleSwitch() {
+        this.toggle = !this.toggle
+    },
     cancel() {
       this.$emit("cancel")
     },
@@ -102,7 +111,7 @@ export default {
             //登录成功
             if( result.data.status === 1 ) {
                 this.message = result.data.message
-                tip.style.background = "#5cb85c"
+                tip.style.background = "rgb(79, 192, 141)"
                 tip.style.display = "block"
                 this.$store.state.user = result.data.user
                 this.$store.state.token = result.data.user.token
@@ -262,11 +271,11 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
                     background-color: #c9302c;
                     border: none;
                     left: 30px;
-                    top: 232px;
+                    top: 263px;
                     margin: 0;
                     padding: 0;
                     border-radius: 5px;
-                    font-size: 16px;
+                    font-size: 18px;
                     display: none;
                     color: #fff;
                     cursor: pointer;
@@ -341,7 +350,6 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
         }
     }
 }
-
 
 
 

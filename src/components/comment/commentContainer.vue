@@ -25,7 +25,7 @@
     </div>
     <!-- 评论列表 -->
     
-    <div class="comment-list" v-for="item of commentsData" :key="item.id">
+    <div class="comment-list" v-for="(item, index) in commentsData" :key="item.id">
       <div class="list-item reply-wrap">
         <div class="user-face">
           <a href="javascript:void(0);" target="_blank">
@@ -43,7 +43,7 @@
             <p class="text">{{ item.content }}</p>
           </div>
           <div class="info">
-            <span class="floor">#123</span>
+            <span class="floor"># {{ commentsData.length - index }}</span>
             <span class="plad">
               来自<a href="javascript:void(0);" target="_blank">网页客户端</a>
             </span>
@@ -344,7 +344,13 @@ export default {
       },
   },
   components: {
-  }
+  },
+  computed: {
+    reverseSum() {
+        return this.commentsData.reverse();
+    }
+  },
+
 }
 </script>
 <style lang="scss" scoped>

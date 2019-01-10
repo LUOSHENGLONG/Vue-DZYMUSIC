@@ -9,7 +9,7 @@
       <!-- 详细内容 -->
       <div class="left col-sm-9 col-md-9 col-lg-9"  v-if="hackReset">
         <!-- 导航栏 -->
-        <ol class="breadcrumb">
+        <ol class="breadcrumb" style="background-color: #fdfdfd;">
           <li><router-link to="/"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</router-link></li>
           <li><router-link :to="`/`+infoData.type">{{infoData.type | typeFormat}}</router-link></li>
           <li class="active">{{ infoData.title }}</li>
@@ -151,9 +151,10 @@
               <p class="hot-title">&nbsp;最新文章</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of rightData1" :key="item.id">
-                <div class="zhx"></div>
-                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
+              <!-- <li v-for="(item, index) of rightData1" :key="item.id"> -->
+              <li v-for="(item) of rightData1" :key="item.id">
+                <!-- <div class="zhx"></div> -->
+                <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
                 <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
                 </a>
@@ -170,9 +171,10 @@
               <p class="hot-title">&nbsp;下载热度</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of rightData2" :key="item.id">
-                <div class="zhx"></div>
-                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
+              <!-- <li v-for="(item, index) of rightData2" :key="item.id"> -->
+              <li v-for="(item) of rightData2" :key="item.id">
+                <!-- <div class="zhx"></div> -->
+                <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
                 <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
                 </a>
@@ -187,6 +189,7 @@
 </template>
 <script>
 import CommentContainer from '../comment/CommentContainer.vue'
+import RightContainer from './RightContainer.vue'
 
 import Clipboard from 'clipboard';
 import axios from 'axios'
@@ -727,7 +730,7 @@ button.active[data-v-a15ca838] {
         margin-bottom: 15px;
         background-color: #fff;
         .right-title {
-          background-color: #F7F7F7;
+          background-color: #fdfdfd;
           border-bottom: 1px solid #eaeaea;
           .hot-logo, .hot-title,.last-article {
             font-size: 22px;
@@ -819,7 +822,7 @@ button.active[data-v-a15ca838] {
               line-height: 20px;
               left: 5px;
               top: 10px;
-              width: 83%;
+              width: 100%;
               height: 40px;;
               overflow:hidden;
               background-color: #fff;

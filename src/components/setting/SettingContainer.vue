@@ -6,34 +6,34 @@
         <div class="rightBorder col-md-2 col-sm-2 col-xs-2 col-lg-2 hidden-xs">
           
           <ul class="settingInfo nav nav-tabs" role="tablist">
-            <p class="title"><i class="fas fa-cog"></i> 设置&nbsp;</p>
+            <!-- <p class="title"><i class="fas fa-cog"></i> 设置&nbsp;</p> -->
             <li role="presentation" class="active">
               <a href="#home" aria-controls="home" role="tab" data-toggle="tab">
-                <i class="far fa-user-circle" style="font-size:18px"></i> 
+                <i class="far fa-user-circle" style="font-size:26px;vertical-align: -3px;"></i> 
                 &nbsp;修改头像
               </a>
             </li>
             <li role="presentation">
               <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
-                <i class="fas fa-id-card-alt" style="font-size:18px"></i> 
+                <i class="fas fa-id-card-alt" style="font-size:24px;vertical-align: -3px;"></i> 
                 &nbsp;个人资料
                 </a>
             </li>
             <li role="presentation">
               <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">
-                <i class="fas fa-id-card" style="font-size:18px"></i> 
+                <i class="fas fa-id-card" style="font-size:24px;vertical-align: -3px;"></i> 
                 &nbsp;实名认证
               </a>
             </li>
             <li role="presentation">
-              <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
-                <i class="fas fa-key" style="font-size:18px"></i> 
-                &nbsp;密码安全
+              <a href="#safe" aria-controls="safe" role="tab" data-toggle="tab">
+                <i class="fas fa-key" style="font-size:24px;vertical-align: -3px;"></i> 
+                &nbsp;账户安全
               </a>
             </li>
             <li role="presentation">
-              <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
-                <i class="fas fa-donate" style="font-size:18px"></i> 
+              <a href="#promotion" aria-controls="promotion" role="tab" data-toggle="tab">
+                <i class="fas fa-donate" style="font-size:24px;vertical-align: -3px;"></i> 
                 &nbsp;访问推广
               </a>
             </li>
@@ -77,80 +77,41 @@
               </form>
             </div>
             <div role="tabpanel" class="tab-pane" id="profile">
-              <form>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">用户名 </label>
-                  <input type="text" class="form-control" id="exampleInputEmacil1" placeholder="Email" readonly unselectable="on">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">性别</label>
-                  <select name="gender" id="gender" class="ps" tabindex="1">
-                    <option value="1">男</option>
-                    <option value="2">女</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">生日</label>
-                  <input type="text" class="form-control" id="birth" placeholder="date">
-
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">地区</label>
-                  <input type="text" class="form-control" id="exampleInputEmaail1" placeholder="Email">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">手机号</label>
-                  <input type="text" class="form-control" id="exampleInputEmasxil1" placeholder="Email" maxlength="11" minlength="11">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">邮箱地址</label>
-                  <input type="text" class="form-control" id="exampleInputEmails1" placeholder="Email">
-                </div>
-                <div class="form-group mybtn">
-                  <button type="submit" class="btn btn-primary">保存</button>
-                </div>
-              </form>
+              <!-- <div class="profile">
+                <ul>
+                  <li>
+                    <div class="">
+                      <span class="profile-span">注册时间</span>
+                      <input type="text" name="" id="" class="profile-input">
+                    </div>
+                  </li>
+                  <li>
+                    <div class="">
+                      <span class="profile-span">注册时间</span>
+                      <input type="text" name="" id="" class="profile-input">
+                    </div>
+                  </li>
+                </ul>
+              </div> -->
+              <div class="safe">
+                <img src="../../images/working.png" alt="">
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="messages">
-              <form>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">用户名 </label>
-                  <input type="text" class="form-control" id="exampleInputEmail11" placeholder="Email" readonly unselectable="on">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">真实姓名</label>
-                  <input type="text" class="form-control" id="name" placeholder="date">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">证件类型</label>
-                  <select name="gender" id="gender" class="ps" tabindex="1">
-                    <option value="1">身份证</option>
-                    <option value="2">护照</option>
-                    <option value="2">驾驶证</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">证件号码</label>
-                  <input type="text" class="form-control" id="birth" placeholder="date">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">手机号</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">支付宝</label>
-                  <input type="text" class="form-control" id="exampleInputEmail2" placeholder="Email" maxlength="11" minlength="11">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">QQ号码</label>
-                  <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Email">
-                </div>
-                <div class="form-group mybtn">
-                  <button type="submit" class="btn btn-primary">保存</button>
-                </div>
-              </form>
+              <div class="safe">
+                <img src="../../images/working.png" alt="">
+              </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="settings">.settings..</div>
+            <div role="tabpanel" class="tab-pane" id="safe">
+              <div class="safe">
+                <img src="../../images/working.png" alt="">
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="promotion">
+              <div class="safe">
+                <img src="../../images/working.png" alt="">
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -381,7 +342,7 @@ export default {
         transition: all 0.5s ease;
         width: 180px;
         margin-top: 4px;
-        border-radius: 20px;
+        border-radius: 40px;
         overflow: hidden;
         a {
           border: 0;
@@ -593,13 +554,13 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset;}
 
 @keyframes overturn {
   0%{
-    transform: rotateY(0deg) scale(1.01);
+    transform: rotateY(0deg);
     }
   50%{
-    transform: rotateY(180deg) scale(1.05);
+    transform: rotateY(180deg);
   }
   100%{
-    transform: rotateY(360deg) scale(1.1);
+    transform: rotateY(360deg);
   }
 }
 .active {
@@ -636,5 +597,60 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset;}
 
 .vicp-wrap {
   display: none !important;
+}
+
+
+
+.safe {
+  margin-top: 50px;
+  text-align: center;
+  img{
+  }
+}
+ul,li {
+  list-style: none;
+}
+.profile {
+  margin-top: 50px;
+  height: 600px;
+  text-align: center;
+  ul {
+    li {
+      margin-top: 20px;
+      div {
+        input {
+          
+        }
+      }
+    }
+  }
+}
+
+.profile-span {
+  height: 46px;
+  padding: 10px 20px 10px 0;
+  font-size: 16px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+  color: #555;
+}
+
+
+.profile-input {
+  width: 300px;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 </style>
