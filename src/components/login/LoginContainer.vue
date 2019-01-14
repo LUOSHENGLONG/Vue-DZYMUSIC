@@ -102,12 +102,9 @@ export default {
             return
         }
         
-        // console.log(this.username)
-        // console.log(this.password)
 
-        axios.post("http://localhost:3001/login",{username:this.username,password:this.password})
+        axios.post("http://localhost:3001/login",{username:this.username,password:this.password,toggle: this.toggle})
         .then(result => {
-            console.log(result)
             //登录成功
             if( result.data.status === 1 ) {
                 this.message = result.data.message
@@ -116,9 +113,12 @@ export default {
                 this.$store.state.user = result.data.user
                 this.$store.state.token = result.data.user.token
                 
-                localStorage.setItem("user",JSON.stringify(result.data.user))
-                localStorage.setItem("token",result.data.user.token)
-                
+                sessionStorage.setItem("user",JSON.stringify(result.data.user))
+                sessionStorage.setItem("token",result.data.user.token)
+                // 是否勾选记住密码直接登录 勾选则把token有效时间设置为15天
+                if( this.toggle === true) {
+                    localStorage.setItem("token",result.data.user.token)
+                }
                 this.$store.commit('showLogin')
                 setTimeout(() => {
                     this.cancel();

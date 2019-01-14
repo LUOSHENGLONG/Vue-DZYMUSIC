@@ -23,6 +23,9 @@ import Search2Container from './components/search/Search2Container.vue'
 import CommentContainer from './components/comment/CommentContainer.vue'
 import LastContainer from './components/last/LastContainer.vue'
 import ContributeContainer from './components/contribute/ContributeContainer.vue'
+import SuccessContribute from './components/contribute/SuccessContribute.vue'
+import FailContribute from './components/contribute/FailContribute.vue'
+import TipsContainer from './components/contribute/TipsContainer.vue'
 import UploadImagesContainer from './components/uploadImages/UploadImagesContainer.vue'
 
 
@@ -47,6 +50,9 @@ var router = new VueRouter({
     {path: '/uploadImages', component: UploadImagesContainer},
     {path: '/last', component: LastContainer},
     {path: '/contribute', component: ContributeContainer},
+    {path: '/success', component: SuccessContribute},
+    {path: '/fail', component: FailContribute},
+    {path: '/tips', component: TipsContainer},
     {path: '/search/:keyword', component: SearchContainer, name:"search"},
     {path: '/search/:keyword', component: Search2Container, name:"search2"},
     {path: '/:type/info/:id', component: InfoContainer, name:"info"},

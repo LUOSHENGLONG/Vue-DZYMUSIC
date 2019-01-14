@@ -40,9 +40,9 @@
       more(e) {
         e.preventDefault();
         if(this.type === "合成器"){
-          this.$router.push({path: "/synth"})
+          this.$router.push({path: "/synthesizer"})
         }else if(this.type === "采样包") {
-          this.$router.push({path: "/sample"})
+          this.$router.push({path: "/samplePack"})
         }else if(this.type === "效果器") {
           this.$router.push({path: "/effects"})
         }else if(this.type === "宿主") {
@@ -92,7 +92,7 @@ a {
   }
   .feature-news:hover {
     background-color: rgba(192, 188, 250, 0.005);
-    border-color: rgba(192, 188, 250, 0.005);
+    border-color: rgba(121, 121, 121, 0.094);
     .gradient {
       background-color: rgba(20, 8, 189, 0.089);
     }
@@ -100,13 +100,20 @@ a {
       color: #663a9e;
     }
   }
+  .feature-news:hover {
+    padding-top: 0px;
+    box-shadow: 2px 6px 15px rgba(0, 0, 0, 0.094);
+  }
   .feature-news {
-    border: 1px solid #fff;
-    margin-bottom: 20px;
+    border: 1px solid rgba(121, 121, 121, 0.094);
+    border-top: 0;
+    padding-top: 2px;
+    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
+    margin: 10px 0;
     display: inline-block;
     width: 19.20%;
     height: 376px;
-    background-color: white;
+    background-color: #fbfbfb10;
     position: relative;
     margin-right: 1%;
     .gradient {
@@ -168,11 +175,16 @@ a {
         color: white;
       }
     }
+    .content:hover {
+
+    }
     .content {
       color: #444444;
       padding: 15px 8px 0;
       overflow: hidden;
       height: 205px;
+      background-color: #fff;
+      box-shadow: 0 6px 50px rgba(0, 0, 0, 0.054) inset;
       .title {
         font-size: 20px;
         line-height: 1.6;

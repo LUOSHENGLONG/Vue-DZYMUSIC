@@ -86,7 +86,6 @@
               <p class="post-content-text">{{ infoData.description }}</p>
             </blockquote>
             <div class="video-responsive">
-              <iframe src="//v.qq.com/txp/iframe/player.html?vid=v0812nmz60u" allowfullscreen="true" frameborder="0"></iframe>
               <iframe src="//player.bilibili.com/player.html?aid=38535307&cid=67736992&page=1" frameborder="0" allowfullscreen="true"> </iframe>
               <br>
               <hr>
@@ -244,7 +243,7 @@ import axios from 'axios'
       },
       like() {
         //未登录操作
-        if(localStorage.getItem("user") === null || this.$store.state.isLogin === false) {
+        if(sessionStorage.getItem("user") === null || this.$store.state.isLogin === false) {
           this.tips = "请登录后操作"
           this.$refs.tips.style.display = "block"
           setTimeout(() => {
@@ -275,7 +274,7 @@ import axios from 'axios'
         {
           id: getUUID(),
           articleId: this.id,
-          userId: JSON.parse(localStorage.getItem("user")).id,
+          userId: JSON.parse(sessionStorage.getItem("user")).id,
           createTime: formatDateTime(mydate)
         })
         .then(result => {
@@ -286,7 +285,7 @@ import axios from 'axios'
       },
       cancelLike() {
         //未登录操作
-        if(localStorage.getItem("user") === null || this.$store.state.isLogin === false) {
+        if(sessionStorage.getItem("user") === null || this.$store.state.isLogin === false) {
           this.tips = "请登录后操作"
           this.$refs.tips.style.display = "block"
           setTimeout(() => {
@@ -318,7 +317,7 @@ import axios from 'axios'
         axios.post("http://localhost:3001/cancelFavorite",
         {
           articleId: this.id,
-          userId: JSON.parse(localStorage.getItem("user")).id
+          userId: JSON.parse(sessionStorage.getItem("user")).id
         })
         .then(result => {
           $('#favorite2').popover('hide');
@@ -345,8 +344,8 @@ import axios from 'axios'
         })
       },
       getFavorite() {
-        if( localStorage.getItem("user") !== null) {
-          axios.post("http://localhost:3001/getFavorite",{articleId: this.id,userId: JSON.parse(localStorage.getItem("user")).id})
+        if( sessionStorage.getItem("user") !== null) {
+          axios.post("http://localhost:3001/getFavorite",{articleId: this.id,userId: JSON.parse(sessionStorage.getItem("user")).id})
           .then(result => {
             if(parseInt(result.data.isFavorite) === 1) {
               this.isFavorite = true
@@ -439,6 +438,7 @@ button.active {
   padding: 0;
   .main-content {
     width: 100%;
+    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
     background-color: #fff;
     border: 1px solid #eee;
     padding: 20px 40px 65px 40px;
@@ -520,7 +520,7 @@ button.active {
       .video-responsive {
         iframe {
           width: 100%;
-          height: 592px;
+          height: 720px;
         }
       }
       .download {
@@ -556,6 +556,7 @@ button.active {
       height: 100px;
       background-color: #aaa;
       margin:15px 0;
+      box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
       
     }
   }
@@ -725,6 +726,7 @@ button.active {
   .right {
     padding: 0;
     .mediaRight{
+      box-shadow: 5px 6px 23px rgba(0, 0, 0, 0.094);
       background-color: #fefefe;
       border-radius: 5px;
       .list-group {
@@ -763,7 +765,7 @@ button.active {
           font-weight: 700;
         }
         .rightUl {
-          padding: 0 15px 15px 10px;
+          padding: 0 15px 0px 10px;
           margin-bottom: 15px;
           li:last-child a{
             border-bottom: 1px solid #fff;

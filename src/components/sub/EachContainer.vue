@@ -58,7 +58,7 @@
             </div>
           </div>
           
-          <div ref="noResult" class="noResult" style="width: 100%; height:400px;display: none;text-align: center;margin-top: 40px;">
+          <div ref="noResult" class="noResult" style="width: 100%; height:480px;display: none;text-align: center;margin-top: 40px;">
             <img src="../../images/empty.png" alt="">
           </div>
           <!-- 分页 -->
@@ -145,6 +145,7 @@
 <script>
 import RightContainer from './RightContainer.vue'
 
+import axios from 'axios'
 import paginate from "../../asset/jPaginate/jquery.paginate.js"
   export default {
     data() {
@@ -164,9 +165,27 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
       })
       this.menu()
       
+      // this.getData1()
+      // this.getData2()
+
     },
     methods: {
-      
+      getData1() {
+        axios.post("http://localhost:3001/rightData1",{currentPage: this.currentPage, keyword: this.keyword})
+        .then(result => {
+          if(result != null) {
+            this.rightData1 = result.data.data
+          }
+        })
+      },
+      getData2() {
+        axios.post("http://localhost:3001/rightData2",{currentPage: this.currentPage, keyword: this.keyword})
+        .then(result => {
+          if(result != null) {
+            this.rightData2 = result.data.data
+          }
+        })
+      },
       intoInfo(e, id, type) {
         e.preventDefault()
         this.$router.push({path: `/${type}/info/${id}`})
@@ -252,6 +271,7 @@ a {
 
 .container {
   padding: 0;
+  
   //广告内容
   .ad-container {
     padding: 0;
@@ -265,9 +285,7 @@ a {
   //标题
   
   .breadcrumb {
-    border: 1px solid #eee;
     background-color: #fdfdfd;
-    border-bottom: 0;
     margin: 0;
     border-radius: 0;
     li {
@@ -280,17 +298,24 @@ a {
   .left {
     padding: 0;
     padding-right: 10px;
-    .mediaLeft {
+    .mediaLeft {  border: 1px solid rgba(0, 0, 0, 0.094);
+      box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
+      
+
       .media {
         background-color: #fff;
-        padding-bottom: 0;
-        border: 1px solid #eee;
-        border-bottom: none;
-        margin: 0;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.054),0 1px 10px rgba(0, 0, 0, 0.044) inset;
+        padding: 20px 10px;
+        border-top: 1px solid rgba(0, 0, 0, 0.044);
+        border-left: 0;
+        border-right: 0;
+        border-radius: 4px;
+        margin: 0 0 0px;
         .media-body {
           position: relative;
           height: 100%;
           padding-bottom: 10px;
+        
           .media-left {
             
             padding: 0;
@@ -306,7 +331,8 @@ a {
                 img {
                   // border-left: 5px solid #337ab7;
                   opacity: 0.8;
-                  transition: all 1s ease;
+                  box-shadow: 0 2px 16px #aaa;
+                  
                 }
               }
               .titleDiv {
@@ -324,12 +350,12 @@ a {
               .imgDiv {
                 text-align: center;
                 img {
-                  padding: 0 0 0 4px;
-                  border-left: 5px solid #fff;
+                  padding: 0;
+                  // border-left: 5px solid #fff;
                   float: left;
                   width: 220px;
                   height: 140px;
-                  margin: 0px 10px 0px 6px;
+                  margin: 0px 10px 0px 10px;
                   vertical-align: middle;
                   background-position: center;
                   background-size: cover;
@@ -423,40 +449,40 @@ a {
       .pageNav {
         background-color: #fff;
         text-align: center;
-        border: 1px solid rgba(204, 204, 204, 0.397);
-        .pagination {
-          padding: 0;
-          margin: 15px 0;
-          text-align: right;
-          vertical-align: middle;
-          padding: 0 10px;
-          padding-bottom: 0;
-          li {
-            height: 40px;
-            width: 50px;
-            padding: 0 3px;
-            list-style: none;
-            display: inline-block;
-            text-align: center;
-            color: rgba(0, 0, 0, 0.5);
-            font-size: 14px;
+        // border: 1px solid rgba(204, 204, 204, 0.397);
+        // .pagination {
+        //   padding: 0;
+        //   margin: 15px 0;
+        //   text-align: right;
+        //   vertical-align: middle;
+        //   padding: 0 10px;
+        //   padding-bottom: 0;
+        //   li {
+        //     height: 40px;
+        //     width: 50px;
+        //     padding: 0 3px;
+        //     list-style: none;
+        //     display: inline-block;
+        //     text-align: center;
+        //     color: rgba(0, 0, 0, 0.5);
+        //     font-size: 14px;
             
-            a {
-              display: inline-block;
-              width: 100%;
-              height: 100%;
-              border-radius: 5px;
-              font-size: 18px;
-              text-align: center;
+        //     a {
+        //       display: inline-block;
+        //       width: 100%;
+        //       height: 100%;
+        //       border-radius: 5px;
+        //       font-size: 18px;
+        //       text-align: center;
 
-              span {
-                font-size: 18px;
-                padding: 0;
-                margin-top: 3px;
-              }
-            }
-          }
-        }
+        //       span {
+        //         font-size: 18px;
+        //         padding: 0;
+        //         margin-top: 3px;
+        //       }
+        //     }
+        //   }
+        // }
       }
 
     }
@@ -615,6 +641,10 @@ a {
 }
 
 
+
+.pagination>.active>a {
+  padding: 20px !important;
+}
 
 </style>
 

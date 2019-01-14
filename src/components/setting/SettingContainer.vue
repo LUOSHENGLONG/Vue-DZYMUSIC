@@ -134,7 +134,8 @@ export default {
       show: false,
       size:2.1,
       formData: {},
-      isUpload: false
+      isUpload: false,
+      id: "",
     }
   },
   mounted() {
@@ -147,22 +148,28 @@ export default {
     laydate.render({
       elem: '#birth' //指定元素
     });
-    if( localStorage.getItem("user") != null) {
-      this.avatar = `http://localhost:3001` + JSON.parse(localStorage.getItem("user")).avatar
-      console.log(this.avatar)
+
+    // 判断是否已登录
+    if( sessionStorage.getItem("user") != null) {
+      this.avatar = `http://localhost:3001` + JSON.parse(sessionStorage.getItem("user")).avatar
+    } else {
+      this.$router.push({path: "/"})
     }
 
+    this.menu()
   },
   components: {
     "my-upload": myUpload
   },
   methods: {
+      menu() {
+        window.scrollTo(0,0);
+      },
       imgSrc() {
         this.formData = new FormData();
         const file = $("#examplexxxs")[0].files[0]
         // 图片格式、大小验证
         if(file.type.indexOf("image/") === -1 || Math.ceil(parseInt(file.size)/1024) > 2048) {
-          console.log("请上传图片类型文件")
           this.$refs.uploadTips.style.color = "#a94442"
           setTimeout(() => {
             this.$refs.uploadTips.style.color = "#999"
@@ -173,20 +180,17 @@ export default {
         
         let finalFile = {}
         imageConversion.compressAccurately(file,100).then(res => {
-          console.log(res)
           // 得到Blob对象
           finalFile = res
           let imgUrl = URL.createObjectURL(finalFile)
           $("#showImg").attr("src",imgUrl)
           // 将Blob对象转成base64
           blobToDataURL(finalFile, result => {
-            console.log("resultresultresultresult")
             // 将base64转出file
             finalFile = dataURLtoFile(result,"1.png")
-            console.log(finalFile)
             
             this.formData.append('file',finalFile);
-            this.formData.append('id',JSON.parse(localStorage.getItem("user")).id);
+            this.formData.append('id',JSON.parse(sessionStorage.getItem("user")).id);
             this.formData.append('imgUrl',imgUrl);
             this.formData.append('avatar',this.avatar.substring(this.avatar.lastIndexOf("/")));
             this.isUpload = true
@@ -212,7 +216,7 @@ export default {
       },
       uploadAvatar() {
         if( this.isUpload === true ) {
-          let userData = JSON.parse(localStorage.getItem("user"))
+          let userData = JSON.parse(sessionStorage.getItem("user"))
           $.ajax({
             url : 'http://localhost:3001/fileUpload',
             async: false,
@@ -223,11 +227,9 @@ export default {
             success : function(ret){
               
               userData.avatar = ret.avatar
-              localStorage.setItem("user", JSON.stringify(userData))
-              console.log(ret.avatar)
+              sessionStorage.setItem("user", JSON.stringify(userData))
             },
             error : function(ret){
-              console.log(ret);
             } 
           })
           this.$store.state.user = userData
@@ -254,7 +256,7 @@ export default {
           u8arr[n] = bstr.charCodeAt(n);
         }
         let blob = new Blob([u8arr], { type: mime })
-        console.log(new Blob([u8arr], { type: mime })) ;//这里打印base64转成blob的资源，根据自己的项目需求去转吧
+        // console.log(new Blob([u8arr], { type: mime })) ;//这里打印base64转成blob的资源，根据自己的项目需求去转吧
         $("#showImg").attr("src",URL.createObjectURL(blob))
 
         let finalFile = {}
@@ -262,20 +264,17 @@ export default {
         this.formData = new FormData()
 
         imageConversion.compressAccurately(blob,100).then(res => {
-          console.log(res)
           // 得到Blob对象
           finalFile = res
           let imgUrl = URL.createObjectURL(finalFile)
           $("#showImg").attr("src",imgUrl)
           // 将Blob对象转成base64
           blobToDataURL(finalFile, result => {
-            console.log("resultresultresultresult")
             // 将base64转出file
             finalFile = dataURLtoFile(result,"1.png")
-            console.log(finalFile)
             
             this.formData.append('file',finalFile);
-            this.formData.append('id',JSON.parse(localStorage.getItem("user")).id);
+            this.formData.append('id',JSON.parse(sessionStorage.getItem("user")).id);
             this.formData.append('imgUrl',imgUrl);
             this.formData.append('avatar',this.avatar.substring(this.avatar.lastIndexOf("/")));
             this.isUpload = true
@@ -306,10 +305,14 @@ export default {
 <style lang="scss" scoped>
 @import '../../lib/laydate/theme/default/laydate.css';
 .container {
-  padding: 0;
+  padding: 0 20px;
+    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
+    margin-top: 80px;
+    padding-bottom: 20px;
 }
 .rightBorder {
   padding: 0;
+  z-index: 55;
 }
 .Tab {
   padding-right: 0;

@@ -161,8 +161,8 @@ export default {
       this.minHeight = document.documentElement.clientHeight - 754
     }
 
-    if( localStorage.getItem("user") != null) {
-      this.userData = JSON.parse(localStorage.getItem("user"))
+    if( sessionStorage.getItem("user") != null) {
+      this.userData = JSON.parse(sessionStorage.getItem("user"))
     } else {
       this.$router.push({path: '/'})
     }

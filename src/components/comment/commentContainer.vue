@@ -67,7 +67,7 @@
           <div class="replay-box" v-for="reply of filter(item.id)" :key="reply.id">
             <div class="replay-item reply-wrap">
               <a href="javascript:void(0);" target="_blank" class="reply-face">
-                <img class="reply-face-img" v-lazy="`http://localhost:3001`+reply.fromAvatar" alt="">
+                <img class="reply-face-img" :src="`http://localhost:3001`+reply.fromAvatar" alt="">
               </a>
               <div class="replay-con">
                 <div class="user">
@@ -137,8 +137,8 @@ export default {
   mounted() {
     this.getComment()
     
-    if( localStorage.getItem('user') != null) {
-      this.CommentAvatar = `http://localhost:3001` + JSON.parse(localStorage.getItem('user')).avatar
+    if( sessionStorage.getItem('user') != null) {
+      this.CommentAvatar = `http://localhost:3001` + JSON.parse(sessionStorage.getItem('user')).avatar
     }else {
         this.navAvatar = "./src/images/tx.jpg"
       }
@@ -188,7 +188,7 @@ export default {
       $(this.$refs[id]).css("display","block")
       $(this.$refs[`text`+id]).focus()
       $(this.$refs[`text`+id]).attr("placeholder",`回复 @`+ nickname + `: `)
-      this.toUid = JSON.parse(localStorage.getItem("user")).id
+      this.toUid = JSON.parse(sessionStorage.getItem("user")).id
       this.replyType = 0
     },
 
@@ -208,7 +208,7 @@ export default {
       $(this.$refs[`text`+id]).attr("placeholder",`回复 @`+ replyNickname + `: `)
       
       
-      if(JSON.parse(localStorage.getItem("user")).nickname === replyNickname){
+      if(JSON.parse(sessionStorage.getItem("user")).nickname === replyNickname){
         this.replyType = 0
         return
       }
@@ -228,7 +228,7 @@ export default {
       //已经登录可以发表评论
       if(this.commentContent.trim().length > 0 ) {
         // 获取评论用户id 也就是当前登录用户id
-        const commentId = JSON.parse(localStorage.getItem("user")).id
+        const commentId = JSON.parse(sessionStorage.getItem("user")).id
         
         // 获取评论内容 this.commentContent
 
@@ -320,9 +320,9 @@ export default {
             replyId: id,
             replyType: this.replyType,
             content: this.replyComment,
-            fromUid: JSON.parse(localStorage.getItem("user")).id,
-            fromNickname: JSON.parse(localStorage.getItem("user")).nickname,
-            fromAvatar: JSON.parse(localStorage.getItem("user")).avatar,
+            fromUid: JSON.parse(sessionStorage.getItem("user")).id,
+            fromNickname: JSON.parse(sessionStorage.getItem("user")).nickname,
+            fromAvatar: JSON.parse(sessionStorage.getItem("user")).avatar,
             toUid: this.toUid,
             createTime: formatDateTime(new Date()),
           })
@@ -362,6 +362,7 @@ export default {
   width: 100%;
   background-color: #fff;
   border: 1px solid #eee;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.094);
   .section-title h2 {
     font-size: 24px;
     float: left;

@@ -11,6 +11,11 @@ import moment from 'moment' //设置中文
 // import VuePaginate from 'vue-paginate'
 // Vue.use(VuePaginate)
 // import Clipboard from 'clipboard'
+import {VTable,VPagination} from 'vue-easytable'
+
+Vue.component(VTable.name, VTable)
+Vue.component(VPagination.name, VPagination)
+
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(VueCropper)
@@ -53,7 +58,7 @@ Vue.filter('hiddenPhone', function (dataStr) {
   if(dataStr === "" || dataStr === null){
     return "未填写"
   }else {
-    return dataStr.substring(0,3)+`****`+dataStr.substring(7,11)
+    return dataStr
   }
 })
 

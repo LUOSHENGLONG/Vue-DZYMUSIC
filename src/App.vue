@@ -57,8 +57,12 @@ export default {
       isSignup: false,
       top: 0 ,
       navStatus: this.$store.state.isLogin,
-      confirmLogin: this.$store.state.isLogin
+      confirmLogin: this.$store.state.isLogin,
     };
+  },
+  created() {
+    this.$store.commit("confirmLogin")
+
   },
   mounted() {
     window.onresize = () => {
@@ -70,7 +74,8 @@ export default {
       this.auto()
     }
     
-    this.$store.commit("confirmLogin")
+    this.$store.commit("queryRightData")
+
   }
   ,
   methods: {
@@ -95,22 +100,6 @@ export default {
       
       this.$refs.login.style.top = this.top + "px"
     },
-    register() {
-      this.$http
-        .post(
-          "http://127.0.0.1:5000/api/register",
-          {
-            username: this.username,
-            password: this.password,
-            nickname: this.nickname
-          },
-          { emulateJSON: true }
-        )
-        .then(result => {
-          console.log(result);
-        });
-    },
-    
     //显示登录div 遮罩层
     showLoginDiv() {
       this.isLogin = true
@@ -185,7 +174,9 @@ export default {
       this.isLogin = true
       this.isSignup = false 
 
-    }
+    },
+
+    
   },
   
   components: {
@@ -203,13 +194,7 @@ export default {
     TutorialIndexContainer,
   },
   watch: {
-    confirmLogin(newVal, oldVal) {
-      if(newVal === false) {
-        localStorage.removeItem("user")
-        localStorage.removeItem("token")
-        console.log("清除")
-      }
-    }
+    
   },
 };
 

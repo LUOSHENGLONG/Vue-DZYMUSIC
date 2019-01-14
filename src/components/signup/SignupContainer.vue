@@ -304,20 +304,20 @@ export default {
 .login-form {
     z-index: 33;
     overflow: hidden;
-    width: 400px;
-    padding: 40px 0 0;
+    width: 350px;
+    padding: 40px 8px 0;
     background: #fff;
     box-shadow: 0 0 20px rgba(59,59,68,.25);
     border: 1px solid #e9e9ea;
     position: absolute;
-    left: 0;
+    left: 25px;
     -webkit-border-radius: 9px;
     -moz-border-radius: 9px;
     border-radius: 9px;
     border-bottom: none;
     font-size: 14px;
     .form-box {
-        padding: 0 60px;
+        padding: 0 30px;
         
         .cancel {
             position: absolute;
@@ -368,7 +368,7 @@ export default {
                     bottom: -40px;
                     opacity: 0.8;
                     visibility: hidden;
-                    width: 278px;
+                    width: 272px;
                     z-index: 1;
                 }
                 .form-group {
@@ -494,10 +494,10 @@ export default {
 }
 
 .errorTip {
-    width: 278px;
-    height: 46px;
+    width: 272px;
+    height: 45px;
     position: absolute;
-    left: 60px;
+    left: 38px;
     bottom: 92px;
     background-color: #c9302c;
     border-radius: 5px;

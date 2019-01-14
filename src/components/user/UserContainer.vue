@@ -8,15 +8,21 @@
           <ul class="homeInfo nav nav-tabs" role="tablist">
             <!-- <p class="title"><i class="fas fa-user-circle"></i> 用户中心</p> -->
             <li role="presentation" class="active">
-              <a href="#home" aria-controls="home" role="tab" data-toggle="tab">
+              <a href="#personalInfo" aria-controls="personalInfo" role="tab" data-toggle="tab">
                 <i class="far fa-user-circle" style="font-size:24px;vertical-align: -2px;"></i> 
                 &nbsp;个人信息
               </a>
             </li>
             <li @click="showFavorite()" role="presentation">
-              <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
+              <a href="#myFavorite" aria-controls="myFavorite" role="tab" data-toggle="tab">
                 <i class="fas fa-star-half-alt" style="font-size:24px;vertical-align: -2px;"></i> 
-                &nbsp;&nbsp;收藏夹&nbsp;&nbsp;
+                &nbsp;我的收藏
+              </a>
+            </li>
+            <li @click="showFavorite()" role="presentation">
+              <a href="#myContribute" aria-controls="myContribute" role="tab" data-toggle="tab">
+                <i class="fas fa-edit" style="font-size:22px;vertical-align: -2px;"></i> 
+                &nbsp;我的投稿
               </a>
             </li>
           </ul>
@@ -24,7 +30,7 @@
         <!-- Tab panes -->
         <div class="Tab col-md-10 col-sm-10 col-xs-10 col-lg-10">
           <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="home">
+            <div role="tabpanel" class="tab-pane active" id="personalInfo">
               
               <div class="personal-info-row">
                 <div class="info-left input-group input-group-lg">
@@ -94,13 +100,12 @@
                 </div>
               </div>
 
-            <div class="mybtn">
-              <button type="button" @click="savePerInfo" class="btn btn-success" style="background-color: #4fc08d;">更新</button>
-            </div>
+              <div class="mybtn">
+                <button type="button" @click="savePerInfo" class="btn btn-success" style="background-color: #4fc08d;">更新</button>
+              </div>
               
             </div>
-
-            <div role="tabpanel" class="tab-pane" id="profile">
+            <div role="tabpanel" class="tab-pane" id="myFavorite">
 
               <div class="media" v-for="item of data" :key="item.id">
                 <div class="media-left media-middle hidden-xs hidden-sm">
@@ -129,7 +134,7 @@
                   >
                 </button>
               </div>
-              <div ref="noResult" class="noResult" style="width: 100%; height:400px;display: none;margin-top: 50px;text-align: center;">
+              <div ref="noResult" class="noResult" style="width: 100%; height:480px;display: none;margin-top: 50px;text-align: center;">
                 <img src="../../images/empty.png" alt="" style="">
               </div>
               <!-- 分页 -->
@@ -144,6 +149,13 @@
                 </paginate>
                 
               </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="myContribute">
+              <div class="myContribute">
+                
+              </div>
+              
             </div>
             
           </div>
@@ -185,14 +197,18 @@ export default {
       this.minHeight = document.documentElement.clientHeight - 754
     }
 
-    if( localStorage.getItem("user") != null) {
-      this.userData = JSON.parse(localStorage.getItem("user"))
+    if( sessionStorage.getItem("user") != null) {
+      this.userData = JSON.parse(sessionStorage.getItem("user"))
     } else {
       this.$router.push({path: '/'})
     }
     this.getLikeData()
+    this.menu()
   },
   methods: {
+    menu() {
+      window.scrollTo(0,0);
+    },
     savePerInfo() {
       if( this.nickname.trim() != "") {
         if( this.oldNickname === this.nickname ) {
@@ -214,14 +230,12 @@ export default {
           userId: this.userData.id
         })
         .then(result => {
-          console.log(result.data)
-          console.log(result.data.code === 0)
           if (result.data.code === 0) {
             // this.userData = result.data.user[0]
             // localStorage.setItem("user",JSON.stringify(this.userData))
-            let tempDate = JSON.parse(localStorage.getItem("user"))
+            let tempDate = JSON.parse(sessionStorage.getItem("user"))
             tempDate.nickname = result.data.nickname
-            localStorage.setItem("user",JSON.stringify(tempDate))
+            sessionStorage.setItem("user",JSON.stringify(tempDate))
             this.userData = tempDate
             this.$store.state.user = this.userData
             this.$router.go(0)
@@ -249,7 +263,7 @@ export default {
       axios.post("http://localhost:3001/cancelFavorite",
       {
         articleId: id,
-        userId: JSON.parse(localStorage.getItem("user")).id
+        userId: JSON.parse(sessionStorage.getItem("user")).id
       })
       .then(result => {
         if( this.currentPage > 1) {
@@ -266,8 +280,8 @@ export default {
       })
     },
     getLikeData() {
-      if( localStorage.getItem("user") != null) {
-        this.userData = JSON.parse(localStorage.getItem("user"))
+      if( sessionStorage.getItem("user") != null) {
+        this.userData = JSON.parse(sessionStorage.getItem("user"))
         axios.post("http://localhost:3001/likeData",{userId: this.userData.id, currentPage: this.currentPage})
         .then(result => {
           this.data = result.data.likeData
@@ -279,7 +293,6 @@ export default {
       
     },
     showFavorite() {
-      console.log(111111111111)
     },
     del() {
       this.$refs.formEdit.style.display="block"
@@ -287,7 +300,6 @@ export default {
     editBatch(e) {
       e.preventDefault()
       this.$refs.btnCancel.style.display="block"
-      console.log(this.$refs.btnDelbat)
 
       this.$refs.btnDelbat.forEach(item => {
         item.style.display="none"
@@ -323,7 +335,6 @@ export default {
 
     },
     bacthDel() {
-      console.log(this.batchData)
       this.batchData.forEach(id => {
         this.data.forEach((item,i) => {
           if(item.id === id) {
@@ -333,7 +344,6 @@ export default {
       })
     },
     delOne(id) {
-      console.log(id)
       this.data.forEach((item,i) => {
         if(item.id === id) {
           this.data.splice(i,1)
@@ -341,7 +351,6 @@ export default {
       })
     },
     batData (e) {
-      console.log(e)
       let idIndex = this.batchData.indexOf(e)
       if (idIndex >= 0) {
         // 如果已经包含了该id, 则去除(单选按钮由选中变为非选中状态)
@@ -350,7 +359,6 @@ export default {
         // 选中该checkbox
         this.batchData.push(e)
       }
-      console.log(this.batchData)
     }
   },
   components: {
@@ -378,8 +386,10 @@ export default {
 
 @import'../../lib/laydate/theme/default/laydate.css';
 .container {
-  padding: 0;
+  padding: 0 20px;;
   min-width: 1200px;
+    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
+    margin-top: 80px;
   
 }
 .Tab {
@@ -457,7 +467,7 @@ export default {
 .tab-pane {
   width: 100%;
   padding: 20px;
-  margin-top: 16px;
+  margin-top: 22px;
   // border: 1px solid #eee;
   background-color: #fff;
   
@@ -639,8 +649,9 @@ form.form-search {
 .media {
   position: relative;
   border: 0;
-  padding: 15px 10px 5px 8px;
-  border-bottom: 1px solid #eee;
+  padding: 15px;
+  border: 1px solid rgba(126, 126, 126, 0.094);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.094);
 
 }
 .media-object {
@@ -670,6 +681,7 @@ form.form-search {
   background-color: #fefefe;
   .media-object {
     opacity: 0.7;
+    box-shadow: 0 2px 16px #aaa;
   }
   .media-heading {
     color: rgb(43, 101, 151);
@@ -695,7 +707,7 @@ form.form-search {
   vertical-align: middle;
   padding: 0 10px;
   padding-bottom: 0;
-  margin-bottom: 0;
+  margin-bottom: 6px;
   margin-right: 20px;
   position: absolute;
   right: 15px;
@@ -729,7 +741,7 @@ form.form-search {
 .fullStar {
   position: absolute;
   right: 0;
-  bottom: 5px;
+  bottom: 8px;
   font-size: 30px;
   color: #337ab7;
   background: none;
@@ -813,6 +825,7 @@ button.active {
 .btn,.btn:hover,.btn-success:hover,.btn.active {
   border: 0;
   border-radius: 20px;
+  font-size: 18px;
 }
 
 .mybtn {

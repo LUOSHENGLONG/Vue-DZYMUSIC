@@ -1,6 +1,6 @@
 <template>
   <div class="dzyTop">
-    <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0 4px 10px #bbb;">
+    <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0 4px 10px #ddd;">
 
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -168,7 +168,7 @@ import axios from 'axios'
         keyword: "",
         switch: 0,
         oldKeyword: "",
-        navAvatar: "",
+        navAvatar: this.$store.state.user.avatar,
         nickname: this.$store.state.user.nickname,
         emailOrPhone: "",
       }
@@ -177,11 +177,20 @@ import axios from 'axios'
       navStatus: {
         type: Boolean,
       }
-    }
-    ,
+    },
+    created() {
+      // this.confirmLogin()
+
+    },
     mounted() {
-      if( localStorage.getItem("user") != null) {
-        const user = JSON.parse(localStorage.getItem("user"))
+      
+
+
+      let fr = new FileReader()
+    },
+    updated() {
+      if( sessionStorage.getItem("user") != null) {
+        const user = JSON.parse(sessionStorage.getItem("user"))
         this.navAvatar = `http://localhost:3001` + user.avatar
         this.nickname = user.nickname
         if(user.email.trim() != "" || user.email !=null) {
@@ -190,8 +199,6 @@ import axios from 'axios'
           this.emailOrPhone = user.phone
         }
       } 
-
-      let fr = new FileReader()
     },
     methods: {
       showLogin(e) {
@@ -222,13 +229,17 @@ import axios from 'axios'
       },
       logout(e) {
         e.preventDefault()
-        localStorage.removeItem("token")
-        localStorage.removeItem("user")
-        this.$store.commit("confirmLogin")
+        sessionStorage.removeItem("token")
+        sessionStorage.removeItem("user")
+        if( localStorage.getItem("token") ) {
+          localStorage.removeItem("token")
+        }
+        // this.$store.commit("confirmLogin")
         this.$router.go(0)
       },
       
     },
+      
     watch: {
       keyword(newVal, oldVal) {
         if(newVal !== oldVal) {

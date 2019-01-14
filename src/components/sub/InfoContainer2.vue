@@ -242,7 +242,7 @@ import axios from 'axios'
       },
       like() {
         //未登录操作
-        if(localStorage.getItem("user") === null || this.$store.state.isLogin === false) {
+        if(sessionStorage.getItem("user") === null || this.$store.state.isLogin === false) {
           this.tips = "请登录后操作"
           this.$refs.tips.style.display = "block"
           setTimeout(() => {
@@ -273,7 +273,7 @@ import axios from 'axios'
         {
           id: getUUID(),
           articleId: this.id,
-          userId: JSON.parse(localStorage.getItem("user")).id,
+          userId: JSON.parse(sessionStorage.getItem("user")).id,
           createTime: formatDateTime(mydate)
         })
         .then(result => {
@@ -284,7 +284,7 @@ import axios from 'axios'
       },
       cancelLike() {
         //未登录操作
-        if(localStorage.getItem("user") === null || this.$store.state.isLogin === false) {
+        if(sessionStorage.getItem("user") === null || this.$store.state.isLogin === false) {
           this.tips = "请登录后操作"
           this.$refs.tips.style.display = "block"
           setTimeout(() => {
@@ -316,7 +316,7 @@ import axios from 'axios'
         axios.post("http://localhost:3001/cancelFavorite",
         {
           articleId: this.id,
-          userId: JSON.parse(localStorage.getItem("user")).id
+          userId: JSON.parse(sessionStorage.getItem("user")).id
         })
         .then(result => {
           $('#favorite2').popover('hide');
@@ -343,8 +343,8 @@ import axios from 'axios'
         })
       },
       getFavorite() {
-        if( localStorage.getItem("user") !== null) {
-          axios.post("http://localhost:3001/getFavorite",{articleId: this.id,userId: JSON.parse(localStorage.getItem("user")).id})
+        if( sessionStorage.getItem("user") !== null) {
+          axios.post("http://localhost:3001/getFavorite",{articleId: this.id,userId: JSON.parse(sessionStorage.getItem("user")).id})
           .then(result => {
             if(parseInt(result.data.isFavorite) === 1) {
               this.isFavorite = true
@@ -439,6 +439,7 @@ button.active[data-v-a15ca838] {
     background-color: #fff;
     border: 1px solid #eee;
     padding: 20px 40px 65px 40px;
+    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
     .main-title {
       text-align: left;
       border-bottom: 1px solid #eee;
@@ -723,6 +724,7 @@ button.active[data-v-a15ca838] {
     padding: 0;
     .mediaRight{
       background-color: #fefefe;
+      box-shadow: 5px 6px 23px rgba(0, 0, 0, 0.094);
       border-radius: 5px;
       .list-group {
         border: 1px solid #eee;
@@ -760,7 +762,7 @@ button.active[data-v-a15ca838] {
           font-weight: 700;
         }
         .rightUl {
-          padding: 0 15px 15px 10px;
+          padding: 0 15px 0px 10px;
           margin-bottom: 15px;
           li:last-child a{
             border-bottom: 1px solid #fff;

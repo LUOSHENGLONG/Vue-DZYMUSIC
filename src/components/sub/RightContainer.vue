@@ -10,10 +10,10 @@
               <li v-for="(item) of rightData1" :key="item.id">
                 <!-- <div class="zhx"></div> -->
                 <!-- <p class="rank-num hidden-sm hidden-md">&nbsp;{{ index+1 }}. </p> -->
-                <!-- <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item"> -->
-                <router-link :to="`/`+item.type+`/info/`+item.id" id="rankA" ref="rankA" href="#"  class="list-group-item">
+                <a ref="rankA" target="_blank" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
+                <!-- <router-link :to="`/`+item.type+`/info/`+item.id" id="rankA" ref="rankA" href="#"  class="list-group-item"> -->
                   <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
-                </router-link>
+                </a>
               </li>
               
             </ul>
@@ -30,7 +30,7 @@
               <li v-for="(item) of rightData2" :key="item.id">
                 <!-- <div class="zhx"></div> -->
                 <!-- <p class="rank-num hidden-sm hidden-md">&nbsp;{{ index+1 }}. </p> -->
-                <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
+                <a ref="rankA" target="_blank" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                 <!-- <router-link :to="`/`+item.type+`/info/`+item.id" ref="rankA" href="#" class="list-group-item"> -->
                   <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
                 </a>
@@ -42,19 +42,41 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       scrollTitleInterval: {},
       rightData1: JSON.parse(localStorage.getItem("rightData1") || []),
       rightData2: JSON.parse(localStorage.getItem("rightData2") || []),
+      
 
     }
   },
+  mounted() {
+    this.getData1()
+    this.getData2()
+  },
   methods: {
+    getData1() {
+      axios.post("http://localhost:3001/rightData1",{currentPage: this.currentPage, keyword: this.keyword})
+      .then(result => {
+        if(result != null) {
+          this.rightData1 = result.data.data
+        }
+      })
+    },
+    getData2() {
+      axios.post("http://localhost:3001/rightData2",{currentPage: this.currentPage, keyword: this.keyword})
+      .then(result => {
+        if(result != null) {
+          this.rightData2 = result.data.data
+        }
+      })
+    },
     intoInfo(e, id, type) {
       e.preventDefault()
-      // this.$router.push({path: `/${type}/info/${id}`})
+      this.$router.push({path: `/${type}/info/${id}`})
       this.$emit("switch",id)
     },
     stopScroll(id,type) {
@@ -82,6 +104,7 @@ export default {
       background-color: #fefefe;
       border-radius: 5px;
       margin-bottom: 15px;
+      box-shadow: 5px 6px 13px rgba(0, 0, 0, 0.094);
       .list-group {
         border: 1px solid #eee;
         
