@@ -74,6 +74,12 @@ Vue.filter('dateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
 
 })
 
+Vue.filter('contributeTimeFormat', function(dataStr) {
+  
+  return "xxxxxxxx";
+
+})
+
 Vue.filter('userId', function(dataStr) {
   
   

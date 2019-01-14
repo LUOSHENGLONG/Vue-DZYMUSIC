@@ -20,7 +20,7 @@
               </a>
             </li>
             <li @click="showFavorite()" role="presentation">
-              <a href="#myContribute" aria-controls="myContribute" role="tab" data-toggle="tab">
+              <a href="#myContribute" @click="getMyContribute" aria-controls="myContribute" role="tab" data-toggle="tab">
                 <i class="fas fa-edit" style="font-size:22px;vertical-align: -2px;"></i> 
                 &nbsp;我的投稿
               </a>
@@ -30,6 +30,7 @@
         <!-- Tab panes -->
         <div class="Tab col-md-10 col-sm-10 col-xs-10 col-lg-10">
           <div class="tab-content">
+            <!-- personalInfo -->
             <div role="tabpanel" class="tab-pane active" id="personalInfo">
               
               <div class="personal-info-row">
@@ -105,6 +106,7 @@
               </div>
               
             </div>
+            <!-- myFavorite -->
             <div role="tabpanel" class="tab-pane" id="myFavorite">
 
               <div class="media" v-for="item of data" :key="item.id">
@@ -150,10 +152,45 @@
                 
               </div>
             </div>
-
+            <!-- myContribute -->
             <div role="tabpanel" class="tab-pane" id="myContribute">
-              <div class="myContribute">
-                
+              <div class="bs-example" data-example-id="hoverable-table">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>文章标题</th>
+                      <th>文章类型</th>
+                      <th>投稿时间</th>
+                      <th>状态、操作</th>
+                    </tr>
+                  </thead>
+                  <tbody v-for="item in userContribute" :key="item.id">
+                    <tr v-if="item.isRealease === 1" class="success">
+                      <td scope="row">{{ item.title }}</td>
+                      <td>{{ item.type }}</td>
+                      <td>{{ item.contributeTime }}</td>
+                      
+                      
+                      <td>
+                        <span>已发布</span>&nbsp;
+                        <router-link to="/">查看</router-link>
+                        <a href="#" @click="deleteMyContribute($event,item.id)">删除</a>
+                      </td>
+                    </tr>
+                    <tr v-if="item.isRealease === 0">
+                      <td scope="row">{{ item.title }}</td>
+                      <td>{{ item.type }}</td>
+                      <td>{{ item.contributeTime }}</td>
+                      
+                      <td>
+                        <span>待审核</span>&nbsp;
+                        <a href="#" @click="deleteMyContribute($event,item.id)">删除</a>
+                      </td>
+                      
+                    </tr>
+                    
+                  </tbody>
+                </table>
               </div>
               
             </div>
@@ -188,6 +225,8 @@ export default {
       currentPage: 1,
       nickname: "",
       oldNickname: "",
+      userContribute:[]
+      
     }
   },
   mounted() {
@@ -204,8 +243,46 @@ export default {
     }
     this.getLikeData()
     this.menu()
+    
   },
   methods: {
+    deleteMyContribute(e, id) {
+      e.preventDefault()
+      axios.post('http://127.0.0.1:3001/deleteMyContribute',{id: id})
+        .then((result) => {
+          this.getMyContribute()
+          
+        })
+    },
+    getMyContribute() {
+      if( sessionStorage.getItem("user")) {
+        console.log("=============")
+        function timestampToTime (cjsj) {
+            var date = new Date(cjsj) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var Y = date.getFullYear() + '-'
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-'
+            var D = date.getDate() + ' '
+            var h = date.getHours() + ':'
+            var m = date.getMinutes() + ':'
+            var s = date.getSeconds() < 10 ? '0'+ date.getSeconds() : date.getSeconds()
+            return Y+M+D+h+m+s
+            console.log(timestampToTime (1533293827000))
+        }
+        let userId = JSON.parse(sessionStorage.getItem("user")).id
+        console.log(userId)
+        axios.post('http://127.0.0.1:3001/getMyContribute',{userId: userId})
+        .then((result) => {
+          console.log(result.data)
+          this.userContribute = result.data
+          this.userContribute.forEach( item => {
+            console.log(item)
+            item.contributeTime = timestampToTime(parseInt(item.contributeTime))
+          })
+        })
+
+        
+      }
+    },
     menu() {
       window.scrollTo(0,0);
     },
@@ -925,4 +1002,34 @@ button.active {
   animation: bgc 4s linear infinite alternate;  /*开始动画后无限循环，用来控制rotate*/
 }
 
+.myContribute{
+  background-color: pink;
+  height: 600px;;
+}
+
+.table {
+  text-align: center;
+  box-shadow: 0 6px 20px #eee;
+  tbody {
+    border-top: 5px solid #fff;
+    tr{
+    }
+  }
+  th {
+    padding: 12px 0;
+    font-size: 18px;
+    border: 0;
+    text-align: center;
+    max-width: 500px;
+    background-color: #eee;
+  }
+  td {
+    border: 0;
+    font-size: 16px;
+    max-width: 500px;
+  }
+}
+a {
+  text-decoration: none;
+}
 </style>
