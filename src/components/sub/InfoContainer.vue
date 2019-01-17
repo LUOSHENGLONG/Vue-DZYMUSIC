@@ -9,7 +9,7 @@
       <!-- 详细内容 -->
       <div class="left col-sm-9 col-md-9 col-lg-9"  v-if="hackReset">
         <!-- 导航栏 -->
-        <ol class="breadcrumb" style="background-color: #fdfdfd;">
+        <ol class="breadcrumb hidden-xs" style="background-color: #fdfdfd;">
           <li><router-link to="/"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</router-link></li>
           <li><router-link :to="`/`+infoData.type">{{infoData.type | typeFormat}}</router-link></li>
           <li class="active">{{ infoData.title }}</li>
@@ -17,12 +17,14 @@
         <section class="main-content">
           <div class="main-title">
             <h2>{{ infoData.title}}</h2>
+            <!-- <div class="title-left"></div> -->
           </div>
+          
           <div class="main-info">
             <ul class="message">
               <li><span class="fas fa-user-edit"></span>{{ infoData.issuer }}</li> 
-              <li><span class="fas fa-clock"></span>{{ infoData.releaseTime }}</li>
-              <li><span class="fas fa-eye"></span>{{ infoData.look }}浏览</li>
+              <li><span class="fas fa-clock hidden-xs"></span>{{ infoData.releaseTime }}</li>
+              <li class="hidden-xs"><span class="fas fa-eye"></span>{{ infoData.look }}浏览</li>
               <!-- <li>
                 <a href="#" @click="like($event)">
                 <span ref="likeSpan" :class="isLike"></span>{{ infoData.like }}收藏
@@ -91,6 +93,7 @@
               <hr>
             </div>
             <div class="download">
+
               <blockquote>
                 <p class="post-content-text"> 
                   下载地址：
@@ -142,7 +145,7 @@
       </div>
       <!-- 右侧数据排行 -->
       <!-- 最新文章 -->
-      <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
+      <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs hidden-sm hidden-md">
         <div class="mediaRight">
           <div class="list-group">
             <div class="right-title">
@@ -404,7 +407,52 @@ import axios from 'axios'
   }
 </script>
 <style lang="scss" scoped>
+@media screen and (max-width: 400px) {
+  .main-title {
+    h2 {
+      font-size: 18px !important;
+    }
+    
+  }
+  .video-responsive {
+    iframe {
+      height: 100% !important;
+    }
+  }
+  .main-content {
+    padding: 5px 14px !important;
+  }
+}
 
+@media screen and (max-width: 1200px) and  (min-width: 992px){
+  .left {
+    width: 100%;
+  }
+  .video-responsive {
+    iframe {
+      height: 500px !important;
+    }
+  }
+  .container {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 992px) and (min-width: 400px) {
+  .video-responsive {
+    iframe {
+      height: 300px !important;
+    }
+  }
+  .left {
+    width: 100%;
+  }
+  .container {
+    width: 100%;
+    margin: 0;
+  }
+}
 .red {
   color: #d9534f !important; 
 }
@@ -442,9 +490,21 @@ button.active {
     background-color: #fff;
     border: 1px solid #eee;
     padding: 20px 40px 65px 40px;
+    
     .main-title {
       text-align: left;
       border-bottom: 1px solid #eee;
+      position: relative;
+      .title-left {
+        position: absolute;
+        left: -70px;
+        width:0;
+        height:0;
+        border-width:20px 30px 20px 0;
+        border-style:solid;
+        border-color:transparent #7645b8 transparent transparent;/*透明 灰 透明 透明 */
+        top: 0;
+      }
       h2 {
             font-size: 30px;
             border-bottom: 2px solid #7645b8;
@@ -524,6 +584,7 @@ button.active {
         }
       }
       .download {
+        position: relative;
         blockquote {
           background-color: #dff0d8;
           border-color: #449d44;
@@ -564,7 +625,7 @@ button.active {
   //页面左边 显示数据
   .left {
     padding: 0;
-    padding-right: 10px;
+    // padding-right: 10px;
     .breadcrumb {
       width: 100%;
         height: 100%;
@@ -725,6 +786,7 @@ button.active {
   //页面左边显示排行情况
   .right {
     padding: 0;
+    padding-left: 4px;
     .mediaRight{
       box-shadow: 5px 6px 23px rgba(0, 0, 0, 0.094);
       background-color: #fefefe;

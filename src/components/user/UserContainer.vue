@@ -7,20 +7,20 @@
           
           <ul class="homeInfo nav nav-tabs" role="tablist">
             <!-- <p class="title"><i class="fas fa-user-circle"></i> 用户中心</p> -->
-            <li role="presentation" class="active">
+            <li role="personalInfo">
               <a href="#personalInfo" aria-controls="personalInfo" role="tab" data-toggle="tab">
                 <i class="far fa-user-circle" style="font-size:24px;vertical-align: -2px;"></i> 
                 &nbsp;个人信息
               </a>
             </li>
-            <li @click="showFavorite()" role="presentation">
+            <li @click="showFavorite()" role="myFavorite">
               <a href="#myFavorite" aria-controls="myFavorite" role="tab" data-toggle="tab">
                 <i class="fas fa-star-half-alt" style="font-size:24px;vertical-align: -2px;"></i> 
                 &nbsp;我的收藏
               </a>
             </li>
-            <li @click="showFavorite()" role="presentation">
-              <a href="#myContribute" @click="getMyContribute" aria-controls="myContribute" role="tab" data-toggle="tab">
+            <li @click="showFavorite()" role="myContribute">
+              <a href="#myContribute" ref="myContribute" @click="getMyContribute" aria-controls="myContribute" role="tab" data-toggle="tab">
                 <i class="fas fa-edit" style="font-size:22px;vertical-align: -2px;"></i> 
                 &nbsp;我的投稿
               </a>
@@ -158,10 +158,10 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>文章标题</th>
-                      <th>文章类型</th>
-                      <th>投稿时间</th>
-                      <th>状态、操作</th>
+                      <th style="width: 55%">文章标题</th>
+                      <th style="width: 15%">文章类型</th>
+                      <th style="width: 15%">投稿时间</th>
+                      <th style="width: 15%">状态、操作</th>
                     </tr>
                   </thead>
                   <tbody v-for="item in userContribute" :key="item.id">
@@ -179,7 +179,7 @@
                     </tr>
                     <tr v-if="item.isRealease === 0">
                       <td scope="row">{{ item.title }}</td>
-                      <td>{{ item.type }}</td>
+                      <td>{{ item.type | typeFormat }}</td>
                       <td>{{ item.contributeTime }}</td>
                       
                       <td>
@@ -191,6 +191,17 @@
                     
                   </tbody>
                 </table>
+              </div>
+
+              <div ref="paginate" class="pageNav" id="pageNav">
+                <paginate
+                  :page-count="Math.ceil(contributePageCount / 10)"
+                  :click-handler="contributePage"
+                  :prev-text="'上一页'"
+                  :next-text="'下一页'"
+                  :container-class="'pagination'"
+                  >
+                </paginate>
               </div>
               
             </div>
@@ -225,7 +236,12 @@ export default {
       currentPage: 1,
       nickname: "",
       oldNickname: "",
-      userContribute:[]
+      userContribute:[],
+      active: this.$route.params.active,
+      contributePageCount: 1,
+      currentContributePage: 1
+
+      
       
     }
   },
@@ -243,7 +259,14 @@ export default {
     }
     this.getLikeData()
     this.menu()
+    console.log("=====zzzzzzzxx=====")
+    console.log(this.active)
+    let target = "[role='"+ this.active +"']"
+    console.log($(target))
     
+    $(this.$refs[this.active]).click()
+    $(target).addClass("active")
+    this.getMyContribute()
   },
   methods: {
     deleteMyContribute(e, id) {
@@ -254,6 +277,10 @@ export default {
           
         })
     },
+    contributePage(e) {
+      this.currentContributePage = e
+      this.getMyContribute()
+    },
     getMyContribute() {
       if( sessionStorage.getItem("user")) {
         console.log("=============")
@@ -261,19 +288,20 @@ export default {
             var date = new Date(cjsj) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
             var Y = date.getFullYear() + '-'
             var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-'
-            var D = date.getDate() + ' '
-            var h = date.getHours() + ':'
-            var m = date.getMinutes() + ':'
+            var D = (date.getDate() < 10 ? '0'+ date.getDate() : date.getDate() ) + ' '
+            var h = (date.getHours() < 10 ? '0'+ date.getHours() : date.getHours()) + ':'
+            var m = (date.getMinutes() < 10 ? '0'+ date.getMinutes() : date.getMinutes()) + ':'
             var s = date.getSeconds() < 10 ? '0'+ date.getSeconds() : date.getSeconds()
             return Y+M+D+h+m+s
             console.log(timestampToTime (1533293827000))
         }
         let userId = JSON.parse(sessionStorage.getItem("user")).id
         console.log(userId)
-        axios.post('http://127.0.0.1:3001/getMyContribute',{userId: userId})
+        axios.post('http://127.0.0.1:3001/getMyContribute',{userId: userId, currentPage: this.currentContributePage})
         .then((result) => {
-          console.log(result.data)
-          this.userContribute = result.data
+          console.log(result.data.count[0].count)
+          this.contributePageCount = result.data.count[0].count
+          this.userContribute = result.data.pageData
           this.userContribute.forEach( item => {
             console.log(item)
             item.contributeTime = timestampToTime(parseInt(item.contributeTime))

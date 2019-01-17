@@ -43,7 +43,7 @@ var router = new VueRouter({
     {path: '/effecstindex', component: EffectsIndexContainer},
     {path: '/sampleindex', component: SamplePackIndexContainer},
     {path: '/hostindex', component: HostIndexContainer},
-    {path: '/user', component: UserContainer},
+    {path: '/user/:active', component: UserContainer},
     {path: '/setting', component: SettingContainer},
     {path: '/login', component: LoginContainer},
     {path: '/each', component: EachContainer},

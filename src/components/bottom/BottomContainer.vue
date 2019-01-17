@@ -52,12 +52,12 @@
       </div>
 
       <div class="row footer-top col-md-12 col-lg-12 col-xs-12  col-sm-12">
-        <div class="col-md-4 col-lg-4">
+        <div class="col-md-4 col-lg-4" style="text-align: center;">
             <img class="logo" src="../../asset/icon/sss11.png">
           <p>我们一直致力于为广大音乐制作人提供更多的优质资源！</p>
         </div>
-        <div class="col-md-8  col-lg-7 col-lg-offset-1">
-          <div class="row about">
+        <div class="col-md-8  col-lg-7 col-lg-offset-1"  style="text-align: center;">
+          <div class="row about" style="text-align: center">
             <div class="col-sm-2">
               <h4>关于</h4>
               <ul class="list-unstyled">

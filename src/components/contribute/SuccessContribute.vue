@@ -30,7 +30,7 @@ export default {
             this.$router.push({path: "/contribute"})
         },
         myContribute() {
-            this.$router.push({path: "/user"})
+            this.$router.push({path: "/user/myContribute",params: {active: "myContribute"}})
         },
     }
 }

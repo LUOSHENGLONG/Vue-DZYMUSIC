@@ -19,25 +19,25 @@
           <li><router-link to="/samplePack">采样包</router-link></li>
           <li><router-link to="/host">宿主</router-link></li>
           <li><router-link to="/tutorial">教程</router-link></li>
-          <li><router-link to="/last">更多</router-link></li>
+          <li><router-link to="/last">最新</router-link></li>
          
         </ul>
-        <form class="navbar-form navbar-left hidden-sm hidden-md hidden-xs">
+        <form class="navbar-form navbar-left  hidden-sm hidden-md" style="text-align: center;">
           <div class="form-group">
             <input ref="keyword" v-model="keyword" type="text" class="form-control" placeholder="请输入搜索内容">
           </div>
           <button @click="search()" type="button" class="btn btn-primary" style="background-color: #47b39d;">搜索</button>
           
         </form>
-        <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
-          <li>
+        <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right">
+          <li class="hidden-sm">
             <router-link to="/contribute" class="contribute">
             &nbsp;<i class="fas fa-edit" style="font-size: 18px"></i>
             <span style="font-size: 16px">投稿&nbsp;</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/user" style="padding: 0;margin: 0 4px;border: 0;">
+            <router-link to="/user/personalInfo" style="padding: 0;margin: 0 4px;border: 0;">
               <img id="imgSrc" v-lazy="navAvatar" alt =".." class="img-circle" >
             </router-link>
             <!-- <i class="fa fa-user-circle img-circle" style="font-size: 26px; color: #337ab7;cursor: pointer"></i> -->
@@ -47,7 +47,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="margin-right: 0;">{{ nickname }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li class="dropdown-info">
-                <router-link to="/user">
+                <router-link to="/user/personalInfo">
                   <div class="dropdown-info-left">
                     <img :src="navAvatar" alt =".." class="img-info-circle">
                   </div>
@@ -59,7 +59,7 @@
                 </router-link>
               </li>
               <li>
-                <router-link to="/user">
+                <router-link to="/user/personalInfo">
                   <i class="fas fa-user-circle" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
                   <span>个人中心</span>
                   <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
@@ -136,17 +136,23 @@
           
           
         </ul>
-        <ul v-if="!this.$store.state.isLogin" class="nav navbar-nav navbar-right hidden-sm hidden-xs  hidden-md">
+        <ul v-if="!this.$store.state.isLogin" class="nav navbar-nav navbar-right">
           
           <li>
-            <a href="#" @click="showLogin($event)">登录</a>
+            <a class="loginTagA" href="#" @click="showLogin($event)">登录</a>
           </li>
           <li>
-            <a href="#" @click="showSignup($event)">注册</a>
+            <a class="signupTagA" href="#" @click="showSignup($event)">注册</a>
           </li>
         </ul>
+        
       </div><!-- /.navbar-collapse -->
-
+        <button type="button" class="navbar-toggle collapsed  hidden-sm hidden-md  hidden-lg" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="true">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
     
     </div><!-- /.container- -->
     <!-- <div class="progress">
@@ -253,9 +259,22 @@ import axios from 'axios'
 </script>
 
 <style lang="scss" scoped>
+
+// @media screen and (min-width: 1200px) {
+//   .navbar-fixed-top {
+//     width: 80%;
+//   }
+// }
+@media screen and (max-width: 1530px) {
+  .container {
+    width: 98%;
+  }
+}
 .container {
   padding: 0;
   position: relative;
+  // padding-left: 10px; 
+  // padding-right: 10px; 
 }
 .img-circle {
   width: 30px;
@@ -461,5 +480,24 @@ ul li {
     background-color: #eee;
     border-color: #47b39d;
 }
+
+.navbar-toggle {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.loginTagA {
+  margin-left: 0;
+}
+.signupTagA {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+// .navbar-right {
+//   position: absolute;
+//   right: 0;
+//   top: 0;
+// }
 </style>
 

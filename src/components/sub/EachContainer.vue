@@ -63,26 +63,6 @@
           </div>
           <!-- 分页 -->
           <div ref="paginate" class="pageNav" id="pageNav">
-            <!-- <nav aria-label="Page navigation">
-              <ul class="pagination">
-                <li>
-                  <a href="#" aria-label="Previous">
-                    <span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span>
-                  </a>
-                </li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li>
-                  <a href="#" aria-label="Next">
-                    <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
-                  </a>
-                </li>
-              </ul>
-            </nav> -->
-
             <paginate
               :page-count="Math.ceil(PageCount / 10)"
               :click-handler="page"
@@ -91,23 +71,22 @@
               :container-class="'pagination'"
               >
             </paginate>
-            
           </div>
         </div>
       </div>
       <!-- 右侧数据排行 -->
-      <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs">
+      <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs hidden-sm hidden-md">
         <!-- 1.下载排行 -->
-        <!-- <div class="mediaRight" ref="downloadRank">
+        <div class="mediaRight" ref="downloadRank">
           <div class="list-group">
             <div class="right-title">
               <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
               <p class="hot-title">&nbsp;最新文章</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of rightData1" :key="item.id">
-                <div class="zhx"></div>
-                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
+              <li v-for="(item) of rightData1" :key="item.id">
+                <!-- <div class="zhx"></div> -->
+                <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
                 <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
                 </a>
@@ -115,18 +94,18 @@
               
             </ul>
           </div>
-        </div> -->
+        </div>
         <!-- 2.受欢迎排行 -->
-        <!-- <div class="mediaRight" ref="likeRank">
+        <div class="mediaRight" ref="likeRank">
           <div class="list-group">
             <div class="right-title">
               <span class="hot-logo glyphicon glyphicon-sort-by-order hidden-sm" style="color: rgb(102, 58, 158);"></span>
               <p class="hot-title">&nbsp;下载热度</p>
             </div>
             <ul class="rightUl">
-              <li v-for="(item, index) of rightData2" :key="item.id">
-                <div class="zhx"></div>
-                <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p>
+              <li v-for="(item) of rightData2" :key="item.id">
+                <!-- <div class="zhx"></div> -->
+                <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
                 <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
                 </a>
@@ -134,8 +113,8 @@
               
             </ul>
           </div>
-        </div> -->
-        <RightContainer></RightContainer>
+        </div>
+        <!-- <RightContainer></RightContainer> -->
       </div>
       
       
@@ -249,6 +228,41 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
 </script>
 <style lang="scss" scoped>
 @import '../../asset/jPaginate/css/style.css';
+@media screen and (max-width: 400px) {
+  .titleDiv {
+    h4 {
+      font-size: 18px !important;
+    }
+  }
+
+  .media {
+    padding: 10px !important;
+  }
+  .media-body {
+    padding: 0 !important;
+  }
+}
+
+@media screen and (max-width: 1200px) and  (min-width: 992px){
+  .container {
+    width: 100%;
+    margin: 0;
+  }
+  .left {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 992px) and (min-width: 400px) {
+  .container {
+    width: 100%;
+    margin: 0;
+  }
+  .left {
+    width: 100%;
+
+  }
+}
 
 body, textarea, input, select, section, h4, li {
     color: rgb(68, 68, 68);
@@ -297,7 +311,7 @@ a {
   //页面左边 显示数据
   .left {
     padding: 0;
-    padding-right: 10px;
+    padding-right: 0px;
     .mediaLeft {  border: 1px solid rgba(0, 0, 0, 0.094);
       box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
       
@@ -490,10 +504,13 @@ a {
   //页面右边显示排行情况
   .right {
     padding: 0;
+    padding-left: 4px;
     .mediaRight{
       background-color: #fefefe;
       border-radius: 5px;
       margin-bottom: 15px;
+      box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.094);
+
       .list-group {
         border: 1px solid #eee;
         
@@ -531,7 +548,7 @@ a {
           font-weight: 700;
         }
         .rightUl {
-          padding: 0 15px 15px 10px;
+          padding: 0 10px 0px 5px;
           margin-bottom: 15px;
           li:last-child a{
             border-bottom: 1px solid #fff;
@@ -593,7 +610,7 @@ a {
               line-height: 20px;
               left: 5px;
               top: 10px;
-              width: 83%;
+              width: 100%;
               height: 40px;;
               overflow:hidden;
               background-color: #fff;

@@ -77,6 +77,40 @@
   }
 </script>
 <style lang="scss" scoped>
+
+@media screen and (max-width: 1200px) and  (min-width: 992px){
+  .feature-news{
+    margin-left: 4px !important;
+    margin-right: 4px !important;
+  }
+  .feature-news {
+    width: 32% !important;
+  }
+  
+}
+
+@media screen and (max-width: 992px) and (min-width: 400px) {
+  .feature-news{
+    margin-left: 4px !important;
+    margin-right: 4px !important;
+  }
+  .feature-news {
+    width: 48% !important;
+  }
+  
+}
+
+@media screen and (max-width: 400px) {
+  .feature-news{
+    margin-left: 2% !important;
+    margin-right: 2% !important;
+  }
+  .feature-news {
+    width: 96% !important;
+  }
+  
+}
+
 .container {
   padding: 0;
 }
