@@ -19,6 +19,7 @@
     <Bottom></Bottom>
     <!-- 遮罩层 -->
     <div ref="popContainer" class='popContainer'></div>
+    
   </div> 
 
 </template>
@@ -320,6 +321,7 @@ a {
   background-color: #fff;
   border-radius: 5px;
 }
+
 
 
 </style>

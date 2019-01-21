@@ -55,6 +55,25 @@ export default {
       axios.post("http://localhost:3001/homeData")
         .then(result => {
           if(result != null) {
+            let test = /(\")|(\])|(\[)/
+            String.prototype.replaceAll = function(s1,s2){ 
+              return this.replace(new RegExp(s1,"gm"),s2); 
+            }
+            result.data.data.forEach( origin => {
+              origin.forEach (item => {
+                item.img = item.img + ""
+                item.img = item.img.replaceAll(test,"")
+                let img = []
+                if(item.img.indexOf(",") > -1) {
+                  item.img.split(",").forEach( item2 => {
+                    img.push("http://localhost:3001" + item2)
+                  })
+                }else {
+                  img.push("http://localhost:3001" + item.img)
+                }
+                item.img = img[0]
+              })
+            })
             localStorage.setItem("homeData",JSON.stringify(result.data))
             this.$store.state.homeData = result.data
           }

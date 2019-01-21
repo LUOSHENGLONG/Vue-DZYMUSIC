@@ -36,6 +36,8 @@
       }
     },
     props:["data","type"],
+    mounted() {
+    },
     methods: {
       more(e) {
         e.preventDefault();
@@ -67,9 +69,11 @@
         }
         this.$router.push({name: "info",params: {type: typeName,id: id}})
         
-      }
+      },
+      
     },
     mounted() {
+      
     }
     ,
     components: {
@@ -100,7 +104,7 @@
   
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 420px) {
   .feature-news{
     margin-left: 2% !important;
     margin-right: 2% !important;
@@ -137,6 +141,10 @@ a {
   .feature-news:hover {
     padding-top: 0px;
     box-shadow: 2px 6px 15px rgba(0, 0, 0, 0.094);
+    img {
+      transform: scale(1.5);
+      transition: all 1s ease;
+    }
   }
   .feature-news {
     border: 1px solid rgba(121, 121, 121, 0.094);
@@ -183,6 +191,7 @@ a {
         overflow: hidden;
         text-align: center;
         img {
+          height: 100%;
           background-position: center;
           background-size: cover;
         }

@@ -116,11 +116,13 @@
                   </a>
                 </div>
                 <div class="media-body">
+                  <router-link target="_blank" :to="{name: 'info', params: {type: item.type, id: item.id}}" :style="item.type | colorFormat">
                   <h4 class="media-heading">
-                    <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
+                    <a :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
                     {{ item.title }}
                   </h4>
                   <span class="mediaContent hidden-xs hidden-sm">{{ item.content }}</span>
+                  </router-link>
                   <ul class="message hidden-xs hidden-sm">
                     <li><span class="fas fa-user-edit"></span>发布人</li> 
                     <li><span class="fas fa-clock"></span>{{ item.releaseTime | dateFormat }}</li>
@@ -158,35 +160,31 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th style="width: 55%">文章标题</th>
+                      <th style="width: 60%;text-align: left;padding-left: 20px">文章标题</th>
                       <th style="width: 15%">文章类型</th>
-                      <th style="width: 15%">投稿时间</th>
+                      <th style="width: 10%">投稿时间</th>
                       <th style="width: 15%">状态、操作</th>
                     </tr>
                   </thead>
                   <tbody v-for="item in userContribute" :key="item.id">
-                    <tr v-if="item.isRealease === 1" class="success">
-                      <td scope="row">{{ item.title }}</td>
-                      <td>{{ item.type }}</td>
+                    <tr v-if="item.isRelease === 1" >
+                      <td scope="row" style="text-align: left;padding-left: 20px">{{ item.title }}</td>
+                      <td>{{ item.type | typeFormat }}</td>
                       <td>{{ item.contributeTime }}</td>
-                      
-                      
                       <td>
-                        <span>已发布</span>&nbsp;
-                        <router-link to="/">查看</router-link>
+                        <div>已发布</div>&nbsp;
+                        <router-link target="_blank" :to="{name: 'info', params: {type: item.type,id: item.id}}">查看</router-link>
                         <a href="#" @click="deleteMyContribute($event,item.id)">删除</a>
                       </td>
                     </tr>
-                    <tr v-if="item.isRealease === 0">
-                      <td scope="row">{{ item.title }}</td>
+                    <tr v-if="item.isRelease === 0">
+                      <td scope="row" style="text-align: left;padding-left: 20px">{{ item.title }}</td>
                       <td>{{ item.type | typeFormat }}</td>
                       <td>{{ item.contributeTime }}</td>
-                      
                       <td>
-                        <span>待审核</span>&nbsp;
+                        <div>待审核</div>&nbsp;
                         <a href="#" @click="deleteMyContribute($event,item.id)">删除</a>
                       </td>
-                      
                     </tr>
                     
                   </tbody>
@@ -302,6 +300,7 @@ export default {
           console.log(result.data.count[0].count)
           this.contributePageCount = result.data.count[0].count
           this.userContribute = result.data.pageData
+          console.log(this.userContribute)
           this.userContribute.forEach( item => {
             console.log(item)
             item.contributeTime = timestampToTime(parseInt(item.contributeTime))
@@ -390,10 +389,28 @@ export default {
         axios.post("http://localhost:3001/likeData",{userId: this.userData.id, currentPage: this.currentPage})
         .then(result => {
           this.data = result.data.likeData
-          this.PageCount = result.data.count.count
+          String.prototype.replaceAll = function(s1,s2){ 
+            return this.replace(new RegExp(s1,"gm"),s2); 
+          }
+          let test = /(\")|(\])|(\[)/
+          let img = []
+          this.data.forEach( item => {
+            if(item.img === "" | item.img === null) {
+              return
+            }
+            item.img = item.img + ""
+            item.img = item.img.replaceAll(test,"")
+            if(item.img.indexOf(",") > -1) {
+              item.img.split(",").forEach( item => {
+                img.push("http://localhost:3001" + item)
+              })
+            }else {
+              img.push("http://localhost:3001" + item.img)
+            }
+            item.img = img[0]
+            
+          })
         })
-      } else {
-        this.$router.push({path: '/'})
       }
       
     },
@@ -777,6 +794,7 @@ form.form-search {
     line-height: 24px;
   }
   span.mediaContent {
+    color: #444;
     font-size: 16px;
     display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;
 

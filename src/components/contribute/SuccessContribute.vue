@@ -40,6 +40,7 @@ export default {
     height: 600px;
     box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
     position: relative;
+    margin-top: 70px;
 }
 .submitContribute {
   position: absolute;

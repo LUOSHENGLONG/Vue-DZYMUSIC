@@ -25,6 +25,29 @@ import EachContainer from '../sub/EachContainer.vue'
         .then(result => {
           this.data = result.data.data
           this.count = result.data.count["count(id)"]
+          console.log(this.data)
+          let test = /(\")|(\])|(\[)/
+          let img = []
+          String.prototype.replaceAll = function(s1,s2){ 
+            return this.replace(new RegExp(s1,"gm"),s2); 
+          }
+          this.data.forEach( item => {
+            img = []
+            if( item.img != null) {
+              item.img = item.img.replaceAll(test,"")
+              if(item.img.indexOf(",") > -1) {
+                item.img.split(",").forEach( item => {
+                  img.push("http://localhost:3001" + item)
+                })
+              }else {
+                img.push("http://localhost:3001" + item.img)
+              }
+              item.img = img[0]
+            }else {
+              item.img = "http://localhost:3001/contribute/1788MUSIC.png"
+            }
+            console.log(item.img)
+          })
         })
       },
       setCurrentPage(e) {

@@ -24,16 +24,16 @@
         </ul>
         <form class="navbar-form navbar-left  hidden-sm hidden-md" style="text-align: center;">
           <div class="form-group">
-            <input ref="keyword" v-model="keyword" type="text" class="form-control" placeholder="请输入搜索内容">
+            <input ref="keyword" v-model="keyword" @keyup.enter="search" type="text" class="form-control" placeholder="请输入搜索内容">
+            <i class="fas fa-search" @click="search" style="cursor: pointer;"></i>
           </div>
-          <button @click="search()" type="button" class="btn btn-primary" style="background-color: #47b39d;">搜索</button>
           
         </form>
         <ul v-if="this.$store.state.isLogin" class="nav navbar-nav navbar-right">
           <li class="hidden-sm">
             <router-link to="/contribute" class="contribute">
-            &nbsp;<i class="fas fa-edit" style="font-size: 18px"></i>
-            <span style="font-size: 16px">投稿&nbsp;</span>
+            &nbsp;&nbsp;<i class="fas fa-edit" style="font-size: 18px"></i>
+            <span style="font-size: 16px">投稿&nbsp;&nbsp;</span>
             </router-link>
           </li>
           <li>
@@ -283,10 +283,15 @@ import axios from 'axios'
   cursor: pointer;
 }
 .form-control:focus {
-    border-color: rgb(109, 109, 109);
+    border-color: #47b39d9d;
     outline: 0;
     -webkit-box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 2px rgba(0,0,0,.075);
     box-shadow: inset 0 0px 0px rgba(0,0,0,.075), 0 0 2px rgba(0,0,0,.075);
+}
+.form-control {
+    border-radius: 40px;
+    padding-right: 34px;
+    font-size: 16px;
 }
 
 .navbar {
@@ -316,14 +321,17 @@ ul li {
     
   }
   a.contribute {
-    margin-top: 6px; 
-    height: 38px;
-    line-height: 28px;
+    margin-left: 0;
+    margin-top: 8px; 
+    height: 34px;
+    line-height: 24px;
     letter-spacing: 2px;
+    border-radius: 40px;
   }
   
   a:hover {
     border-bottom: 3px solid #47b39d;
+    opacity: 0.9;
   }
 }
 .progress {
@@ -499,5 +507,15 @@ ul li {
 //   right: 0;
 //   top: 0;
 // }
+
+.form-group {
+  position: relative;
+  .fa-search {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    color: #47b39d;
+  }
+} 
 </style>
 

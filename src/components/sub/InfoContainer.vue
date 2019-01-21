@@ -1,5 +1,11 @@
 <template>
-    <div class="container">
+    <div class="container" ref="container" v-if="switchArticle">
+      <div class="shadeLayer" @click="hiddenOrg">
+        <!-- <i class="glyphicon glyphicon-remove" style="font-size: 50px;margin-top: 50px;cursor:pointer" @click="hiddenOrg"></i> -->
+      </div>
+      <div class="originImg" ref="originImg" @click="hiddenOrg">
+        <img ref="showOrigin" src="http://localhost:3001/contribute/1788MUSIC.png" alt="" title="点击返回">
+      </div>
       <!--广告 -->
       <div class="ad-container col-sm-12 col-md-12 col-lg-12">
         <div class="ad">
@@ -14,28 +20,17 @@
           <li><router-link :to="`/`+infoData.type">{{infoData.type | typeFormat}}</router-link></li>
           <li class="active">{{ infoData.title }}</li>
         </ol>
-        <section class="main-content">
+        <section class="main-content" ref="mainContent">
           <div class="main-title">
             <h2>{{ infoData.title}}</h2>
-            <!-- <div class="title-left"></div> -->
           </div>
           
           <div class="main-info">
             <ul class="message">
               <li><span class="fas fa-user-edit"></span>{{ infoData.issuer }}</li> 
-              <li><span class="fas fa-clock hidden-xs"></span>{{ infoData.releaseTime }}</li>
-              <li class="hidden-xs"><span class="fas fa-eye"></span>{{ infoData.look }}浏览</li>
-              <!-- <li>
-                <a href="#" @click="like($event)">
-                <span ref="likeSpan" :class="isLike"></span>{{ infoData.like }}收藏
-                </a>
-              </li> -->
-              <!-- <li>
-                <span class="qrcode glyphicon glyphicon-qrcode"></span>
-              </li> -->
-              <li>
-                
-              </li>
+              <li><span class="fas fa-clock hidden-xs"></span>{{ infoData.releaseTime | dateFormat }}</li>
+              <li class="hidden-xs"><span class="fas fa-eye"></span>{{ infoData.size }}</li>
+              
             </ul>
             <button 
               id="favorite1"
@@ -63,32 +58,38 @@
               data-content="取消收藏"
               >
             </button>
-            
-            <!-- <span ref="favoriteTips" style="float: right;margin: 10px;font-size: 16px;color: #337ab7;display: none"> 点击收藏 </span> -->
           </div>
           <div class="post-content mdf_connect">
             
-            <p class="post-content-img">
-              <img class="content-img" 
-                alt="" 
-                data-original="//image.midifan.com/data/attach/album/2018/1218/9219_1545127635_thumb.jpg" 
-                src="//image.midifan.com/data/attach/album/2018/1218/9219_1545127635_thumb.jpg" 
-                style="display: inline;">
+            <div class="post-content-img" v-for="item of infoData.img" :key="item"> 
               <br>
-            </p>
+              <img class="content-img" 
+                ref="infoImg"
+                alt="" 
+                title="点击查看原图" 
+                :data-original="item" 
+                :src="item" 
+                @click="showOrigin(item)"
+                style="display: inline-block;">
+                <div class="topShade"></div>
+                <div class="bottomShade"></div>
+                <div class="leftShade"></div>
+                <div class="rightShade"></div>
+              <br>
+            </div>
 
-            <p class="post-content-text">
+
+            <p class="post-content-text post-content-text-content">
               <!-- <span class="intexthighlight">Kenny Chesney</span> -->
               {{ infoData.content }}
-              <br><br>
             </p>
             
             <!-- <p class="post-content-text">Kenny Chesney此次巡演舞台工程师Chris Rabold：</p> -->
-            <blockquote>
+            <blockquote v-if="infoData.description === null ? true : false">
               <p class="post-content-text">{{ infoData.description }}</p>
             </blockquote>
-            <div class="video-responsive">
-              <iframe src="//player.bilibili.com/player.html?aid=38535307&cid=67736992&page=1" frameborder="0" allowfullscreen="true"> </iframe>
+            <div class="video-responsive" v-if="haveVideoLink">
+              <iframe :src="infoData.videoLink" frameborder="0" allowfullscreen="true"> </iframe>
               <br>
               <hr>
             </div>
@@ -111,8 +112,10 @@
                     ref="btnTips1"
                     data-clipboard-target="#tqm"
                   >复制提取码</button>
-                   &nbsp;&nbsp;&nbsp;
-                   解压密码: <span ref="jymm" id="jymm">xxx</span>  &nbsp;&nbsp;
+
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                   解压密码: <span ref="jymm" id="jymm" v-text="infoData.downloadUnzip === '' ? '无':infoData.downloadUnzip">xxx</span>  &nbsp;&nbsp;
 
                   <button 
                     @click="showAndhideTips2()" 
@@ -130,9 +133,7 @@
             <div class="description">
               <blockquote>
                 <p class="post-content-text"> 
-                  我知道sE,我一直在用sE RF(我知道sE,我一直在用sE R
-                  我知道sE,我一直在用sE RF(我知道sE,我一直在用sE RF(
-                  F(我知道sE,我一直在用sE RF(我知道sE,我一直在用sE RF(
+                  1788 MUSIC
                 </p>
               </blockquote>
             </div>
@@ -157,7 +158,7 @@
               <li v-for="(item) of rightData1" :key="item.id">
                 <!-- <div class="zhx"></div> -->
                 <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
-                <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
+                <a ref="rankA" href="#" target="_blank" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
                 </a>
               </li>
@@ -177,7 +178,7 @@
               <li v-for="(item) of rightData2" :key="item.id">
                 <!-- <div class="zhx"></div> -->
                 <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
-                <a ref="rankA" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
+                <a ref="rankA" target="_blank" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
                   <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
                 </a>
               </li>
@@ -189,6 +190,9 @@
 
       </div>
       <div class="wrap" ref="tips">{{ tips }}</div>
+      <div class="topScroll" ref="topScroll" @click="menu">
+        <img src="../../images/top.png">
+      </div>
     </div>
 </template>
 <script>
@@ -197,14 +201,12 @@ import RightContainer from './RightContainer.vue'
 
 import Clipboard from 'clipboard';
 import axios from 'axios'
+import { setTimeout } from 'timers';
 
   export default {
     data() {
       return {
         infoData: {},
-        
-        isLike: "glyphicon glyphicon-heart-empty",
-        isRed: "black",
         scrollTitleInterval: {},
         clipboard: {},
         tips: "",
@@ -213,6 +215,10 @@ import axios from 'axios'
         rightData1: JSON.parse(localStorage.getItem("rightData1")|| []),
         rightData2: JSON.parse(localStorage.getItem("rightData2")|| []),
         isFavorite: false,
+        haveVideoLink: false,
+        isShow: false,
+        switchArticle: true
+
       }
     },
     
@@ -228,8 +234,58 @@ import axios from 'axios'
       this.menu()
       this.getInfoData()
       this.getFavorite()
+      
+
+      // 如果图片宽度大于内容宽度 则把img 设置 成 width 100%
+      window.onload = () => {
+        // this.$refs.topScroll.style.top = "200px"
+
+        let content = $(this.$refs.mainContent).width()
+        let img = $(this.$refs.infoImg).width()
+        if (img > content) {
+          $(this.$refs.infoImg).css("width","100%")
+        }
+        // $(this.$refs.topScroll).css("top",$(window).height()-250 + "px")
+      }
+      
+      window.onscroll = () => {
+        $(this.$refs.topScroll).css("top",$(window).height()-250+$(document).scrollTop() + "px")
+        $(this.$refs.topScroll).css("display","block")
+      }
     },
+    updated() {
+      let content = $(this.$refs.mainContent).width()
+      let img = $(this.$refs.infoImg).width()
+      if (img > content) {
+        $(this.$refs.infoImg).css("width","100%")
+      }
+
+      window.onscroll = () => {
+        $(this.$refs.topScroll).css("top",$(window).height()-250+$(document).scrollTop() + "px")
+      }
+    },
+    
     methods: {
+      hiddenOrg() {
+        this.$refs.originImg.style.display = "none"
+        $(".shadeLayer").css("display","none")
+      },
+      showOrigin(src) {
+        window.scrollTo(0,0)
+        this.$refs.showOrigin.src = src
+        this.$refs.originImg.style.display = "block"
+        let clientHeight = $(window).height()
+        let imgHeight = this.$refs.showOrigin.height
+
+        let imgWidht = this.$refs.showOrigin.widht
+
+
+        if (imgHeight < clientHeight) {
+          this.$refs.showOrigin.style.top = clientHeight / 2  - imgHeight / 2 + "px"
+        }
+        this.$refs.originImg.style.height = $(document).height() + "px"
+        $(".shadeLayer").css("display","block")
+      },
       showFavoriteTips1() {
         $('#favorite1').popover('show');
         
@@ -254,20 +310,7 @@ import axios from 'axios'
           }, 2000);
           return
         }
-        function formatDateTime(date) {  
-          var y = date.getFullYear();  
-          var m = date.getMonth() + 1;  
-          m = m < 10 ? ('0' + m) : m;  
-          var d = date.getDate();  
-          d = d < 10 ? ('0' + d) : d;  
-          var h = date.getHours();  
-          h=h < 10 ? ('0' + h) : h;  
-          var minute = date.getMinutes();  
-          minute = minute < 10 ? ('0' + minute) : minute;  
-          var second=date.getSeconds();  
-          second=second < 10 ? ('0' + second) : second;  
-          return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
-        };
+        
         
         const mydate = new Date()
         function getUUID() {
@@ -278,7 +321,7 @@ import axios from 'axios'
           id: getUUID(),
           articleId: this.id,
           userId: JSON.parse(sessionStorage.getItem("user")).id,
-          createTime: formatDateTime(mydate)
+          createTime: new Date().getTime()
         })
         .then(result => {
           $('#favorite1').popover('hide');
@@ -296,21 +339,6 @@ import axios from 'axios'
           }, 2000);
           return
         }
-        //时间初始化
-        function formatDateTime(date) {  
-          var y = date.getFullYear();  
-          var m = date.getMonth() + 1;  
-          m = m < 10 ? ('0' + m) : m;  
-          var d = date.getDate();  
-          d = d < 10 ? ('0' + d) : d;  
-          var h = date.getHours();  
-          h=h < 10 ? ('0' + h) : h;  
-          var minute = date.getMinutes();  
-          minute = minute < 10 ? ('0' + minute) : minute;  
-          var second=date.getSeconds();  
-          second=second < 10 ? ('0' + second) : second;  
-          return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
-        };
         
         const mydate = new Date()
         //UUID
@@ -333,8 +361,14 @@ import axios from 'axios'
       intoInfo(e, id, type) {
         e.preventDefault()
         // this.$router.go(0)
-        this.$router.push({name: `info2`,params: {id: id}})
+        // this.$router.push({name: `info2`,params: {id: id}})
+        this.id = id 
+        this.switchArticle = false
+        this.getInfoData()
         this.menu()
+        setTimeout(() => {
+          this.switchArticle = true
+        }, 1);
       },
       menu() {
         window.scrollTo(0,0);
@@ -343,7 +377,33 @@ import axios from 'axios'
         axios.post("http://localhost:3001/info",{id: this.id})
         .then(result => {
           this.infoData = result.data.data
-          localStorage.setItem("article",JSON.stringify(result.data.data))
+          String.prototype.replaceAll = function(s1,s2){ 
+            return this.replace(new RegExp(s1,"gm"),s2); 
+          }
+          let test = /(\")|(\])|(\[)/
+          let img = []
+          // test = /\[\]\"/
+          if(this.infoData.img === "" | this.infoData.img === null) {
+            return
+          }
+          this.infoData.img = this.infoData.img.replaceAll(test,"")
+          if(this.infoData.img.indexOf(",") > -1) {
+            this.infoData.img.split(",").forEach( item => {
+              img.push("http://localhost:3001" + item)
+            })
+          }else {
+            img.push("http://localhost:3001" + this.infoData.img)
+          }
+          this.infoData.img = img
+          if( this.infoData.videoLink === "" || this.infoData.videoLink === null ) {
+            this.haveVideoLink = false
+            return
+          }
+
+          let videoStart = this.infoData.videoLink.toString().indexOf("/av") + 3
+          this.infoData.videoLink = "//player.bilibili.com/player.html?aid=" + this.infoData.videoLink.substring(videoStart,videoStart+8)
+          this.haveVideoLink = true
+          
         })
       },
       getFavorite() {
@@ -407,6 +467,8 @@ import axios from 'axios'
   }
 </script>
 <style lang="scss" scoped>
+
+
 @media screen and (max-width: 400px) {
   .main-title {
     h2 {
@@ -430,7 +492,7 @@ import axios from 'axios'
   }
   .video-responsive {
     iframe {
-      height: 500px !important;
+      height: 650px !important;
     }
   }
   .container {
@@ -439,7 +501,7 @@ import axios from 'axios'
   }
 }
 
-@media screen and (max-width: 992px) and (min-width: 400px) {
+@media screen and (max-width: 600px) and (min-width: 400px) {
   .video-responsive {
     iframe {
       height: 300px !important;
@@ -452,6 +514,38 @@ import axios from 'axios'
     width: 100%;
     margin: 0;
   }
+}
+
+@media screen and (max-width: 800px) and (min-width: 600px) {
+  .video-responsive {
+    iframe {
+      height: 400px !important;
+    }
+  }
+  .left {
+    width: 100%;
+  }
+  .container {
+    width: 100%;
+    margin: 0;
+  }
+  
+}
+
+@media screen and (max-width: 992px) and (min-width: 800px) {
+  .video-responsive {
+    iframe {
+      height: 560px !important;
+    }
+  }
+  .left {
+    width: 100%;
+  }
+  .container {
+    width: 100%;
+    margin: 0;
+  }
+  
 }
 .red {
   color: #d9534f !important; 
@@ -484,6 +578,7 @@ button.active {
 
 .container {
   padding: 0;
+    position: relative;
   .main-content {
     width: 100%;
     box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
@@ -507,7 +602,7 @@ button.active {
       }
       h2 {
             font-size: 30px;
-            border-bottom: 2px solid #7645b8;
+            border-bottom: 3px solid #7645b8;
             padding-bottom: 18px;
             margin-bottom: -2px;
             font-weight: 700;
@@ -558,7 +653,15 @@ button.active {
       
     }
     .post-content {
+      .post-content-text-content {
+        text-indent: 2em;
+        border-left: 5px solid #7645b8;
+        background-color: #7745b809;
+        margin: 30px 0;
+        padding: 10px 20px;
+      }
       .post-content-text {
+        
         font-size: 18px;
         .intexthighlight {
           color: rgb(26, 117, 255);
@@ -567,8 +670,11 @@ button.active {
       }
       .post-content-img {
         text-align: center;
+        position: relative;
+        overflow: hidden;
         .content-img {
-          width: 100%;
+          // width: 100%;
+          cursor: pointer;
         }
       }
       blockquote {
@@ -586,10 +692,10 @@ button.active {
       .download {
         position: relative;
         blockquote {
-          background-color: #dff0d8;
-          border-color: #449d44;
+          background-color: #35b69c11;
+          border-color: #0ebd9a;
           p {
-            color: #3c763d;
+            color: #086653;
           }
           // .tqm:hover,.jymm:hover {
           //   color: #449d44;
@@ -600,7 +706,7 @@ button.active {
       }
       .description {
         blockquote {
-          background-color: #f7f7f9;
+          background-color: #3379b70e;
           border-color: #337ab7;
           p {
             color: rgba(0, 0, 0, 0.801);
@@ -1040,6 +1146,99 @@ img {
   color: #337ab7;
   background: none;
   border: none;
+}
+
+.topShade {
+        position: absolute;
+        width: 100%;
+        height: 15%;
+        left: 0;
+        top: 0;
+        background-image: -webkit-linear-gradient(bottom, rgba(255, 255, 255, 0) 0%, white 500%);
+        background-repeat: repeat-x;
+    }
+    .bottomShade {
+        position: absolute;
+        width: 100%;
+        height: 15%;
+        left: 0;
+        bottom: 0%;
+        background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 500%);
+        background-repeat: repeat-x;
+    }
+    .leftShade {
+        position: absolute;
+        width: 8%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-image: -webkit-linear-gradient(right, rgba(255, 255, 255, 0) 0%, white 500%);
+        background-repeat: repeat-y;
+    }
+    .rightShade {
+        position: absolute;
+        width: 8%;
+        height: 100%;
+        right: 0;
+        top: 0;
+        background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, white 500%);
+        background-repeat: repeat-y;
+    }
+
+p{ 
+  word-wrap:break-word;
+  word-break:break-all;
+}
+
+.jymm, .tqm {
+  border-radius: 40px;
+  background-color: #47b39d;
+  border-color: #47b39d;
+  outline: 0;
+}
+
+.jymm:hover, .tqm:hover, .jymm:focus, .tqm:focus {
+  background-color: #47b39de3;
+  border-color: #47b39d;
+  outline: 0;
+}
+
+.originImg {
+  position: absolute;
+  background-color: rgba(146, 143, 143, 0.2);
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  margin: 0 auto;
+  text-align: center;
+  display: none;
+  img {
+    position: absolute;
+    left: 50%;
+    
+    transform: translate(-50%),
+  }
+}
+
+.topScroll {
+  position: absolute;
+  right: -5%;
+  cursor: pointer;
+  display: none;
+}
+
+.shadeLayer {
+  position: fixed;
+  background-color: rgba(146, 143, 143, 0.771);
+  width: 100%;
+  height: 110%;
+  display: none;
+  left: 0;
+  top: -50px;
+  z-index: 99;
+  text-align: right;
 }
 </style>
 

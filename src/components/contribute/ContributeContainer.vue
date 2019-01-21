@@ -144,6 +144,7 @@
               ></textarea>
             </div>
           </li>
+          
 
           <li class="imgLink-li">
             <!-- 文章图片链接 -->
@@ -203,6 +204,29 @@
                 onpropertychange="this.style.height=this.scrollHeight + 'px'"
                 oninput="this.style.height=this.scrollHeight + 'px'"
                 placeholder="如有提供资源下载请填写百度云链接"
+              ></textarea>
+            </div>
+          </li>
+
+          <li class="downloadLink-li">
+            <!-- 资源大小 -->
+            <div class="contribute-downloadLink">
+              <span class="contribute-downloadLink-text">资源大小&nbsp;
+                <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
+
+              </span>
+              <!-- 设置textarea高度自动化 隐藏右侧滚动条 -->
+              <textarea
+                name="articleTextarea"
+                id
+                cols="30"
+                rows="10"
+                v-model="size"
+                maxlength="1000"
+                class="coolscrollbar contribute-downloadLink-textarea"
+                onpropertychange="this.style.height=this.scrollHeight + 'px'"
+                oninput="this.style.height=this.scrollHeight + 'px'"
+                placeholder="如提供资源请填写资源大小 如：3.2GB / 201MB / 565KB"
               ></textarea>
             </div>
           </li>
@@ -303,7 +327,8 @@ export default {
       downloadPassword: "",
       downloadUnzip: "",
       img: [],
-      contributeData: []
+      contributeData: [],
+      size: ""
 
     };
   },
@@ -323,7 +348,7 @@ export default {
     this.menu()
   },
   methods: {
-    
+    // 投稿提示
     goTips() {
       const {href} = this.$router.resolve({
         path: "/tips",
@@ -331,6 +356,7 @@ export default {
       })
       window.open(href, '_blank')
     },
+    // 提交投稿
     submitContribute() {
       // 获取文章标题 判断是否为空
       if( this.title.trim() === "" ) {
@@ -355,21 +381,7 @@ export default {
       // 获取文章类型 id为 如 samplePack 
       this.type = $('input[name="type"]:checked')[0].id
 
-      // 2019-01-02 09:29:59 格式化日期
-      function formatDateTime(date) {  
-        var y = date.getFullYear();  
-        var m = date.getMonth() + 1;  
-        m = m < 10 ? ('0' + m) : m;  
-        var d = date.getDate();  
-        d = d < 10 ? ('0' + d) : d;  
-        var h = date.getHours();  
-        h=h < 10 ? ('0' + h) : h;  
-        var minute = date.getMinutes();  
-        minute = minute < 10 ? ('0' + minute) : minute;  
-        var second=date.getSeconds();  
-        second=second < 10 ? ('0' + second) : second;  
-        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
-      };
+      
 
       this.formData.append("title",this.title)
       this.formData.append("type",this.type)
@@ -377,9 +389,10 @@ export default {
       this.formData.append("description",this.description)
       this.formData.append("videoLink",this.videoLink)
       this.formData.append("downloadLink",this.downloadLink)
+      this.formData.append("size",this.size)
       this.formData.append("downloadPassword",this.downloadPassword)
       this.formData.append("downloadUnzip",this.downloadUnzip)
-      this.formData.append("contributeTime",formatDateTime(new Date()))
+      this.formData.append("contributeTime",new Date().getTime())
       this.formData.append("userId", JSON.parse(sessionStorage.getItem("user")).id)
 
       let that = this
@@ -550,11 +563,12 @@ export default {
   margin-top: 80px;
 }
 .container {
-  height: 1300px;
+  min-height: 1400px;
   // background-color: pink;
   position: relative;
   text-align: center;
   padding: 0;
+  z-index: 999;
   .contributeTips {
     position: absolute;
     background-color: #7745b8de;
@@ -797,13 +811,13 @@ export default {
     height: 60px;
   }
   .contribute-zipPassword-textarea {
-    min-height: 40px;
-    height: 40px;
+    min-height: 60px;
+    height: 60px;
     margin-left: -4px;
   }
   .contribute-downloadCode-textarea {
-    min-height: 40px;
-    height: 40px;
+    min-height: 60px;
+    height: 60px;
     margin-left: -22px;
   }
 }

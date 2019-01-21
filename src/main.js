@@ -22,8 +22,8 @@ Vue.use(VueCropper)
 
 //图片懒加载
 Vue.use(VueLazyLoad,{
-  error:'./src/asset/icon/lazy.gif',
-  loading:'./src/asset/icon/lazyEach.gif'
+  error:'./src/asset/icon/lazy8.gif',
+  loading:'./src/asset/icon/lazy8.gif'
 })
 // Vue.use(axios)
 // Vue.use(Clipboard)
@@ -53,6 +53,9 @@ Vue.filter('typeFormat', function (dataStr) {
   }
 })
 
+
+
+
 //hiddenPhone
 Vue.filter('hiddenPhone', function (dataStr) {
   if(dataStr === "" || dataStr === null){
@@ -64,15 +67,21 @@ Vue.filter('hiddenPhone', function (dataStr) {
 
 //filter
 Vue.filter('dateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
-  
+  dataStr = parseInt(dataStr)
   moment.locale('zh-cn') //设置中文显示
-  // return moment().startOf('day').fromNow()
-  // return moment.duration(10, "minutes").humanize()
-  // console.log(new Date())
-  // const time = moment(new Date()).format(pattern)
-  return moment(dataStr).startOf('hour').fromNow();
+
+  // 864000000毫秒等于10天
+  let now = new Date().getTime()
+  if ( now - dataStr < 864000000 ) {
+    dataStr = moment(dataStr).format('YYYY-MM-DD HH:mm:ss');
+    return moment(dataStr).startOf('hour').fromNow();
+  } else {
+    return moment(dataStr).format('YYYY-MM-DD HH:mm:ss');
+  }
 
 })
+
+
 
 Vue.filter('contributeTimeFormat', function(dataStr) {
   

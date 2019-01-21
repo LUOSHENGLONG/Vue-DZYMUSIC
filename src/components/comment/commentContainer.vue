@@ -752,7 +752,7 @@ export default {
               border: 1px solid #337ab7;
             }
             .ipt-txt {
-              font-size: 12px;
+              font-size: 16px;
               display: inline-block;
               box-sizing: border-box;
               background-color: #f4f5f7;

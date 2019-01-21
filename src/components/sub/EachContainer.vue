@@ -15,49 +15,35 @@
             <li><router-link to="/"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</router-link></li>
             <li class="active">{{navType}}</li>
           </ol>
+          
           <div class="media" v-for="item of data" :key="item.id">
-            <div class="media-body">
-              <div class="media-left media-middle">
-                <div class="Content">
-                  <router-link target="_blank" :to="`/`+item.type+`/info/`+item.id">
-                    <!-- <h4 class="media-heading">
-                      <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      
-                        {{item.id}}---{{ item.title }}
-                    </h4>
-                    <div class="xhx"></div>
-                    <img class="media-object hidden-xs hidden-sm" :src="item.img" alt="...">
-                    <p class="pDiv hidden-xs hidden-sm">
-                        {{ item.content }}
-                    </p> -->
-                    <div class="imgDiv">
-                      <img class="media-object hidden-xs hidden-sm" v-lazy="item.img" alt="...">
-                    </div>
-                    <div class="titleDiv">
-                      <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
-                      <h4 class="media-heading">{{item.id}}---{{ item.title }}</h4>
-                    </div>
-                    <div class="contentDiv">
-                      <p class="pDiv hidden-xs hidden-sm">
-                        {{ item.content }}
-                      </p>
-                    </div>
-                  </router-link>
+            <router-link target="_blank" :to="`/`+item.type+`/info/`+item.id">
 
-                </div>
-                <div class="info hidden-xs hidden-sm">
-                  <ul class="message">
-                    <li><span class="fas fa-user-edit"></span>发布人</li> 
-                    <li><span class="fas fa-clock"></span>{{ item.releaseTime | dateFormat }}</li>
-                    <li><span class="fas fa-window-maximize"></span>476MB</li>
-                    
-                  </ul>
-                </div>
+            <div class="media-left">
+              <a href="#" class="hidden-xs hidden-sm">
+                <img class="media-object"  v-lazy="item.img" data-holder-rendered="true">
+              </a>
             </div>
+            <div class="media-body">
+              <h3 class="media-heading">
+                <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
+                {{ item.title }}
+              </h3>
+              <p class=" hidden-xs">{{ item.content }}</p>
+            </div>
+
+            </router-link>
+            <div class="info hidden-xs hidden-sm">
+              <ul class="message">
+                <li><span class="fas fa-user-edit"></span>发布人</li> 
+                <li><span class="fas fa-clock"></span>{{ item.releaseTime | dateFormat }}</li>
+                <li><span class="fas fa-window-maximize"></span>476MB</li>
+                
+              </ul>
             </div>
           </div>
-          
+
+
           <div ref="noResult" class="noResult" style="width: 100%; height:480px;display: none;text-align: center;margin-top: 40px;">
             <img src="../../images/empty.png" alt="">
           </div>
@@ -117,7 +103,9 @@
         <!-- <RightContainer></RightContainer> -->
       </div>
       
-      
+      <div class="topScroll" ref="topScroll" @click="menu">
+        <img src="../../images/top.png">
+      </div>
       
     </div>
 </template>
@@ -143,12 +131,24 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
         $('[data-toggle="tooltip"]').tooltip()
       })
       this.menu()
-      
-      // this.getData1()
-      // this.getData2()
 
+      window.onload = () => {
+        // this.$refs.topScroll.style.top = "200px"
+        $(this.$refs.topScroll).css("top",$(window).height()-250 + "px")
+      }
+      
+      window.onscroll = () => {
+        $(this.$refs.topScroll).css("top",$(window).height()-250+$(document).scrollTop() + "px")
+      }
     },
+    updated() {
+      window.onscroll = () => {
+        $(this.$refs.topScroll).css("top",$(window).height()-250+$(document).scrollTop() + "px")
+      }
+    },
+    
     methods: {
+      
       getData1() {
         axios.post("http://localhost:3001/rightData1",{currentPage: this.currentPage, keyword: this.keyword})
         .then(result => {
@@ -200,7 +200,7 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
         const rankTitle = "rankTitle" + type + id
         const title = this.$refs[rankTitle]
         const aWidth = $(this.$refs.rankA).width()
-        const width = $(title).width()-aWidth+50
+        const width = $(title).width()-aWidth+80
         $(title).animate({left: -width+"px"},2000);
       },
       stopScroll(id,type) {
@@ -229,17 +229,21 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
 <style lang="scss" scoped>
 @import '../../asset/jPaginate/css/style.css';
 @media screen and (max-width: 400px) {
-  .titleDiv {
-    h4 {
-      font-size: 18px !important;
-    }
-  }
 
   .media {
     padding: 10px !important;
   }
   .media-body {
     padding: 0 !important;
+  }
+  .media-heading {
+    font-size: 16px ;
+  }
+  .label {
+    font-size: 14px !important;
+    vertical-align: -6px !important;
+    padding: 2px 4px !important;
+    
   }
 }
 
@@ -285,7 +289,7 @@ a {
 
 .container {
   padding: 0;
-  
+  position: relative;
   //广告内容
   .ad-container {
     padding: 0;
@@ -314,191 +318,13 @@ a {
     padding-right: 0px;
     .mediaLeft {  border: 1px solid rgba(0, 0, 0, 0.094);
       box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
-      
-
-      .media {
-        background-color: #fff;
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.054),0 1px 10px rgba(0, 0, 0, 0.044) inset;
-        padding: 20px 10px;
-        border-top: 1px solid rgba(0, 0, 0, 0.044);
-        border-left: 0;
-        border-right: 0;
-        border-radius: 4px;
-        margin: 0 0 0px;
-        .media-body {
-          position: relative;
-          height: 100%;
-          padding-bottom: 10px;
-        
-          .media-left {
-            
-            padding: 0;
-            .Content:hover {
-              .media-heading {
-                color: rgb(43, 101, 151);
-              }
-            }
-            
-            //发布内容详细信息 发布标题 内容 图片
-            .Content:hover {
-              .imgDiv {
-                img {
-                  // border-left: 5px solid #337ab7;
-                  opacity: 0.8;
-                  box-shadow: 0 2px 16px #aaa;
-                  
-                }
-              }
-              .titleDiv {
-                .media-heading {
-                  color: rgb(47, 103, 151);
-                }
-              }
-            }
-            .Content {
-              width: 100%;
-              height: 100%;
-              text-decoration: none;
-              color: rgba(0, 0, 0, 0.664);
-              
-              .imgDiv {
-                text-align: center;
-                img {
-                  padding: 0;
-                  // border-left: 5px solid #fff;
-                  float: left;
-                  width: 220px;
-                  height: 140px;
-                  margin: 0px 10px 0px 10px;
-                  vertical-align: middle;
-                  background-position: center;
-                  background-size: cover;
-                }
-              
-              }
-              .titleDiv {
-                margin: 10px 10px 4px 10px;
-                .label {
-                  font-size: 100%;
-                  float: left;
-                  width: 58px;
-                  height: 22px;
-                  margin-top: 1px;
-                  line-height: 16px;
-                }
-                .media-heading {
-                  display: inline;
-                  padding-top: 0;
-                  padding: 15px 10px 0px 8px;
-                  padding-bottom: 4px;
-                  color: #428BD1;
-                  font-size: 22px;
-                  font-weight: 700;
-                  line-height: 22px;
-                }
-              }
-              .contentDiv {
-                .pDiv {
-                  padding: 0;
-                  font-size: 16px;
-                  display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;
-                  margin-right: 15px;
-                }
-              }
-              
-              
-            }
-            //发布详细信息 发布人 发布时间 收藏数 
-            .info {
-              width: 100%;
-              height: 100%;
-              .message {
-                text-align: right;
-                vertical-align: middle;
-                padding: 0 10px;
-                padding-bottom: 0;
-                margin-bottom: 0px;
-                position: absolute;
-                right: 15px;
-                bottom: 0px;
-                li {
-                  list-style: none;
-                  display: inline-block;
-                  width: 90px;
-                  height: 25px;
-                  text-align: center;
-                  color: rgba(0, 0, 0, 0.5);
-                  font-size: 14px;
-                  a {
-                    display: inline-block;
-                    font-size: 14px;
-                    color: rgba(0, 0, 0, 0.5);
-                    span {
-                      font-size: 14px;
-                      padding-left: 5px;
-                      padding-right: 3px;
-                      color: rgba(0, 0, 0, 0.5);
-                    }
-                  }
-                  span {
-                    font-size: 14px;
-                    padding-left: 5px;
-                    padding-right: 3px;
-                  }
-                }
-              }             
-            }
-            p {
-              margin: 10px;
-              padding-left: 200px;
-              color: rgba(0, 0, 0, 0.664);
-            }
-            
-          }  
-        }
-        
-      }
-      
       //分页
       .pageNav {
         background-color: #fff;
         text-align: center;
-        // border: 1px solid rgba(204, 204, 204, 0.397);
-        // .pagination {
-        //   padding: 0;
-        //   margin: 15px 0;
-        //   text-align: right;
-        //   vertical-align: middle;
-        //   padding: 0 10px;
-        //   padding-bottom: 0;
-        //   li {
-        //     height: 40px;
-        //     width: 50px;
-        //     padding: 0 3px;
-        //     list-style: none;
-        //     display: inline-block;
-        //     text-align: center;
-        //     color: rgba(0, 0, 0, 0.5);
-        //     font-size: 14px;
-            
-        //     a {
-        //       display: inline-block;
-        //       width: 100%;
-        //       height: 100%;
-        //       border-radius: 5px;
-        //       font-size: 18px;
-        //       text-align: center;
-
-        //       span {
-        //         font-size: 18px;
-        //         padding: 0;
-        //         margin-top: 3px;
-        //       }
-        //     }
-        //   }
-        // }
+        font-size: 20px;
+        
       }
-
     }
   }
   //页面右边显示排行情况
@@ -663,6 +489,119 @@ a {
   padding: 20px !important;
 }
 
+.media {
+  position: relative;
+  background-color: #fff;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.054),0 1px 10px rgba(0, 0, 0, 0.044) inset;
+  padding: 20px 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.044);
+  border-left: 0;
+  border-right: 0;
+  border-radius: 4px;
+  margin: 0 0 0px;
+
+  .media-left {
+    a {
+      display: inline-block;
+      width: 220px;
+      height: 150px;
+      overflow: hidden;
+      text-align: center !important;
+      .media-object {
+        display: inline-block;
+        height: 100%;
+        opacity: 0.8;
+        
+      }
+    }
+  }
+
+  .media-body {
+    position: relative;
+    height: 100%;
+    padding-bottom: 0px;
+    .media-heading {
+      font-weight: 700;
+      line-height: 30px;
+      a {
+        display: inline-block;
+        font-size: 16px;
+        line-height: 20px;
+        border-radius: 6px;
+        padding: 4px 10px;
+        overflow: hidden;
+        vertical-align: -6px;
+      }
+      
+    }
+
+    p {
+      font-size: 16px;
+      color: #444;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      }
+  }
+  
+}
+.media:hover {
+  .media-object {
+    opacity: 1 !important;
+    transform: scale(1.1);
+    transition: all 1s ease;
+  } 
+}
+//发布详细信息 发布人 发布时间 收藏数 
+.info {
+  width: 100%;
+  height: 100%;
+  .message {
+    text-align: right;
+    vertical-align: middle;
+    padding: 0 10px;
+    padding-bottom: 0;
+    margin-bottom: 0px;
+    position: absolute;
+    right: 15px;
+    bottom: 16px;
+    li {
+      list-style: none;
+      display: inline-block;
+      width: 90px;
+      height: 25px;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.5);
+      font-size: 14px;
+      a {
+        display: inline-block;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.5);
+        span {
+          font-size: 14px;
+          padding-left: 5px;
+          padding-right: 3px;
+          color: rgba(0, 0, 0, 0.5);
+        }
+      }
+      span {
+        font-size: 14px;
+        padding-left: 5px;
+        padding-right: 3px;
+      }
+    }
+  }             
+}
+ 
+
+
+ .topScroll {
+  position: absolute;
+  right: -5%;
+  bottom: 0;
+  cursor: pointer;
+}
 </style>
 
 
