@@ -38,6 +38,9 @@
     props:["data","type"],
     mounted() {
     },
+    updated() {
+
+    },
     methods: {
       more(e) {
         e.preventDefault();
@@ -142,7 +145,7 @@ a {
     padding-top: 0px;
     box-shadow: 2px 6px 15px rgba(0, 0, 0, 0.094);
     img {
-      transform: scale(1.5);
+      transform: scale(1.2);
       transition: all 1s ease;
     }
   }

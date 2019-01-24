@@ -5,8 +5,8 @@
         <div class="inner">
           <h3><label for="member_email">订阅我们的月刊 (中文)</label></h3>
           <form class="newsletter-form">
-            <input class="newsletter-input" v-model="email" type="email" name="member[email]" id="member_email"  placeholder="邮件地址">
-            <input class="button newsletter-button" @click="confirmEmail" type="button" value="订阅" name="member[subscribe]" id="member_submit">
+            <input class="newsletter-input" v-model="email" type="email"  id="member_email"  placeholder="邮件地址">
+            <input class="button newsletter-button" @click="confirmEmail" type="button" value="订阅"  id="member_submit">
           </form>
           <p ref="emailTips" class="emailTips">
             你可以在 <a href="https://news.vuejs.org" target="_blank">网易云</a> 翻阅往期的 issue，也可以收听 podcast。
@@ -17,43 +17,41 @@
             <i class="fa fa-wechat"></i>
           </button>
 
-          <button class="button button-caution button-box button-raised button-giant button-longshadow">
+          <button @click="goWeibo" class="button button-caution button-box button-raised button-giant button-longshadow">
             <i class="fa fa-weibo"></i>
           </button>
 
-          <button class="button button-primary button-box button-giant button-longshadow-left">
+          <button @click="goQq" class="button button-primary button-box button-giant button-longshadow-left">
             <i class="fa fa-qq"></i>
           </button>
 
-          <button class="button button-caution button-box button-giant button-longshadow-right button-longshadow-expand">
+          <button @click="goYoutube" class="button button-caution button-box button-giant button-longshadow-right button-longshadow-expand">
             <i class="fa fa-youtube-square"></i>
           </button>
-          <button class="button button-primary button-box button-giant button-longshadow-left button-longshadow-expand">
+          <button @click="goTwitter" class="button button-primary button-box button-giant button-longshadow-left button-longshadow-expand">
             <i class="fa fa-twitter"></i>
           </button>
-          <button class="button button-primary button-box button-giant button-longshadow-right button-longshadow-expand">
+          <button @click="goFacebook" class="button button-primary button-box button-giant button-longshadow-right button-longshadow-expand">
             <i class="fa fa-facebook-official"></i>
           </button>
-          <button class="ins button button-caution button-box button-giant button-longshadow-left">
+          <button @click="goIns" class="ins button button-caution button-box button-giant button-longshadow-left">
             <i class="fa"></i>
           </button>
         </div>
 
         <div ref="btnPopup" class="btn-popup">
           <div class="title">
-            
             <h3>扫描二维码<span @click="hiddenWechat()" class="closeSpan glyphicon glyphicon-remove"></span></h3>
-            
           </div>
           <div ref="qrcode" class="qrcode">
-            <img ref="qrcodeImg" src="../../asset/icon/qr.jpg" alt="">
+            <img ref="qrcodeImg" src="../../images/qrcodesmall.png" alt="">
           </div>
         </div>
       </div>
 
       <div class="row footer-top col-md-12 col-lg-12 col-xs-12  col-sm-12">
-        <div class="col-md-4 col-lg-4" style="text-align: center;">
-            <img class="logo" src="../../asset/icon/sss11.png">
+        <div class="col-md-4 col-lg-4">
+            <img class="logo" src="../../asset/icon/logo.png">
           <p>我们一直致力于为广大音乐制作人提供更多的优质资源！</p>
         </div>
         <div class="col-md-8  col-lg-7 col-lg-offset-1"  style="text-align: center;">
@@ -70,9 +68,9 @@
             <div class="col-sm-2">
               <h4>订阅我们</h4>
               <ul class="list-unstyled">
-                <li><a href="/about/">微博</a></li>
-                <li><a href="/ad/">公众号</a></li>
-                <li><a href="/links/">哔哩哔哩</a></li>
+                <li><a href="https://weibo.com/u/6725785449/home">微博</a></li>
+                <li><router-link to="/help">公众号</router-link></li>
+                <li><a href="http://space.bilibili.com/380735644?">哔哩哔哩</a></li>
                 <li><a href="/hr/">Youtube</a></li>
                 <li><a href="/hr/">Instagram</a></li>
               </ul>
@@ -80,28 +78,27 @@
             <div class="col-sm-2">
               <h4>联系方式</h4>
               <ul class="list-unstyled">
-                <li><a href="http://weibo.com/bootcss" title="Bootstrap中文网官方微博" target="_blank">微信</a></li>
-                <li><a href="http://weibo.com/bootcss" title="Bootstrap中文网官方微博" target="_blank">电话号码</a></li>
-                <li><a href="http://weibo.com/bootcss" title="Bootstrap中文网官方微博" target="_blank">新浪微博</a></li>
-                <li><a href="mailto:admin@bootcss.com">电子邮件</a></li>
+                <li><a href="JavaScript: void(0)" @click="showWechat()" target="_blank">微信</a></li>
+                <li><a href="#" target="_blank">电话号码</a></li>
+                <li><a href="https://weibo.com/u/6725785449/home" target="_blank">新浪微博</a></li>
+                <li><router-link to="/help">电子邮件</router-link></li>
               </ul>
             </div>
             <div class="col-sm-2">
               <h4>快捷导航</h4>
               <ul class="list-unstyled">
-                <li><a href="http://www.golaravel.com/" target="_blank">合成器</a></li>
-                <li><a href="http://www.ghostchina.com/" target="_blank">效果器</a></li>
-                <li><a href="http://www.bootcdn.cn/" target="_blank">采样包</a></li>
-                <li><a href="https://pkg.phpcomposer.com/" target="_blank">宿主</a></li>
-                <li><a href="https://www.return.net/" target="_blank">教程</a></li>
+                <li><router-link to="/synthesizer" target="_blank">合成器</router-link></li>
+                <li><router-link to="/effects" target="_blank">效果器</router-link></li>
+                <li><router-link to="/samplePack" target="_blank">采样包</router-link></li>
+                <li><router-link to="/host" target="_blank">宿主</router-link></li>
+                <li><router-link to="/tutorial" target="_blank">教程</router-link></li>
               </ul>
             </div>
             <div class="col-sm-2">
-              <h4>赞助商</h4>
+              <h4>赞助</h4>
               <ul class="list-unstyled">
-                <li><a href="http://www.maoyun.tv/" target="_blank">猫云</a></li>
-                <li><a href="https://www.jdcloud.com/" target="_blank">京东云</a></li>
-                <li><a href="https://www.upyun.com" target="_blank">又拍云</a></li>
+                <li><router-link to="/sponsor" target="_blank">微信</router-link></li>
+                <li><router-link to="/sponsor" target="_blank">支付宝</router-link></li>
               </ul>
             </div>
           </div>
@@ -120,10 +117,28 @@
   export default {
     data() {
       return {
-        email: ""
+        email: "",
       }
     },
     methods: {
+      goWeibo() {
+        window.open("https://weibo.com/u/6725785449/home")
+      },
+      goQq() {
+        window.open("http://wpa.qq.com/msgrd?v=3&uin=2085203270&site=qq&menu=yes")
+      },
+      goYoutube() {
+        window.open("https://www.youtube.com/channel/UC-zwZZMXX34hGRanbZ6rMDg")
+      },
+      goTwitter() {
+        window.open("http://wpa.qq.com/msgrd?v=3&uin=2085203270&site=qq&menu=yes")
+      },
+      goFacebook() {
+        window.open("http://wpa.qq.com/msgrd?v=3&uin=2085203270&site=qq&menu=yes")
+      },
+      goIns() {
+        window.open("https://www.instagram.com/1788music/")
+      },
       showWechat() {
         const nowTime = new Date().getTime();   
         const div = this.$refs.btnPopup
@@ -183,7 +198,7 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 
 .ins {
   // background-color: #f8374a;
-  background-image: url(../../asset/icon/ins2.png);
+  background-image: url(../../asset/icon/ins.png);
   background-size: cover;
 }
 .ins:hover {
@@ -209,8 +224,7 @@ button {
     width: 100%;
     height: 200px;
     img {
-      width: 0px;
-      height: 0;
+      width: 100%;
     }
   }
 }

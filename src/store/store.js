@@ -37,25 +37,20 @@ const mutations = {
     let token = ""
     if( localStorage.getItem("token") ) {
       token = localStorage.getItem("token")
-      console.log("local")
     }
     if( sessionStorage.getItem("token") ) {
       token = sessionStorage.getItem("token")
-      console.log("local")
     }
     if( token === "") {
       return
     }
     axios.post("http://localhost:3001/confirmLogin",{token: token})
     .then(result => {
-      console.log("--------------------result")
-      console.log(result)
       state.isLogin = result.data.isLogin
       if(state.isLogin === false){
         sessionStorage.removeItem("user")
         sessionStorage.removeItem("token")
       }else {
-        console.log(result.data.user)
         sessionStorage.setItem("user",JSON.stringify(result.data.user))
         state.user = result.data.user
       }

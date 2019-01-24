@@ -7,6 +7,7 @@ import VueCropper from 'vue-cropper'
 import axios from 'axios'
 import VueProgressBar from 'vue-progressbar'
 import moment from 'moment' //设置中文
+import vueToTop from 'vue-totop'
 // 分页
 // import VuePaginate from 'vue-paginate'
 // Vue.use(VuePaginate)
@@ -15,16 +16,33 @@ import {VTable,VPagination} from 'vue-easytable'
 
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
-
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(VueCropper)
+Vue.use(vueToTop)
 
 //图片懒加载
 Vue.use(VueLazyLoad,{
-  error:'./src/asset/icon/lazy8.gif',
+  error:'./src/images/1788.png',
   loading:'./src/asset/icon/lazy8.gif'
 })
+
+
+const options = {
+  color: '#47b39d',
+  failedColor: '#874b4b',
+  thickness: '2px',
+  transition: {
+    speed: '1s',
+    opacity: '0.6s',
+    termination: 300
+  },
+  autoRevert: true,
+  location: 'top',
+  inverse: false
+}
+
+Vue.use(VueProgressBar, options)
 // Vue.use(axios)
 // Vue.use(Clipboard)
 // import Paginate from 'vuejs-paginate'
@@ -76,7 +94,7 @@ Vue.filter('dateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
     dataStr = moment(dataStr).format('YYYY-MM-DD HH:mm:ss');
     return moment(dataStr).startOf('hour').fromNow();
   } else {
-    return moment(dataStr).format('YYYY-MM-DD HH:mm:ss');
+    return moment(dataStr).format('YYYY-MM-DD');
   }
 
 })
@@ -125,6 +143,15 @@ import 'swiper/dist/css/swiper.min.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import router from './router.js'
 
+
+
+Vue.http.interceptors.push((request, next) => {
+  NProgress.start();
+
+  next((response)=>{
+    NProgress.done();
+  });
+});
 
 const vm = new Vue({
   el: '#app',

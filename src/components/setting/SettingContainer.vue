@@ -103,9 +103,7 @@
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="safe">
-              <div class="safe">
-                <img src="../../images/working.png" alt="">
-              </div>
+              <AccountSecurity></AccountSecurity>
             </div>
             <div role="tabpanel" class="tab-pane" id="promotion">
               <div class="safe">
@@ -123,6 +121,8 @@
 import laydate from '../../lib/laydate/laydate.js'
 import axios from 'axios'
 import myUpload from 'vue-image-crop-upload';
+
+import AccountSecurity from '../accountSecurity/AccountSecurityContainer.vue';
 
 const imageConversion = require("image-conversion")
 
@@ -159,7 +159,8 @@ export default {
     this.menu()
   },
   components: {
-    "my-upload": myUpload
+    "my-upload": myUpload,
+    AccountSecurity
   },
   methods: {
       menu() {

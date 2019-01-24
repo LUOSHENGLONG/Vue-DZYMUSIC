@@ -1,22 +1,18 @@
 <template>
-  <div class="all">
+  <div class="all container">
+    <!-- 轮播图 -->
+    <Swiper></Swiper>
+    <!-- 首页 合成器模块 -->
+    <SynthesizerIndexContainer></SynthesizerIndexContainer>
+    <!-- 首页 效果器模块 -->
+    <EffectsIndexContainer></EffectsIndexContainer>
+    <!-- 首页 采样包模块 -->
+    <SamplePackIndexContainer></SamplePackIndexContainer>
+    <!-- 首页 宿主模块 -->
+    <HostIndexContainer></HostIndexContainer>
+    <!-- 首页 教程模块 -->
+    <TutorialIndexContainer></TutorialIndexContainer>
     
- 
-  <!-- 轮播图 -->
-  <Swiper></Swiper>
-
-
-  <!-- 首页 合成器模块 -->
-  <SynthesizerIndexContainer></SynthesizerIndexContainer>
-  <!-- 首页 效果器模块 -->
-  <EffectsIndexContainer></EffectsIndexContainer>
-  <!-- 首页 采样包模块 -->
-  <SamplePackIndexContainer></SamplePackIndexContainer>
-  <!-- 首页 宿主模块 -->
-  <HostIndexContainer></HostIndexContainer>
-  <!-- 首页 教程模块 -->
-  <TutorialIndexContainer></TutorialIndexContainer>
-  
   </div>
 
 </template>
@@ -24,7 +20,7 @@
 <script>
 import Swiper from '../swiper/SwiperContainer.vue'
 import Navbar from '../navbar/NavbarContainer.vue'
-import Progress from '../progress/ProgressContainer.vue'
+// import Progress from '../progress/ProgressContainer.vue'
 import Bottom from '../bottom/BottomContainer.vue'
 
 import SynthesizerIndexContainer from '../synthesizer/SynthesizerIndexContainer.vue'
@@ -44,6 +40,9 @@ export default {
       password: "",
       mySwiper: {}
     };
+  },
+  updated() {
+    
   },
   mounted() {
     this.getHomeData()
@@ -74,8 +73,23 @@ export default {
                 item.img = img[0]
               })
             })
+            // 时间排序
+            // let t = {}
+            // this.$store.state.homeData = result.data
+            // result.data.data.forEach( item => {
+            //   for(var i=0;i<item.length;i++){
+            //     for(var j=i+1;j<item.length;j++){
+            //       if(item[i]>item[j]){
+            //           t=item[i];
+            //           item[i]=item[j];
+            //           item[j]=t;
+            //       }
+            //     }
+            //   }
+              
+            // })
             localStorage.setItem("homeData",JSON.stringify(result.data))
-            this.$store.state.homeData = result.data
+
           }
         })
     },
@@ -87,7 +101,7 @@ export default {
   components: {
     Swiper,
     Navbar,
-    Progress,
+    // Progress,
     Bottom,
     SynthesizerIndexContainer,
     EffectsIndexContainer,
@@ -104,7 +118,10 @@ export default {
 <style lang="scss" scoped>
 
 
-
+.all {
+  position: relative;
+  padding: 0;
+}
 
 a {
   text-decoration: none;
@@ -175,6 +192,7 @@ a {
   background-color: #fff;
   border-radius: 5px;
 }
+
 
 
 </style>

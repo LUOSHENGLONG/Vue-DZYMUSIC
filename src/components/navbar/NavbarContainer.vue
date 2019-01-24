@@ -3,23 +3,20 @@
     <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0 4px 10px #ddd;">
 
     <div class="container">
-      <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        
-        <router-link class="navbar-brand" to="/"><img class="headImg" src="../../asset/icon/sss11.png" alt=""></router-link>
+        <router-link class="navbar-brand" to="/"><img class="headImg" src="../../asset/icon/logo.png" alt=""></router-link>
       </div>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <!--  class="active" -->
-          <li><router-link to="/">首页 <span class="sr-only">(current)</span></router-link></li>
+          <li class="hidden-sm"><router-link to="/">首页 <span class="sr-only">(current)</span></router-link></li>
           <li><router-link to="/synthesizer">合成器</router-link></li>
           <li><router-link to="/effects">效果器</router-link></li>
           <li><router-link to="/samplePack">采样包</router-link></li>
           <li><router-link to="/host">宿主</router-link></li>
           <li><router-link to="/tutorial">教程</router-link></li>
-          <li><router-link to="/last">最新</router-link></li>
+          <li><router-link to="/last" style="margin-right: 0">最新</router-link></li>
          
         </ul>
         <form class="navbar-form navbar-left  hidden-sm hidden-md" style="text-align: center;">
@@ -36,15 +33,14 @@
             <span style="font-size: 16px">投稿&nbsp;&nbsp;</span>
             </router-link>
           </li>
-          <li>
+          <li class="">
             <router-link to="/user/personalInfo" style="padding: 0;margin: 0 4px;border: 0;">
               <img id="imgSrc" v-lazy="navAvatar" alt =".." class="img-circle" >
             </router-link>
-            <!-- <i class="fa fa-user-circle img-circle" style="font-size: 26px; color: #337ab7;cursor: pointer"></i> -->
           </li>
           
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="margin-right: 0;">{{ nickname }} <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="margin-right: 0;font-size: 16px;">{{ nickname }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li class="dropdown-info">
                 <router-link to="/user/personalInfo">
@@ -76,18 +72,21 @@
               
               
               <li>
-                <router-link to="/setting">
+                <a href="javascript: void(0)" style="position: relative" class="weixin">
                   <i class="fab fa-weixin" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
                   <span>微信公众号</span>
                   <i class="fa fa-qrcode" style="font-size: 24px;float: right;margin-top:8px"></i>
-                </router-link>
+                  <div class="qrcode" style="">
+                  <img src="../../images/qrcode.jpg" alt="" style="">
+                </div>
+                </a>
               </li>
               <li>
-                <router-link to="/setting">
+                <a href="https://weibo.com/u/6725785449/home" target="_blank">
                   <i class="fab fa-weibo" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
                   <span>官方微博</span>
                   <i class="fas fa-link" style="font-size: 20px;float: right;margin-top:8px"></i>
-                </router-link>
+                </a>
               </li>
               <li>
                 <router-link to="/setting">
@@ -97,18 +96,18 @@
                 </router-link>
               </li>
               <li>
-                <router-link to="/setting">
+                <a target="_blank" href="https://www.instagram.com/1788music/">
                   <i class="fab fa-instagram" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
                   <span>&nbsp;Instagram</span>
                   <i class="fas fa-link" style="font-size: 20px;float: right;margin-top:8px"></i>
-                </router-link>
+                </a>
               </li>
               <li>
-                <router-link to="/setting">
+                <a target="_blank" href="https://www.youtube.com/channel/UC-zwZZMXX34hGRanbZ6rMDg">
                   <i class="fab fa-youtube" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
                   <span>Youtube</span>
                   <i class="fas fa-link" style="font-size: 20px;float: right;margin-top:8px"></i>
-                </router-link>
+                </a>
               </li>
               <li>
                 <router-link to="/setting">
@@ -118,9 +117,16 @@
                 </router-link>
               </li>
               <li>
-                <router-link to="/setting">
+                <router-link to="/help">
                   <i class="fas fa-question-circle" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
                   <span>帮助</span>
+                  <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/sponsor">
+                  <i class="fas fa-wallet" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
+                  <span>赞助</span>
                   <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
                 </router-link>
               </li>
@@ -146,7 +152,7 @@
           </li>
         </ul>
         
-      </div><!-- /.navbar-collapse -->
+      </div>
         <button type="button" class="navbar-toggle collapsed  hidden-sm hidden-md  hidden-lg" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="true">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
@@ -154,10 +160,7 @@
           <span class="icon-bar"></span>
         </button>
     
-    </div><!-- /.container- -->
-    <!-- <div class="progress">
-      <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 10%;height: 3px"></div>
-    </div> -->
+    </div>
     
     </nav>
 
@@ -174,7 +177,7 @@ import axios from 'axios'
         keyword: "",
         switch: 0,
         oldKeyword: "",
-        navAvatar: this.$store.state.user.avatar,
+        navAvatar: `http://localhost:3001` + this.$store.state.user.avatar,
         nickname: this.$store.state.user.nickname,
         emailOrPhone: "",
       }
@@ -189,9 +192,6 @@ import axios from 'axios'
 
     },
     mounted() {
-      
-
-
       let fr = new FileReader()
     },
     updated() {
@@ -270,6 +270,8 @@ import axios from 'axios'
     width: 98%;
   }
 }
+
+
 .container {
   padding: 0;
   position: relative;
@@ -291,7 +293,7 @@ import axios from 'axios'
 .form-control {
     border-radius: 40px;
     padding-right: 34px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .navbar {
@@ -517,5 +519,24 @@ ul li {
     color: #47b39d;
   }
 } 
+.qrcode {
+  position: absolute;
+  left: -205px;top:0px;
+  display:none;
+  width: 200px;
+    opacity: 1;
+  img {
+    width: 200px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
+    opacity: 1;
+  }
+}
+.weixin:hover {
+  .qrcode {
+    display: block;
+  }
+}
 </style>
 

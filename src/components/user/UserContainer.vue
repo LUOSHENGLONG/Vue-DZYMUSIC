@@ -36,7 +36,7 @@
               <div class="personal-info-row">
                 <div class="info-left input-group input-group-lg">
                   <span class="input-group-addon" id="nickname">用户名</span>
-                  <input v-model="nickname" type="text" class="nickname form-control" maxlength="16" :placeholder="userData.nickname" aria-describedby="sizing-addon1">
+                  <input v-model="nickname" type="text" class="nickname form-control"  :placeholder="userData.nickname" aria-describedby="sizing-addon1">
                   <!-- <div ref="exitName" class="exitName">用户名已存在</div> -->
                   <span ref="exitName" class="exitName input-group-addon" id="sizing-addon1">可编辑</span>
                 </div>
@@ -45,7 +45,7 @@
                   <span class="input-group-addon" id="sizing-addon1">密保设置</span>
                   <input type="text" class="form-control" disabled placeholder="未设置" aria-describedby="sizing-addon1">
                   <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
-                    <button  class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即设置</button>
+                    <button @click="binding" class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即设置</button>
                   </span>
                 </div>
               </div>
@@ -60,7 +60,7 @@
                   <span class="input-group-addon" id="sizing-addon1">实名状态</span>
                   <input type="text" class="form-control" placeholder="未实名" disabled aria-describedby="sizing-addon1">
                   <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
-                    <button  class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即实名</button>
+                    <button @click="binding" class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即实名</button>
                   </span>
                   
                 </div>
@@ -77,7 +77,7 @@
                   <span class="input-group-addon" id="sizing-addon1">QQ绑定</span>
                   <input type="text" class="form-control" placeholder="未绑定" disabled aria-describedby="sizing-addon1">
                   <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
-                    <button  class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即绑定</button>
+                    <button @click="binding" class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即绑定</button>
                   </span>
                   
                 </div>
@@ -94,8 +94,8 @@
                 <div class="info-right input-group input-group-lg">
                   <span class="input-group-addon" id="sizing-addon1">微博绑定</span>
                   <input type="text" class="form-control" placeholder="未绑定" disabled aria-describedby="sizing-addon1">
-                  <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
-                    <button  class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即绑定</button>
+                  <span  class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
+                    <button @click="binding" class="real-name btn btn-success"  style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即绑定</button>
                   </span>
                   
                 </div>
@@ -104,16 +104,16 @@
               <div class="mybtn">
                 <button type="button" @click="savePerInfo" class="btn btn-success" style="background-color: #4fc08d;">更新</button>
               </div>
-              
+              <div class="wrap" ref="tips">{{ tips }}</div>
             </div>
             <!-- myFavorite -->
             <div role="tabpanel" class="tab-pane" id="myFavorite">
 
               <div class="media" v-for="item of data" :key="item.id">
                 <div class="media-left media-middle hidden-xs hidden-sm">
-                  <a href="#">
+                  <router-link target="_blank" class="media-object-a" :to="{name: 'info', params: {type: item.type, id: item.id}}" >
                     <img class="media-object" :src="item.img" alt="...">
-                  </a>
+                  </router-link>
                 </div>
                 <div class="media-body">
                   <router-link target="_blank" :to="{name: 'info', params: {type: item.type, id: item.id}}" :style="item.type | colorFormat">
@@ -142,7 +142,7 @@
                 <img src="../../images/empty.png" alt="" style="">
               </div>
               <!-- 分页 -->
-              <div ref="paginate" class="pageNav" id="pageNav">
+              <div ref="paginate" class="pageNav" id="pageNav" v-if="isShow">
                 <paginate
                   :page-count="Math.ceil(PageCount / 6)"
                   :click-handler="page"
@@ -153,10 +153,14 @@
                 </paginate>
                 
               </div>
+
+              <div  v-if="!isShow" ref="noResult" class="noResult" style="width: 100%; height:480px;text-align: center;">
+                <img src="../../images/empty.png" alt="">
+              </div>
             </div>
             <!-- myContribute -->
             <div role="tabpanel" class="tab-pane" id="myContribute">
-              <div class="bs-example" data-example-id="hoverable-table">
+              <div class="bs-example" data-example-id="hoverable-table"  v-if="showContribute">
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -191,7 +195,7 @@
                 </table>
               </div>
 
-              <div ref="paginate" class="pageNav" id="pageNav">
+              <div ref="paginate" class="pageNav" id="pageNav" v-if="showContribute">
                 <paginate
                   :page-count="Math.ceil(contributePageCount / 10)"
                   :click-handler="contributePage"
@@ -201,13 +205,18 @@
                   >
                 </paginate>
               </div>
-              
+              <div  v-if="!showContribute" ref="noResult" class="noResult" style="width: 100%; height:480px;text-align: center;">
+                <img src="../../images/empty.png" alt="">
+              </div>
             </div>
             
           </div>
         </div>
       </div>
     </div>
+
+    
+
   </div>
 </template>
 
@@ -237,8 +246,10 @@ export default {
       userContribute:[],
       active: this.$route.params.active,
       contributePageCount: 1,
-      currentContributePage: 1
-
+      currentContributePage: 1,
+      tips: "此功能暂未开通",
+      isShow: true,
+      showContribute: true,
       
       
     }
@@ -257,8 +268,6 @@ export default {
     }
     this.getLikeData()
     this.menu()
-    console.log("=====zzzzzzzxx=====")
-    console.log(this.active)
     let target = "[role='"+ this.active +"']"
     console.log($(target))
     
@@ -267,6 +276,12 @@ export default {
     this.getMyContribute()
   },
   methods: {
+    binding() {
+      this.$refs.tips.style.display = "block"
+      setTimeout(() => {
+        this.$refs.tips.style.display = "none"
+      }, 2000);
+    },
     deleteMyContribute(e, id) {
       e.preventDefault()
       axios.post('http://127.0.0.1:3001/deleteMyContribute',{id: id})
@@ -279,9 +294,9 @@ export default {
       this.currentContributePage = e
       this.getMyContribute()
     },
+    // 获取投稿 
     getMyContribute() {
       if( sessionStorage.getItem("user")) {
-        console.log("=============")
         function timestampToTime (cjsj) {
             var date = new Date(cjsj) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
             var Y = date.getFullYear() + '-'
@@ -300,6 +315,13 @@ export default {
           console.log(result.data.count[0].count)
           this.contributePageCount = result.data.count[0].count
           this.userContribute = result.data.pageData
+          if( this.userContribute.length < 1) {
+            this.showContribute = false
+            return
+          } else {
+            this.showContribute = true
+
+          }
           console.log(this.userContribute)
           this.userContribute.forEach( item => {
             console.log(item)
@@ -310,10 +332,13 @@ export default {
         
       }
     },
+    // 回到顶部
     menu() {
       window.scrollTo(0,0);
     },
+    // 更换用户名
     savePerInfo() {
+      
       if( this.nickname.trim() != "") {
         if( this.oldNickname === this.nickname ) {
           $(".exitName").text("用户名已存在")
@@ -358,11 +383,13 @@ export default {
           $(".nickname").focus()
       }
     },
+    // 我的收藏 分页
     page(e) {
       this.currentPage = e
       this.getLikeData()
       window.scrollTo(0,0);
     },
+    // 取消收藏
     cancelLike(id) {
       axios.post("http://localhost:3001/cancelFavorite",
       {
@@ -383,18 +410,28 @@ export default {
         }
       })
     },
+    // 获取用户收藏数据
     getLikeData() {
       if( sessionStorage.getItem("user") != null) {
         this.userData = JSON.parse(sessionStorage.getItem("user"))
         axios.post("http://localhost:3001/likeData",{userId: this.userData.id, currentPage: this.currentPage})
         .then(result => {
           this.data = result.data.likeData
+          console.log(this.data.length)
+          if(this.data.length < 1) {
+            this.isShow = false
+            return
+          }else {
+            this.isShow = true
+          }
           String.prototype.replaceAll = function(s1,s2){ 
             return this.replace(new RegExp(s1,"gm"),s2); 
           }
           let test = /(\")|(\])|(\[)/
           let img = []
           this.data.forEach( item => {
+            img = []
+
             if(item.img === "" | item.img === null) {
               return
             }
@@ -494,6 +531,34 @@ export default {
         this.$refs.paginate.style.display = "block"
         this.$refs.noResult.style.display = "none"
       }
+    },
+    nickname(newVal, oldVal) {
+      let len = newVal.replace(/[^\u0000-\u00ff]/g,"aa").length
+      if( len > 12) {
+        this.nickname = cutString(newVal,12)
+        console.log(newVal)
+      }
+
+      function cutString(str,len,suffix){
+        if(!str) return "";
+        if(len<= 0) return "";
+        if(!suffix) suffix = "";
+        var templen=0;
+        for(var i=0;i<str.length;i++){
+          if(str.charCodeAt(i)>255){
+            templen+=2;
+          }else{
+            templen++
+          }
+          if(templen == len){
+            return str.substring(0,i+1)+suffix;
+          }else if(templen >len){
+            return str.substring(0,i)+suffix;
+          }
+        }
+              return str;
+      }
+
     }
   }
 }
@@ -1056,9 +1121,16 @@ button.active {
 .table {
   text-align: center;
   box-shadow: 0 6px 20px #eee;
+  border-radius: 8px !important;
+  overflow: hidden;
   tbody {
-    border-top: 5px solid #fff;
+    border-top: 0px solid #fff;
     tr{
+    background-color: #34495e;
+    color: #fff;
+    }
+    tr:hover {
+      background-color: #34495ee0;
     }
   }
   th {
@@ -1067,15 +1139,39 @@ button.active {
     border: 0;
     text-align: center;
     max-width: 500px;
-    background-color: #eee;
+    background-color: #34495e;
+    color: #fff;
   }
   td {
     border: 0;
     font-size: 16px;
     max-width: 500px;
+    a {
+      color: rgb(142, 229, 238);
+    }
   }
 }
 a {
   text-decoration: none;
+}
+
+.wrap{
+  position: fixed;
+  left: 60%;
+  top:30%;
+  background: rgba(0,0,0,.35);
+  padding: 10px;
+  border-radius: 5px;
+  transform: translate(-50%,-50%);
+  color:#fff;
+  display: none;
+  z-index: 99;
+}
+
+.bs-example {
+  border-top: 3px solid #637383;
+  border-width: 4px;
+  border-top-left-radius:2em;
+  border-top-right-radius:2em;
 }
 </style>

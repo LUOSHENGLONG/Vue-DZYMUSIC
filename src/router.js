@@ -27,6 +27,10 @@ import SuccessContribute from './components/contribute/SuccessContribute.vue'
 import FailContribute from './components/contribute/FailContribute.vue'
 import TipsContainer from './components/contribute/TipsContainer.vue'
 import UploadImagesContainer from './components/uploadImages/UploadImagesContainer.vue'
+import HelpContainer from './components/help/HelpContainer.vue'
+import SponsorContainer from './components/sponsor/SponsorContainer.vue'
+import AccountSecurityContainer from './components/accountSecurity/AccountSecurityContainer.vue'
+import FindPasswordContainer from './components/findPassword/FindPasswordContainer.vue'
 
 
 
@@ -57,6 +61,10 @@ var router = new VueRouter({
     {path: '/search/:keyword', component: Search2Container, name:"search2"},
     {path: '/:type/info/:id', component: InfoContainer, name:"info"},
     {path: '/:type/info/:id', component: Info2Container, name:"info2"},
+    {path: '/help', component: HelpContainer},
+    {path: '/sponsor', component: SponsorContainer},
+    {path: '/accountSecurity', component: AccountSecurityContainer},
+    {path: '/findPassword', component: FindPasswordContainer},
 
   ]
 })

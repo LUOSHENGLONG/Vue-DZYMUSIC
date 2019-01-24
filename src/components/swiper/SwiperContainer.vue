@@ -30,10 +30,8 @@
       
       mySwiper: {},
       img:[
-        {id:1,src:'src/images/lbt1.jpg'},
-        {id:2,src:'src/images/lbt2.jpg'},
-        {id:3,src:'src/images/lbt3.jpg'},
-        {id:4,src:'src/images/lbt4.jpg'}]
+        {id:1,src:'src/images/1788.png'},
+        {id:2,src:'src/images/1788.png'}]
     };
   },
   mounted() {
@@ -46,7 +44,7 @@
         hideOnClick :false,
         clickable :true,
       },
-      mousewheel: true,
+      mousewheel: false,
       keyboard : true,
       navigation: {
         nextEl: '.swiper-button-next',
@@ -84,8 +82,7 @@
   width: 100%;
 }
 .swiper-slide img {
-  width: 100%;
-  height: 100%;
+  
 }
 
 .swiper-pagination-bullet {

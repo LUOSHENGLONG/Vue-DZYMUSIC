@@ -47,7 +47,7 @@
                                     没有帐号？
                                     <a href="#" @click="goSignup($event)" class="zhuce-href">立即注册</a>
                                 </span>
-                                <a href="/reg/forget-pwd" target="_blank" class="forger-pas">忘记密码</a>
+                                <router-link to="/findPassword" target="_blank" class="forger-pas">忘记密码</router-link>
                             </div>
                         </div>
                     </div>

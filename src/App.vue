@@ -1,10 +1,9 @@
 <template>
   <div ref="all" class="all">
+    <vue-progress-bar></vue-progress-bar>
     <!-- 顶部栏 --> 
     <Navbar :navStatus="navStatus" @showLogin="showLoginDiv" @showSignup="showSignupDiv"></Navbar>
-    <!--进度条-->
-    <!-- <Progress></Progress> -->
-    <!-- <vue-progress-bar></vue-progress-bar> -->
+    
     <router-view></router-view>
     
     <!--底部 copyright-->
@@ -19,19 +18,14 @@
     <Bottom></Bottom>
     <!-- 遮罩层 -->
     <div ref="popContainer" class='popContainer'></div>
-    
+    <vueToTop></vueToTop>
   </div> 
 
 </template>
 
 <script>
-
-import './lib/pace/js/pace.min.js'
-
-
 import Swiper from './components/swiper/SwiperContainer.vue'
 import Navbar from './components/navbar/NavbarContainer.vue'
-// import Progress from './components/progress/ProgressContainer.vue'
 import Bottom from './components/bottom/BottomContainer.vue'
 import Login from './components/login/LoginContainer.vue'
 import Signup from './components/signup/SignupContainer.vue'
@@ -43,7 +37,6 @@ import EffectsIndexContainer from './components/effects/EffectsIndexContainer.vu
 import SamplePackIndexContainer from './components/samplepack/SamplePackIndexContainer.vue'
 import HostIndexContainer from './components/host/HostIndexContainer.vue'
 import TutorialIndexContainer from './components/tutorial/TutorialIndexContainer.vue'
-
 
 
 export default {
@@ -63,9 +56,29 @@ export default {
   },
   created() {
     this.$store.commit("confirmLogin")
-
+    this.$Progress.start()
+    //  hook the progress bar to start before we move router-view
+    this.$router.beforeEach((to, from, next) => {
+      //  does the page we want to go to have a meta.progress object
+      if (to.meta.progress !== undefined) {
+        let meta = to.meta.progress
+        // parse meta tags
+        this.$Progress.parseMeta(meta)
+      }
+      //  start the progress bar
+      this.$Progress.start()
+      //  continue to next page
+      next()
+    })
+    //  hook the progress bar to finish after we've finished moving router-view
+    this.$router.afterEach((to, from) => {
+      //  finish the progress bar
+      this.$Progress.finish()
+    })
+  
   },
   mounted() {
+    this.$Progress.finish()
     window.onresize = () => {
       // 浏览器大小改变时 登陆 注册 DIV left top 值改变是其在整个窗口保持居中
       this.auto()
@@ -150,7 +163,6 @@ export default {
       this.top = srcollHeight+docHeight/2-divHeight/2
       
       this.$refs.login.style.top = this.top + "px"
-      console.log(this.top+" top")
       // 设置left
       this.$refs.login.style.left = docWidth/2 - divWidth/2 + "px"
       //遮罩层 显示
@@ -183,7 +195,6 @@ export default {
   components: {
     Swiper,
     Navbar,
-    //Progress,
     Bottom,
     Login,
     Signup,
@@ -204,10 +215,8 @@ export default {
 
 
 <style lang="scss" scoped>
-@import './lib/pace/css/pace-theme-minimal.css';
 @import './asset/css/buttons.css';
 @import './asset/css/font-awesome.min.css';
-
 body, textarea, input, select, section {
     color: rgb(68, 68, 68);
     font-size: 14px;

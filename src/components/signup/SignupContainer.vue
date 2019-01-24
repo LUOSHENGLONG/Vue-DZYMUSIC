@@ -44,7 +44,7 @@
                             <button ref="summit()" class="btn btn-success btn-lg btn-login" type="button" name="bnt" @click="summit()">注&nbsp;&nbsp;&nbsp;册</button>
                             <div ref="errorTip" @click="hiddenErrorTip" class="errorTip">邮箱或手机号码已注册 点击返回</div>
                             <div ref="successTip"  class="errorTip">注册成功 正在跳转到登录页</div>
-                            <div class="rows-forget"><span class="pull-left">已注册？<a href="#" @click="goLogin($event)" class="zhuce-href">立即登录</a></span><a href="/reg/forget-pwd" target="_blank" class="forger-pas">忘记密码</a></div>
+                            <div class="rows-forget"><span class="pull-left">已注册？<a href="#" @click="goLogin($event)" class="zhuce-href">立即登录</a></span><router-link to="/findPassword" target="_blank" class="forger-pas">忘记密码</router-link></div>
                         </div>
                     </div>
                     
@@ -207,9 +207,9 @@ export default {
   watch: {
     email( newVal, oldVal) {
         
-        //正则 邮箱验证
-        const phoneConfirm = new RegExp("(^1[3,4,5,6,7,9,8][0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$)")
         //正则 手机号码验证
+        const phoneConfirm = new RegExp("(^1[3,4,5,6,7,9,8][0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$)")
+        //正则 邮箱验证
         const emailConfirm = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/
         //验证邮箱不匹配
         if( !emailConfirm.test(newVal) ) {

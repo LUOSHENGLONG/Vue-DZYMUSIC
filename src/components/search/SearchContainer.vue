@@ -25,12 +25,10 @@ import EachContainer from '../sub/EachContainer.vue'
     ,
     methods: {
       getData() {
-        console.log(this.keyword)
         axios.post("http://localhost:3001/search",{currentPage: this.currentPage, keyword: this.keyword})
         .then(result => {
           this.data = result.data.data
           this.count = result.data.count["count(id)"]
-          console.log(this.data)
           let test = /(\")|(\])|(\[)/
           let img = []
           String.prototype.replaceAll = function(s1,s2){ 
@@ -51,7 +49,6 @@ import EachContainer from '../sub/EachContainer.vue'
             }else {
               item.img = "http://localhost:3001/contribute/1788MUSIC.png"
             }
-            console.log(item.img)
           })
         })
       },

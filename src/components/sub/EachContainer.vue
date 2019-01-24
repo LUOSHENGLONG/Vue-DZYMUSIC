@@ -7,7 +7,7 @@
           合成器
         </div>
       </div>
-      <!-- 合成器内容 -->
+      <!-- 内容 -->
       <div class="left col-sm-9 col-md-9 col-lg-9">
         
         <div class="mediaLeft">
@@ -20,9 +20,9 @@
             <router-link target="_blank" :to="`/`+item.type+`/info/`+item.id">
 
             <div class="media-left">
-              <a href="#" class="hidden-xs hidden-sm">
+              <router-link target="_blank" :to="`/`+item.type+`/info/`+item.id" class="hidden-xs hidden-sm">
                 <img class="media-object"  v-lazy="item.img" data-holder-rendered="true">
-              </a>
+              </router-link>
             </div>
             <div class="media-body">
               <h3 class="media-heading">
@@ -103,9 +103,7 @@
         <!-- <RightContainer></RightContainer> -->
       </div>
       
-      <div class="topScroll" ref="topScroll" @click="menu">
-        <img src="../../images/top.png">
-      </div>
+      
       
     </div>
 </template>
@@ -132,19 +130,10 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
       })
       this.menu()
 
-      window.onload = () => {
-        // this.$refs.topScroll.style.top = "200px"
-        $(this.$refs.topScroll).css("top",$(window).height()-250 + "px")
-      }
       
-      window.onscroll = () => {
-        $(this.$refs.topScroll).css("top",$(window).height()-250+$(document).scrollTop() + "px")
-      }
     },
     updated() {
-      window.onscroll = () => {
-        $(this.$refs.topScroll).css("top",$(window).height()-250+$(document).scrollTop() + "px")
-      }
+      
     },
     
     methods: {
@@ -569,7 +558,7 @@ a {
     li {
       list-style: none;
       display: inline-block;
-      width: 90px;
+      width: 100px;
       height: 25px;
       text-align: center;
       color: rgba(0, 0, 0, 0.5);
@@ -595,13 +584,6 @@ a {
 }
  
 
-
- .topScroll {
-  position: absolute;
-  right: -5%;
-  bottom: 0;
-  cursor: pointer;
-}
 </style>
 
 

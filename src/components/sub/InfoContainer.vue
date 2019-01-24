@@ -27,9 +27,9 @@
           
           <div class="main-info">
             <ul class="message">
-              <li><span class="fas fa-user-edit"></span>{{ infoData.issuer }}</li> 
-              <li><span class="fas fa-clock hidden-xs"></span>{{ infoData.releaseTime | dateFormat }}</li>
-              <li class="hidden-xs"><span class="fas fa-eye"></span>{{ infoData.size }}</li>
+              <li><span class="fas fa-user-edit"></span>&nbsp;{{ infoData.nickname }}</li> 
+              <li><span class="fas fa-clock hidden-xs"></span>&nbsp;{{ infoData.releaseTime | dateFormat }}</li>
+              <li class="hidden-xs"><span class="fas fa-eye"></span>&nbsp;{{ infoData.size }}</li>
               
             </ul>
             <button 
@@ -95,14 +95,14 @@
             </div>
             <div class="download">
 
-              <blockquote>
+              <blockquote v-if="infoData.downloadLink === '' ? false:true">
                 <p class="post-content-text"> 
                   下载地址：
-                  <a :href="infoData.downloadLink" target="_blank">
+                  <a :href="infoData.downloadLink" target="_blank"  v-text="infoData.downloadLink === '' ? '无':infoData.downloadLink">
                     {{ infoData.downloadLink }}
                   </a>
                   <br>
-                  提取码: <span ref="tqm" id="tqm">{{ infoData.downloadPassword }}</span>&nbsp;&nbsp;
+                  提取码: <span ref="tqm" id="tqm" v-text="infoData.downloadPassword === '' ? '无':infoData.downloadPassword"></span>&nbsp;&nbsp;
                   <button 
                     @click="showAndhideTips1()" 
                     id="btnTips1" type="button" 
@@ -111,11 +111,12 @@
                     title="" data-content="已复制"
                     ref="btnTips1"
                     data-clipboard-target="#tqm"
+                    v-if="infoData.downloadPassword === '' ? false:true"
                   >复制提取码</button>
 
                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                   解压密码: <span ref="jymm" id="jymm" v-text="infoData.downloadUnzip === '' ? '无':infoData.downloadUnzip">xxx</span>  &nbsp;&nbsp;
+                   解压密码: <span ref="jymm" id="jymm" v-text="infoData.downloadUnzip === '' ? '无':infoData.downloadUnzip">{{infoData.downloadUnzip}}</span>  &nbsp;&nbsp;
 
                   <button 
                     @click="showAndhideTips2()" 
@@ -125,6 +126,7 @@
                     data-content="已复制"
                     ref="btnTips2"
                     data-clipboard-target="#jymm"
+                    v-if="infoData.downloadUnzip === '' ? false:true"
                   >复制解压密码</button>
 
                 </p>
@@ -190,9 +192,7 @@
 
       </div>
       <div class="wrap" ref="tips">{{ tips }}</div>
-      <div class="topScroll" ref="topScroll" @click="menu">
-        <img src="../../images/top.png">
-      </div>
+      
     </div>
 </template>
 <script>
@@ -238,31 +238,25 @@ import { setTimeout } from 'timers';
 
       // 如果图片宽度大于内容宽度 则把img 设置 成 width 100%
       window.onload = () => {
-        // this.$refs.topScroll.style.top = "200px"
 
         let content = $(this.$refs.mainContent).width()
         let img = $(this.$refs.infoImg).width()
         if (img > content) {
           $(this.$refs.infoImg).css("width","100%")
         }
-        // $(this.$refs.topScroll).css("top",$(window).height()-250 + "px")
       }
       
-      window.onscroll = () => {
-        $(this.$refs.topScroll).css("top",$(window).height()-250+$(document).scrollTop() + "px")
-        $(this.$refs.topScroll).css("display","block")
-      }
+      
     },
     updated() {
+      this.getFavorite()
       let content = $(this.$refs.mainContent).width()
       let img = $(this.$refs.infoImg).width()
       if (img > content) {
         $(this.$refs.infoImg).css("width","100%")
       }
 
-      window.onscroll = () => {
-        $(this.$refs.topScroll).css("top",$(window).height()-250+$(document).scrollTop() + "px")
-      }
+      
     },
     
     methods: {
@@ -1222,12 +1216,7 @@ p{
   }
 }
 
-.topScroll {
-  position: absolute;
-  right: -5%;
-  cursor: pointer;
-  display: none;
-}
+
 
 .shadeLayer {
   position: fixed;

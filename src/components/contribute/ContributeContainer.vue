@@ -426,7 +426,6 @@ export default {
 
       // 获取file元素数组 把伪数组转换成数组
       let fileList = Array.prototype.slice.call($("#examplexxxs")[0].files);
-      console.log(fileList);
 
       // 判断files数组上传图片是否超过三张 超过三张则截取三张
       // 图片超过三张
@@ -436,11 +435,9 @@ export default {
         setTimeout(() => {
           this.$refs.uploadTips.style.color = "#999";
         }, 2000);
-        console.log("fileList.length > 3");
       }
       // 上传图片数已经超过三张则不能继续上传
       if (this.avatar.length > 2) {
-        console.log("上传图片超过三个");
         return;
       }
 
@@ -455,7 +452,6 @@ export default {
           file.type.indexOf("image/") === -1 ||
           Math.ceil(parseInt(file.size) / 1024) > 20480
         ) {
-          console.log("请上传图片类型文件");
           this.$refs.uploadTips.style.color = "#a94442";
           setTimeout(() => {
             this.$refs.uploadTips.style.color = "#999";
@@ -468,7 +464,6 @@ export default {
 
         // 通过图片大小验证 则对图片进行压缩
         imageConversion.compressAccurately(file, 100).then(res => {
-          console.log(res);
           // 得到Blob对象
           finalFile = res;
           let imgUrl = URL.createObjectURL(finalFile);
@@ -476,10 +471,8 @@ export default {
           this.avatar.push(imgUrl);
           // 将Blob对象转成base64
           blobToDataURL(finalFile, result => {
-            console.log("resultresultresultresult");
             // 将base64转出file
             finalFile = dataURLtoFile(result, index+".png");
-            console.log(finalFile);
             fromFiles.pop()
             fromFiles.push(finalFile);
             this.formData.append('file',finalFile);
@@ -527,10 +520,8 @@ export default {
           success: function(ret) {
             userData.avatar = ret.avatar;
             sessionStorage.setItem("user", JSON.stringify(userData));
-            console.log(ret.avatar);
           },
           error: function(ret) {
-            console.log(ret);
           }
       });
       this.$store.state.user = userData;
@@ -550,7 +541,6 @@ export default {
       if (newVal != oldVal) {
         $(this.$refs[off]).css("display", "block");
         $(this.$refs[on]).css("display", "none");
-        console.log(22222222);
       }
     }
   }
