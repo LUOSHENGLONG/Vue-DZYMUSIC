@@ -1,6 +1,6 @@
 <template>
     <div class="findPassword container">
-        <div class="title">密码找回<i class="fas fa-angle-down" style="font-size: 30px;margin-left:20px;vertical-align: -6px;"></i></div>
+        <div class="title">密码找回<i class="fas fa-angle-down" style="font-size: 24px;margin-left:20px;vertical-align: -2px;"></i></div>
         <div ref="logo">
             <img src="../../images/1788.png" alt="">
         </div>
@@ -210,7 +210,7 @@ export default {
                 console.log(11111)
                 this.$refs.findByHelp.style.display = "none"
                 this.$refs.findByProtect.style.display = "none"
-                this.$refs.findByEmail.style.top = "32%"
+                this.$refs.findByEmail.style.top = "29.7%"
                 this.$refs.email.style.display = "block"
                 this.isEmail = true
             } else {
@@ -389,21 +389,21 @@ export default {
 <style lang="scss" scoped>
 .findPassword {
     box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
-    margin-top: 80px;
+    margin-top: 90px;
     padding: 0;
-    overflow: hidden;
     text-align: center;
     position: relative;
     height: 800px;
+    overflow: hidden;
     border-radius: 8px;
     border-top: 6px solid #34495e9f;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     .title {
         background-color: #34495e;
-        font-size: 22px;
+        font-size: 20px;
         color: #fff;
-        padding: 20px 0;
+        padding: 14px 0;
     }
     .row {
         

@@ -28,13 +28,16 @@
           <button @click="goYoutube" class="button button-caution button-box button-giant button-longshadow-right button-longshadow-expand">
             <i class="fa fa-youtube-square"></i>
           </button>
-          <button @click="goTwitter" class="button button-primary button-box button-giant button-longshadow-left button-longshadow-expand">
+          <!-- <button @click="goTwitter" class="button button-primary button-box button-giant button-longshadow-left button-longshadow-expand">
             <i class="fa fa-twitter"></i>
           </button>
           <button @click="goFacebook" class="button button-primary button-box button-giant button-longshadow-right button-longshadow-expand">
             <i class="fa fa-facebook-official"></i>
-          </button>
+          </button> -->
           <button @click="goIns" class="ins button button-caution button-box button-giant button-longshadow-left">
+            <i class="fa"></i>
+          </button>
+          <button @click="goBilibili" class="bilibili button button-primary button-box button-giant button-longshadow-left">
             <i class="fa"></i>
           </button>
         </div>
@@ -59,39 +62,39 @@
             <div class="col-sm-2">
               <h4>关于</h4>
               <ul class="list-unstyled">
-                <li><a href="/about/">关于我们</a></li>
-                <li><a href="/ad/">广告合作</a></li>
-                <li><a href="/links/">友情链接</a></li>
-                <li><a href="/hr/">招聘</a></li>
+                <li><router-link target="_blank" to="/aboutMe">关于我们</router-link></li>
+                <li><router-link target="_blank" to="/copyright">版权中心</router-link></li>
+                <!-- <li><a href="/links/">友情链接</a></li> -->
+                <!-- <li><a href="/hr/">招聘</a></li> -->
               </ul>
             </div>
             <div class="col-sm-2">
               <h4>订阅我们</h4>
               <ul class="list-unstyled">
-                <li><a href="https://weibo.com/u/6725785449/home">微博</a></li>
+                <li><a target="_blank" href="https://weibo.com/u/6725785449/home">微博</a></li>
                 <li><router-link to="/help">公众号</router-link></li>
-                <li><a href="http://space.bilibili.com/380735644?">哔哩哔哩</a></li>
-                <li><a href="/hr/">Youtube</a></li>
-                <li><a href="/hr/">Instagram</a></li>
+                <li><a target="_blank" href="http://space.bilibili.com/380735644?">哔哩哔哩</a></li>
+                <li><a target="_blank" href="https://www.youtube.com/channel/UC-zwZZMXX34hGRanbZ6rMDg">Youtube</a></li>
+                <li><a target="_blank" href="https://www.instagram.com/1788music">Instagram</a></li>
               </ul>
             </div>
             <div class="col-sm-2">
               <h4>联系方式</h4>
               <ul class="list-unstyled">
-                <li><a href="JavaScript: void(0)" @click="showWechat()" target="_blank">微信</a></li>
-                <li><a href="#" target="_blank">电话号码</a></li>
-                <li><a href="https://weibo.com/u/6725785449/home" target="_blank">新浪微博</a></li>
+                <li><a href="JavaScript: void(0)" @click="showWechat()" target="_blank">微信公众号</a></li>
+                <!-- <li><a href="#" target="_blank">电话号码</a></li> -->
+                <li><a href="https://weibo.com/u/6725785449" target="_blank">新浪微博</a></li>
                 <li><router-link to="/help">电子邮件</router-link></li>
               </ul>
             </div>
             <div class="col-sm-2">
               <h4>快捷导航</h4>
               <ul class="list-unstyled">
+                <li><router-link to="/" target="_blank">首页</router-link></li>
                 <li><router-link to="/synthesizer" target="_blank">合成器</router-link></li>
                 <li><router-link to="/effects" target="_blank">效果器</router-link></li>
                 <li><router-link to="/samplePack" target="_blank">采样包</router-link></li>
-                <li><router-link to="/host" target="_blank">宿主</router-link></li>
-                <li><router-link to="/tutorial" target="_blank">教程</router-link></li>
+                <li><router-link to="/contribute" target="_blank">投稿</router-link></li>
               </ul>
             </div>
             <div class="col-sm-2">
@@ -101,19 +104,27 @@
                 <li><router-link to="/sponsor" target="_blank">支付宝</router-link></li>
               </ul>
             </div>
+            <div class="col-sm-2">
+              <h4>帮助</h4>
+              <ul class="list-unstyled">
+                <li><router-link to="/help" target="_blank">寻求帮助</router-link></li>
+                <li><router-link to="/sponsor" target="_blank">发送反馈</router-link></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="row footer-bottom col-md-12 col-lg-12 col-xs-12  col-sm-12">
         <ul class="list-inline text-center">
-          <li><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备11008151号</a></li><li>Copyright © 2018-2019 DZYMUSIC</li>
+          <li><a href="#" target="_blank"></a></li><li>Copyright © 2018-2019 1788MUSIC</li>
         </ul>
       </div>
     </div>
   </footer>
 </template>
 <script>
+import axios from 'axios';
   export default {
     data() {
       return {
@@ -122,7 +133,7 @@
     },
     methods: {
       goWeibo() {
-        window.open("https://weibo.com/u/6725785449/home")
+        window.open("https://weibo.com/u/6725785449")
       },
       goQq() {
         window.open("http://wpa.qq.com/msgrd?v=3&uin=2085203270&site=qq&menu=yes")
@@ -138,6 +149,9 @@
       },
       goIns() {
         window.open("https://www.instagram.com/1788music/")
+      },
+      goBilibili() {
+        window.open("http://space.bilibili.com/380735644")
       },
       showWechat() {
         const nowTime = new Date().getTime();   
@@ -176,13 +190,35 @@
           const emailTips = this.$refs.emailTips
 
           if( !emailConfirm.test(this.email) ) {
-            $(emailTips).text("xxxxxxxxx")
-            emailTips.style.color = "red"
-          }else {
-            $(emailTips).text("对对度低")
-            emailTips.style.color = "green"
-          //邮箱格式正确
+            $(emailTips).text("请输入正确的邮箱地址")
+            emailTips.style.color = "#FF6A6A"
+            setTimeout(() => {
+              emailTips.style.color = "#555"
+              $(emailTips).text("你可以在 网易云 翻阅往期的 issue，也可以收听 podcast。")
+            }, 5000);
+            return
           }
+          axios.post("http://localhost:3001/submitsubscription",{email: this.email})
+          .then( result => {
+            if( result.data.code != null) {
+              if( result.data.code === 1 ) {
+                $(emailTips).text(result.data.message)
+                emailTips.style.color = "#47b39d"
+                setTimeout(() => {
+                  $(emailTips).text("你可以在 网易云 翻阅往期的 issue，也可以收听 podcast。")
+                  emailTips.style.color = "#555"
+                }, 5000);
+              } 
+              if( result.data.code === 0 ) {
+                $(emailTips).text(result.data.message)
+                emailTips.style.color = "#FF6A6A"
+                setTimeout(() => {
+                  $(emailTips).text("你可以在 网易云 翻阅往期的 issue，也可以收听 podcast。")
+                  emailTips.style.color = "#555"
+                }, 5000);
+              }
+            }
+          })
       }
     },
     watch: {
@@ -200,6 +236,12 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
   // background-color: #f8374a;
   background-image: url(../../asset/icon/ins.png);
   background-size: cover;
+}
+.bilibili {
+  background-image: url(../../asset/icon/bili.png);
+  background-size: 70%;
+  background-position: 11px 6px;
+  background-repeat: no-repeat;
 }
 .ins:hover {
   opacity: 0.6;
@@ -334,5 +376,8 @@ p {
   padding: 10px;
   padding-bottom: 0;
   border-top: 1px solid #eee;
+}
+.footer-top {
+  margin-bottom: 20px;
 }
 </style>

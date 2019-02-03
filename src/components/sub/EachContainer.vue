@@ -4,7 +4,7 @@
       
       <div class="ad-container col-sm-12 col-md-12 col-lg-12">
         <div class="ad">
-          合成器
+          <Swiper></Swiper>
         </div>
       </div>
       <!-- 内容 -->
@@ -26,8 +26,10 @@
             </div>
             <div class="media-body">
               <h3 class="media-heading">
-                <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}</a>
-                {{ item.title }}
+                <a href="#" :style="item.type | colorFormat" @click="label($event,item.id)" class="label">{{item.type | typeFormat}}
+                  <span class="fas fa-caret-right" :style="item.type | arrowsFormat"></span>	
+                </a>
+                &nbsp;{{ item.title }}
               </h3>
               <p class=" hidden-xs">{{ item.content }}</p>
             </div>
@@ -35,9 +37,9 @@
             </router-link>
             <div class="info hidden-xs hidden-sm">
               <ul class="message">
-                <li><span class="fas fa-user-edit"></span>发布人</li> 
+                <li><span class="fas fa-user-edit"></span>{{ item.nickname }}</li> 
                 <li><span class="fas fa-clock"></span>{{ item.releaseTime | dateFormat }}</li>
-                <li><span class="fas fa-window-maximize"></span>476MB</li>
+                <li><span class="fas fa-window-maximize"></span>{{ item.size | sizeFormat}}</li>
                 
               </ul>
             </div>
@@ -109,6 +111,7 @@
 </template>
 <script>
 import RightContainer from './RightContainer.vue'
+import Swiper from '../swiper/AdSwiperContainer.vue'
 
 import axios from 'axios'
 import paginate from "../../asset/jPaginate/jquery.paginate.js"
@@ -200,7 +203,8 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
       }
     },
     components: {
-      RightContainer
+      RightContainer,
+      Swiper,
     },
     watch: {
       data(newVal, oldVal) {
@@ -226,12 +230,13 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
     padding: 0 !important;
   }
   .media-heading {
-    font-size: 16px ;
+    font-size: 16px !important;
+    margin-bottom: 0 !important;
   }
   .label {
     font-size: 14px !important;
-    vertical-align: -6px !important;
-    padding: 2px 4px !important;
+    vertical-align: 0px !important;
+    padding: 2px 6px !important;
     
   }
 }
@@ -285,7 +290,7 @@ a {
     .ad {
       width: 100%;
       height: 100px;
-      background-color: #aaa;
+      background-color: #fff;
       margin:15px 0;
     }
   }
@@ -311,7 +316,7 @@ a {
       .pageNav {
         background-color: #fff;
         text-align: center;
-        font-size: 20px;
+        font-size: 16px;
         
       }
     }
@@ -423,9 +428,9 @@ a {
               border-radius: 3px;
               position: relative;
               line-height: 20px;
-              left: 5px;
+              left: 4px;
               top: 10px;
-              width: 100%;
+              width: 99%;
               height: 40px;;
               overflow:hidden;
               background-color: #fff;
@@ -510,18 +515,29 @@ a {
     height: 100%;
     padding-bottom: 0px;
     .media-heading {
-      font-weight: 700;
       line-height: 30px;
+      margin-bottom: 10px;
+      font-size: 22px;
       a {
         display: inline-block;
-        font-size: 16px;
+        font-size: 15px;
         line-height: 20px;
-        border-radius: 6px;
-        padding: 4px 10px;
-        overflow: hidden;
-        vertical-align: -6px;
+        border-radius: 0;
+        padding: 2px 10px;
+        border-radius: 2px;
+        // overflow: hidden;
+        vertical-align: 3px;
+        position: relative;
+
+        span {
+          position: absolute;
+          right: -5px;
+          top: 5px;
+          color: #444;
+        }
       }
       
+       
     }
 
     p {
@@ -558,8 +574,8 @@ a {
     li {
       list-style: none;
       display: inline-block;
-      width: 100px;
       height: 25px;
+      margin-right: 5px;
       text-align: center;
       color: rgba(0, 0, 0, 0.5);
       font-size: 14px;
@@ -582,7 +598,8 @@ a {
     }
   }             
 }
- 
+
+
 
 </style>
 

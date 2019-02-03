@@ -12,6 +12,12 @@
     <HostIndexContainer></HostIndexContainer>
     <!-- 首页 教程模块 -->
     <TutorialIndexContainer></TutorialIndexContainer>
+    <!-- 首页 kontakt模块 -->
+    <KontaktIndexContainer></KontaktIndexContainer>
+    <!-- 首页 工程模块 -->
+    <ProjectIndexContainer></ProjectIndexContainer>
+    <!-- 首页 预置模块 -->
+    <PresetIndexContainer></PresetIndexContainer>
     
   </div>
 
@@ -28,11 +34,27 @@ import EffectsIndexContainer from '../effects/EffectsIndexContainer.vue'
 import SamplePackIndexContainer from '../samplepack/SamplePackIndexContainer.vue'
 import HostIndexContainer from '../host/HostIndexContainer.vue'
 import TutorialIndexContainer from '../tutorial/TutorialIndexContainer.vue'
+import KontaktIndexContainer from '../kontakt/KontaktIndexContainer.vue'
+import ProjectIndexContainer from '../project/ProjectIndexContainer.vue'
+import PresetIndexContainer from '../preset/PresetIndexContainer.vue'
 
 import axios from 'axios'
 
 export default {
-  
+  components: {
+    Swiper,
+    Navbar,
+    // Progress,
+    Bottom,
+    SynthesizerIndexContainer,
+    EffectsIndexContainer,
+    SamplePackIndexContainer,
+    HostIndexContainer,
+    TutorialIndexContainer,
+    KontaktIndexContainer,
+    ProjectIndexContainer,
+    PresetIndexContainer
+  },
   data() {
     return {
       nickname: "",
@@ -98,17 +120,7 @@ export default {
     },
 
   },
-  components: {
-    Swiper,
-    Navbar,
-    // Progress,
-    Bottom,
-    SynthesizerIndexContainer,
-    EffectsIndexContainer,
-    SamplePackIndexContainer,
-    HostIndexContainer,
-    TutorialIndexContainer
-  }
+  
 };
 
 

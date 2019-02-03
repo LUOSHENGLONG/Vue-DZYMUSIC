@@ -1,69 +1,32 @@
 <template>
-    <div class="container" ref="container" v-if="switchArticle">
-      <div class="shadeLayer" @click="hiddenOrg">
-        <!-- <i class="glyphicon glyphicon-remove" style="font-size: 50px;margin-top: 50px;cursor:pointer" @click="hiddenOrg"></i> -->
-      </div>
-      <div class="originImg" ref="originImg" @click="hiddenOrg">
-        <img ref="showOrigin" src="http://localhost:3001/contribute/1788MUSIC.png" alt="" title="点击返回">
-      </div>
-      <!--广告 -->
-      <div class="ad-container col-sm-12 col-md-12 col-lg-12">
-        <div class="ad">
-          合成器
+    <div class="container" ref="container">
+        <div class="title">
+          <i class="fas fa-angle-double-left" style="font-size: 20px;"></i>
+          &nbsp;投稿预览&nbsp;
+          <i class="fas fa-angle-double-right" style="font-size: 20px;"></i>
         </div>
-      </div>
-      <!-- 详细内容 -->
-      <div class="left col-sm-9 col-md-9 col-lg-9"  v-if="hackReset">
-        <!-- 导航栏 -->
-        <ol class="breadcrumb hidden-xs" style="background-color: #fdfdfd;">
-          <li><router-link to="/"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</router-link></li>
-          <li><router-link :to="`/`+infoData.type">{{infoData.type | typeFormat}}</router-link></li>
-          <li class="active">{{ infoData.title }}</li>
-        </ol>
+        <div class="shadeLayer" @click="hiddenOrg">
+        </div>
+        <div class="originImg" ref="originImg" @click="hiddenOrg">
+            <img ref="showOrigin" src="http://localhost:3001/contribute/1788MUSIC.png" alt="" title="点击返回">
+        </div>
+        
+        
         <section class="main-content" ref="mainContent">
-          <div class="main-title">
-            <h2>{{ infoData.title}}</h2>
-          </div>
-          
-          <div class="main-info">
-            <ul class="message">
-              <li><span class="fas fa-user-edit"></span>&nbsp;{{ infoData.nickname }}</li> 
-              <li><span class="fas fa-clock hidden-xs"></span>&nbsp;{{ infoData.releaseTime | dateFormat }}</li>
-              <li class="hidden-xs"><span class="fas fa-window-maximize"></span>&nbsp;{{ infoData.size | sizeFormat}}</li>
-              
-            </ul>
-            <button 
-              id="favorite1"
-              @click="like()" 
-              @mouseover="showFavoriteTips1" 
-              @mouseout="hiddenFavoriteTips1" 
-              v-if="!isFavorite" 
-              class="emptyStar far fa-star" 
-              title=""
-              data-toggle="like"
-              data-placement="bottom"
-              data-content="点击收藏"
-              >
-            </button>
-            <button 
-              id="favorite2"
-              @click="cancelLike()" 
-              @mouseover="showFavoriteTips2" 
-              @mouseout="hiddenFavoriteTips2" 
-              v-if="isFavorite" 
-              class="fullStar fas fa-star"
-              title=""
-              data-toggle="like"
-              data-placement="bottom"
-              data-content="取消收藏"
-              >
-            </button>
-          </div>
-          <div class="post-content mdf_connect">
-            
+            <div class="main-title">
+            <h2>{{ infoData.title }}</h2>
+            </div>
+            <div class="main-info">
+                <ul class="message">
+                    <li><span class="fas fa-user-edit"></span>&nbsp;{{ infoData.nickname }}</li> 
+                    <li><span class="fas fa-clock hidden-xs"></span>&nbsp;{{ infoData.time | dateFormat}}</li>
+                    <li class="hidden-xs"><span class="fas fa-window-maximize"></span>&nbsp;{{ infoData.size | sizeFormat}}</li>
+                </ul>
+            </div>
+            <div class="post-content mdf_connect">
             <div class="post-content-img" v-for="item of infoData.img" :key="item"> 
-              <br>
-              <img class="content-img" 
+                <br>
+                <img class="content-img" 
                 ref="infoImg"
                 alt="" 
                 title="点击查看原图" 
@@ -75,35 +38,30 @@
                 <div class="bottomShade"></div>
                 <div class="leftShade"></div>
                 <div class="rightShade"></div>
-              <br>
+                <br>
             </div>
-
-
             <p class="post-content-text post-content-text-content">
-              <!-- <span class="intexthighlight">Kenny Chesney</span> -->
-              {{ infoData.content }}
+                {{ infoData.content }}
             </p>
-            
-            <!-- <p class="post-content-text">Kenny Chesney此次巡演舞台工程师Chris Rabold：</p> -->
-            <blockquote v-if="infoData.description === '' ? false : true">
-              <pre class="post-content-text">{{ infoData.description }}</pre>
+            <blockquote v-if="infoData.description === ''?false:true">
+                <pre class="post-content-text">{{ infoData.description }}</pre>
             </blockquote>
-            <div class="video-responsive" v-if="haveVideoLink">
-              <iframe :src="infoData.videoLink" frameborder="0" allowfullscreen="true"> </iframe>
-              <br>
-              <hr>
+            <div class="video-responsive" v-if="infoData.videoLink === ''?false:true">
+                <iframe :src="infoData.videoLink" frameborder="0" allowfullscreen="true"> </iframe>
+                <br>
+                <hr>
             </div>
             <div class="download">
 
-              <blockquote v-if="infoData.downloadLink === '' ? false:true">
+                <blockquote v-if="infoData.downloadLink === '' ? false:true">
                 <p class="post-content-text"> 
-                  下载地址：
-                  <a :href="infoData.downloadLink" target="_blank"  v-text="infoData.downloadLink === '' ? '无':infoData.downloadLink">
+                    下载地址：
+                    <a :href="infoData.downloadLink" target="_blank"  v-text="infoData.downloadLink === '' ? '无':infoData.downloadLink">
                     {{ infoData.downloadLink }}
-                  </a>
-                  <br>
-                  提取码: <span ref="tqm" id="tqm" v-text="infoData.downloadPassword === '' ? '无':infoData.downloadPassword"></span>&nbsp;&nbsp;
-                  <button 
+                    </a>
+                    <br>
+                    提取码: <span ref="tqm" id="tqm" v-text="infoData.downloadPassword === '' ? '无':infoData.downloadPassword"></span>&nbsp;&nbsp;
+                    <button 
                     @click="showAndhideTips1()" 
                     id="btnTips1" type="button" 
                     class="tqm btn btn-success" 
@@ -112,13 +70,13 @@
                     ref="btnTips1"
                     data-clipboard-target="#tqm"
                     v-if="infoData.downloadPassword === '' ? false:true"
-                  >复制提取码</button>
+                    >复制提取码</button>
 
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                   解压密码: <span ref="jymm" id="jymm" v-text="infoData.downloadUnzip === '' ? '无':infoData.downloadUnzip">{{infoData.downloadUnzip}}</span>  &nbsp;&nbsp;
+                    解压密码: <span ref="jymm" id="jymm" v-text="infoData.downloadUnzip === '' ? '无':infoData.downloadUnzip">{{infoData.downloadUnzip}}</span>  &nbsp;&nbsp;
 
-                  <button 
+                    <button 
                     @click="showAndhideTips2()" 
                     id="btnTips2" type="button" 
                     class="jymm btn btn-success" 
@@ -127,88 +85,32 @@
                     ref="btnTips2"
                     data-clipboard-target="#jymm"
                     v-if="infoData.downloadUnzip === '' ? false:true"
-                  >复制解压密码</button>
+                    >复制解压密码</button>
 
                 </p>
-              </blockquote>
+                </blockquote>
             </div>
             <div class="description">
-              <blockquote>
+                <blockquote>
                 <p class="post-content-text"> 
-                  1788MUSIC绝对尊重互联网版权，如本文章侵犯你的权益请来信到邮箱1788music@gmail.com。
-                  <br>
-                  如本站内容资源能为你创造价值，望能赞助我们减轻网站运营负担。
-                  <router-link target="_blank" to="/sponsor">
-                    <i class="fas fa-angle-double-left" style="font-size: 20px;"></i>
-                    赞助我们
-                    <i class="fas fa-angle-double-right" style="font-size: 20px;"></i>
-                  </router-link>
+                    1788 MUSIC
                 </p>
-              </blockquote>
+                </blockquote>
             </div>
-          </div>
+            <div style="text-align: center">
+              <button class="btn btn-success" @click="close">
+                <i class="fas fa-undo"></i>
+                关闭本页面返回投稿</button>
+            </div>
+            </div>
         </section>
 
-        <!-- 评论区模块 -->
-        <CommentContainer></CommentContainer>
-        
-      </div>
-      <!-- 右侧数据排行 -->
-      <!-- 最新文章 -->
-      <div class="right col-sm-3 col-md-3 col-lg-3 hidden-xs hidden-sm hidden-md">
-        <div class="mediaRight">
-          <div class="list-group">
-            <div class="right-title">
-              <span class="hot-logo glyphicon glyphicon-stats hidden-sm"></span>
-              <p class="hot-title">&nbsp;最新文章</p>
-            </div>
-            <ul class="rightUl">
-              <!-- <li v-for="(item, index) of rightData1" :key="item.id"> -->
-              <li v-for="(item) of rightData1" :key="item.id">
-                <!-- <div class="zhx"></div> -->
-                <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
-                <a ref="rankA" href="#" target="_blank" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
-                  <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
-                </a>
-              </li>
-              
-            </ul>
-          </div>
-        </div>
-
-        <div class="mediaRight">
-          <div class="list-group">
-            <div class="right-title">
-              <span class="hot-logo glyphicon glyphicon-sort-by-order hidden-sm" style="color: rgb(102, 58, 158);"></span>
-              <p class="hot-title">&nbsp;下载热度</p>
-            </div>
-            <ul class="rightUl">
-              <!-- <li v-for="(item, index) of rightData2" :key="item.id"> -->
-              <li v-for="(item) of rightData2" :key="item.id">
-                <!-- <div class="zhx"></div> -->
-                <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
-                <a ref="rankA" target="_blank" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
-                  <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
-                </a>
-              </li>
-              
-            </ul>
-          </div>
-        </div>
-        <!-- <RightContainer @switch="intoInfo(id)"></RightContainer> -->
-
-      </div>
-      <div class="wrap" ref="tips">{{ tips }}</div>
-      
     </div>
 </template>
 <script>
-import CommentContainer from '../comment/CommentContainer.vue'
-import RightContainer from './RightContainer.vue'
 
 import Clipboard from 'clipboard';
 import axios from 'axios'
-import { setTimeout } from 'timers';
 
   export default {
     data() {
@@ -216,34 +118,22 @@ import { setTimeout } from 'timers';
         infoData: {},
         scrollTitleInterval: {},
         clipboard: {},
-        tips: "",
-        id: this.$route.params.id,
-        hackReset: true,
-        rightData1: JSON.parse(localStorage.getItem("rightData1")|| []),
-        rightData2: JSON.parse(localStorage.getItem("rightData2")|| []),
-        isFavorite: false,
-        haveVideoLink: false,
-        isShow: false,
-        switchArticle: true
-
       }
     },
-    
+    created() {
+      if(localStorage.getItem("contributeArticle") === null) {
+        this.$router.push({path: '/'})
+        return
+      }
+      this.infoData = JSON.parse(localStorage.getItem("contributeArticle"))
+    },
     mounted() {
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
-      $(function () {
-        $('[data-toggle="like"]').tooltip()
-      })
       const copybtn = this.$refs.btnTips1
       this.clipboard = new Clipboard(copybtn);
       this.menu()
-      this.getInfoData()
-      this.getFavorite()
       
 
-      // 如果图片宽度大于内容宽度 则把img 设置 成 width 100%
+      //如果图片宽度大于内容宽度 则把img 设置 成 width 100%
       window.onload = () => {
 
         let content = $(this.$refs.mainContent).width()
@@ -253,10 +143,13 @@ import { setTimeout } from 'timers';
         }
       }
       
+    if(sessionStorage.getItem("user") === null) {
+      this.$router.push({path: '/'})
+      return
+    }
       
     },
     updated() {
-      this.getFavorite()
       let content = $(this.$refs.mainContent).width()
       let img = $(this.$refs.infoImg).width()
       if (img > content) {
@@ -267,6 +160,12 @@ import { setTimeout } from 'timers';
     },
     
     methods: {
+      close() {
+        if( localStorage.getItem("contributeArticle") != null ) {
+          localStorage.removeItem("contributeArticle")
+        }
+        window.close()
+      },
       hiddenOrg() {
         this.$refs.originImg.style.display = "none"
         $(".shadeLayer").css("display","none")
@@ -301,119 +200,12 @@ import { setTimeout } from 'timers';
       hiddenFavoriteTips2() {
         $('#favorite2').popover('hide');
       },
-      like() {
-        //未登录操作
-        if(sessionStorage.getItem("user") === null || this.$store.state.isLogin === false) {
-          this.tips = "请登录后操作"
-          this.$refs.tips.style.display = "block"
-          setTimeout(() => {
-            this.$refs.tips.style.display = "none"
-          }, 2000);
-          return
-        }
-        
-        
-        const mydate = new Date()
-        
-        axios.post("http://localhost:3001/favorite",
-        {
-          articleId: this.id,
-          nickname: JSON.parse(sessionStorage.getItem("user")).nickname,
-        })
-        .then(result => {
-          $('#favorite1').popover('hide');
-          this.getFavorite()
-        })
-
-      },
-      cancelLike() {
-        //未登录操作
-        if(sessionStorage.getItem("user") === null || this.$store.state.isLogin === false) {
-          this.tips = "请登录后操作"
-          this.$refs.tips.style.display = "block"
-          setTimeout(() => {
-            this.$refs.tips.style.display = "none"
-          }, 2000);
-          return
-        }
-        
-        const mydate = new Date()
-        //UUID
-        
-        axios.post("http://localhost:3001/cancelFavorite",
-        {
-          articleId: this.id,
-          nickname: JSON.parse(sessionStorage.getItem("user")).nickname
-        })
-        .then(result => {
-          $('#favorite2').popover('hide');
-          this.getFavorite()
-        })
-
-
-      }
-      ,
-      intoInfo(e, id, type) {
-        e.preventDefault()
-        // this.$router.go(0)
-        // this.$router.push({name: `info2`,params: {id: id}})
-        this.id = id 
-        this.switchArticle = false
-        this.getInfoData()
-        this.menu()
-        setTimeout(() => {
-          this.switchArticle = true
-        }, 1);
-      },
+      
       menu() {
         window.scrollTo(0,0);
       },
-      getInfoData() {
-        axios.post("http://localhost:3001/info",{id: this.id})
-        .then(result => {
-          this.infoData = result.data.data
-          String.prototype.replaceAll = function(s1,s2){ 
-            return this.replace(new RegExp(s1,"gm"),s2); 
-          }
-          let test = /(\")|(\])|(\[)/
-          let img = []
-          // test = /\[\]\"/
-          if(this.infoData.img === "" | this.infoData.img === null) {
-            return
-          }
-          this.infoData.img = this.infoData.img.replaceAll(test,"")
-          if(this.infoData.img.indexOf(",") > -1) {
-            this.infoData.img.split(",").forEach( item => {
-              img.push("http://localhost:3001" + item)
-            })
-          }else {
-            img.push("http://localhost:3001" + this.infoData.img)
-          }
-          this.infoData.img = img
-          console.log(this.infoData.videoLink)
-          if( this.infoData.videoLink === "" || this.infoData.videoLink === null ) {
-            this.haveVideoLink = false
-            return
-          }
-
-          let videoStart = this.infoData.videoLink.toString().indexOf("/av") + 3
-          this.infoData.videoLink = "//player.bilibili.com/player.html?aid=" + this.infoData.videoLink.substring(videoStart,videoStart+8)
-          this.haveVideoLink = true
-          
-        })
-      },
-      getFavorite() {
-        if( sessionStorage.getItem("user") !== null) {
-          axios.post("http://localhost:3001/getFavorite",{articleId: this.id,nickname: JSON.parse(sessionStorage.getItem("user")).nickname})
-          .then(result => {
-            if(parseInt(result.data.isFavorite) === 1) {
-              this.isFavorite = true
-            } else {
-              this.isFavorite = false
-            }
-          })
-        }
-      },
+      
+      
       // 复制提取码按钮
       showAndhideTips1() {
         const value = this.$refs.tqm.textContent
@@ -435,30 +227,12 @@ import { setTimeout } from 'timers';
         }, 1000);
       }
       ,
-      label(e) {
-        e.preventDefault();
-      },
-      // 滚动右侧排行
-      scrollTitle(id,type) {
-        const rankTitle = "rankTitle" + type + id
-        const title = this.$refs[rankTitle]
-        const aWidth = $(this.$refs.rankA).width()
-        const width = $(title).width()-aWidth+50
-        $(title).animate({left: -width+"px"},2000);
-      },
-      stopScroll(id,type) {
-        const rankTitle = "rankTitle" + type + id
-        const title = this.$refs[rankTitle]
-        $(title).stop()
-        $(title).animate({left: "-0"},300);
-      },
+      
       
     },
     watch: {
     },  
     components: {
-      CommentContainer,
-      RightContainer
     }
   }
 </script>
@@ -542,6 +316,13 @@ import { setTimeout } from 'timers';
     margin: 0;
   }
   
+}
+.container {
+    margin-top: 80px;
+    overflow: hidden;
+    border-top: 3px solid rgba(88, 57, 57, 0.279);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .red {
   color: #d9534f !important; 
@@ -928,111 +709,7 @@ button.active {
           font-size: 24px;
           font-weight: 700;
         }
-        .rightUl {
-          padding: 0 15px 0px 10px;
-          margin-bottom: 15px;
-          li:last-child a{
-            border-bottom: 1px solid #fff;
-          }
-          li:hover {
-            .zhx {
-              background-color: #337ab7;
-            }
-            
-          }
-          li {
-            display: inline-block;
-            border: none;
-            padding-top: 0px;
-            width: 100%;
-            height: 100%;
-            position: relative;
-            .zhx {
-              position: absolute;
-              left: -2px;
-              top: 20px;
-              height: 22px;
-              width: 5px;
-              border-radius: 5px;
-              background-color: #fff;
-            }
-            a:hover {
-              box-shadow: 0 5px 10px rgba(238, 238, 238, 0.295),0 5px 10px rgba(238, 238, 238, 0.295) inset;
-              .rank-logo {
-                font-size: 28px;
-                color: #337AB7;
-                transition: all .3s ease;
-                
-              }
-              .rank-title {
-                font-size: 20px;
-                color: rgba(0, 0, 0, 0.7);
-                box-shadow: 0px 10px 40px #f8f8f8;
-                transition: all .3s ease-out;
-                
-              }
-             
-            }
-            .rank-num {
-                font-size: 26px;
-                color: #337ab7;
-                font-weight: 700;
-                display: inline-block;
-                background-color: #fff;
-                left: 10px;
-              }
-            
-            a {
-              display: inline-block;
-              border: none;
-              padding: 5px;
-              border-radius: 3px;
-              position: relative;
-              line-height: 20px;
-              left: 4px;
-              top: 10px;
-              width: 99%;
-              height: 40px;;
-              overflow:hidden;
-              background-color: #fff;
-              .rank-title {
-                color: rgba(0, 0, 0, 0.8);
-                font-size: 18px;
-                word-wrap: none;
-                white-space:pre;
-                position: absolute;
-                left: 0px;
-                top:0px;
-                overflow: hidden;
-                height: 40px;
-                line-height: 40px;
-              }
-              .rank-logo {
-                position: absolute;
-                right: 0;
-                font-size: 24px;
-                border: none;
-                background-color: rgba(0,0,0,0);
-              }
-            }
-            .a.active, .a.active:focus, .a.active:hover {
-                z-index: 2;
-                color: rgba(0, 0, 0, 0.664);
-                background-color: #fff; 
-                border: none;
-            }
-            a:hover {
-              background-color: #fff;
-            }
-            h4 {
-              text-align: left;
-              font-size: 18px;
-            }
-            p {
-              text-align: left;
-            }
-          }
-        }
+        
       }
     }
   }
@@ -1236,8 +913,25 @@ pre {
   background-color: rgba(238, 238, 238, 0.01);
   overflow-x: hidden;
   border: 0;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+}
+
+.btn-success,.btn-success:hover,.btn-success:focus,btn-success:active {
+  background-color: #47b39d;
+  border-color: #47b39d;
+  width: 220px;
+  height: 60px;;
+  border-radius: 60px;
+  font-size: 18px;
+  margin-top: 40px;
+  outline: 0;
+}
+
+.title {
+    background-color: #f4f4f4;
+    font-size: 18px;
+    color: #555;
+    padding: 10px 0;
+    text-align: center;
 }
 </style>
 

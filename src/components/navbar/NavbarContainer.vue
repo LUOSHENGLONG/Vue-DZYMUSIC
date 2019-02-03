@@ -1,7 +1,6 @@
 <template>
   <div class="dzyTop">
     <nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: 0 4px 10px #ddd;">
-
     <div class="container">
       <div class="navbar-header">
         <router-link class="navbar-brand" to="/"><img class="headImg" src="../../asset/icon/logo.png" alt=""></router-link>
@@ -16,8 +15,19 @@
           <li><router-link to="/samplePack">采样包</router-link></li>
           <li><router-link to="/host">宿主</router-link></li>
           <li><router-link to="/tutorial">教程</router-link></li>
-          <li><router-link to="/last" style="margin-right: 0">最新</router-link></li>
-         
+          <!-- <li><router-link to="/last" style="margin-right: 0">最新</router-link></li> -->
+          <li role="presentation" ref="more" class="dropdown" @mouseover="overClick" @mouseleave="outClick">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+              更多 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu moreUl">
+              <li><router-link to="/kontakt">Kontakt</router-link></li>
+              <li><router-link to="/preset">预置</router-link></li>
+              <li><router-link to="/project">工程</router-link></li>
+              <li role="separator" class="divider"></li>
+              <li><router-link to="/last">最新</router-link></li>
+            </ul>
+          </li>
         </ul>
         <form class="navbar-form navbar-left  hidden-sm hidden-md" style="text-align: center;">
           <div class="form-group">
@@ -63,7 +73,7 @@
               </li>
               
               <li>
-                <router-link to="/setting">
+                <router-link to="/setting/updateAvatar">
                   <i class="fas fa-cog" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
                   <span>资料设置</span>
                   <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
@@ -89,11 +99,11 @@
                 </a>
               </li>
               <li>
-                <router-link to="/setting">
-                  <i class="fab fa-facebook-square" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
-                  <span>&nbsp;Facebook</span>
+                <a target="_blank" href="http://space.bilibili.com/380735644?">
+                  <i class="fas fa-tv" style="margin-right: 20px;font-size: 18px;vertical-align: -3px;"></i>
+                  <span>&nbsp;哔哩哔哩</span>
                   <i class="fas fa-link" style="font-size: 20px;float: right;margin-top:8px"></i>
-                </router-link>
+                </a>
               </li>
               <li>
                 <a target="_blank" href="https://www.instagram.com/1788music/">
@@ -110,21 +120,21 @@
                 </a>
               </li>
               <li>
-                <router-link to="/setting">
+                <router-link to="/feedback">
                   <i class="fas fa-comment-alt" style="margin-right: 22px;font-size: 22px;vertical-align: -3px;"></i>
                   <span>发送反馈</span>
                   <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
                 </router-link>
               </li>
               <li>
-                <router-link to="/help">
+                <router-link target="_blank" to="/help">
                   <i class="fas fa-question-circle" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
                   <span>帮助</span>
                   <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
                 </router-link>
               </li>
               <li>
-                <router-link to="/sponsor">
+                <router-link target="_blank" to="/sponsor">
                   <i class="fas fa-wallet" style="margin-right: 20px;font-size: 24px;vertical-align: -3px;"></i>
                   <span>赞助</span>
                   <i class="fas fa-angle-right" style="font-size: 24px;float: right;margin-top:8px"></i>
@@ -207,6 +217,12 @@ import axios from 'axios'
       } 
     },
     methods: {
+      overClick() {
+        $(this.$refs.more).addClass("open")
+      },
+      outClick() {
+        $(this.$refs.more).removeClass("open")
+      },
       showLogin(e) {
         e.preventDefault();
         this.$emit('showLogin')
@@ -275,8 +291,6 @@ import axios from 'axios'
 .container {
   padding: 0;
   position: relative;
-  // padding-left: 10px; 
-  // padding-right: 10px; 
 }
 .img-circle {
   width: 30px;
@@ -300,6 +314,7 @@ import axios from 'axios'
     margin-bottom: 20px;
     z-index: 99;
     background-color: #fff;
+    
    
 }
 ul {
@@ -521,10 +536,11 @@ ul li {
 } 
 .qrcode {
   position: absolute;
-  left: -205px;top:0px;
+  left: -205px;
+  top:0px;
   display:none;
   width: 200px;
-    opacity: 1;
+  opacity: 1;
   img {
     width: 200px;
     border: 1px solid #eee;
@@ -536,6 +552,15 @@ ul li {
 .weixin:hover {
   .qrcode {
     display: block;
+  }
+}
+
+.moreUl {
+  width: 80px;
+  li {
+    a {
+      color: #666 !important;
+    }
   }
 }
 </style>

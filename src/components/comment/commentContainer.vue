@@ -47,7 +47,7 @@
             <span class="plad">
               来自<a href="javascript:void(0);" target="_blank">网页客户端</a>
             </span>
-            <span class="time">{{ item.createTime }}</span>
+            <span class="time">{{ item.createTime | commentDateFormat}}</span>
             <span :ref="`like`+3" @click="commentLike(3)" class="like " style="display: none">
               <i class="fa fa-thumbs-o-up"></i>
               <span :ref="`commentLikeCount`+3">{{ item.like }}</span>
@@ -77,7 +77,7 @@
                   <span class="text-con" v-if="reply.reply_type === 1"> <a href="javascript:void(0);">@{{ reply.nickname }}</a> : {{ reply.content }}</span>
                 </div>
                 <div class="info">
-                  <span class="time">{{ reply.createTime }}</span>
+                  <span class="time">{{ reply.createTime | commentDateFormat}}</span>
                   <span :ref="`like`+4" @click="commentLike(4)" class="like " style="display: none">
                     <i class="fa fa-thumbs-o-up"></i>
                     <span :ref="`commentLikeCount`+4">24</span>
@@ -100,7 +100,7 @@
           <!-- //回复@回复评论区 -->
           <div class="comment-send" :ref="item.id" >
             <div class="user-face">
-              <img class="user-head" v-lazy="CommentAvatar">
+              <img class="user-head" :src="CommentAvatar">
             </div>
             <div class="textarea-container">
               <i class="ipt-arrow"></i>
@@ -251,12 +251,9 @@ export default {
         };
         
         const mydate = new Date()
-        function getUUID() {
-          return "comments"+mydate.getDay()+ mydate.getHours()+ mydate.getMinutes()+mydate.getSeconds()+mydate.getMilliseconds()+ Math.round(Math.random() * 10000);
-        }
+        
         axios.post("http://localhost:3001/sendComment",
           {
-            id: getUUID(),
             topicId: this.topicId,
             topicType: 0,
             content: this.commentContent,
@@ -295,27 +292,8 @@ export default {
         return
       }
       if(this.replyComment.trim().length > 0) {
-        function formatDateTime(date) {  
-          var y = date.getFullYear();  
-          var m = date.getMonth() + 1;  
-          m = m < 10 ? ('0' + m) : m;  
-          var d = date.getDate();  
-          d = d < 10 ? ('0' + d) : d;  
-          var h = date.getHours();  
-          h=h < 10 ? ('0' + h) : h;  
-          var minute = date.getMinutes();  
-          minute = minute < 10 ? ('0' + minute) : minute;  
-          var second=date.getSeconds();  
-          second=second < 10 ? ('0' + second) : second;  
-          return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
-        };
-        const mydate = new Date()
-        function getUUID() {
-          return "comments"+mydate.getDay()+ mydate.getHours()+ mydate.getMinutes()+mydate.getSeconds()+mydate.getMilliseconds()+ Math.round(Math.random() * 10000);
-        }
         axios.post("http://localhost:3001/sendReply",
           {
-            id: getUUID(),
             commentId: this.topicId,
             replyId: id,
             replyType: this.replyType,
@@ -324,7 +302,6 @@ export default {
             fromNickname: JSON.parse(sessionStorage.getItem("user")).nickname,
             fromAvatar: JSON.parse(sessionStorage.getItem("user")).avatar,
             toUid: this.toUid,
-            createTime: formatDateTime(new Date()),
           })
           .then(result => {
             this.getComment()
@@ -422,6 +399,7 @@ export default {
           line-height: normal;
           resize:none;
           outline: none;
+          overflow-x: hidden;
         }
         textarea:focus, textarea:hover {
           background-color: #fff;

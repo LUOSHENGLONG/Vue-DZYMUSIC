@@ -1,8 +1,8 @@
 <template>
-  <div class="contribute container">
-    <ul v-if="this.$store.state.isLogin" class="first-ul">
-      <li class="dropdown open">
-        <ul class="dropdown-menu">
+  <div class="contribute container" ref="contribute">
+    <ul v-if="this.$store.state.isLogin" class="first-ul" ref="firstUl">
+      <li class="dropdown open" ref="dropdownOpen">
+        <ul class="dropdown-menu" ref="dropdown">
           <li class="dropdown-info">
             <div>
               <div class="dropdown-info-left">
@@ -19,8 +19,8 @@
 
           <div class="contributeTips" @click="goTips"><span>投稿小贴士</span></div>
           
-          <li class="type-li" style="height: 160px">
-            <!-- 文章类型 -->
+          <!-- 文章类型 -->
+          <li class="type-li">
             <div class="contribute-type">
               <span class="contribute-type-text" style="color: #777;">
                 文章类型
@@ -45,8 +45,8 @@
               </div>
             </div>
           </li>
+          <!-- 文章标题 -->
           <li class="title-li">
-            <!-- 文章标题 -->
             <div class="contribute-title">
               <span class="contribute-title-text">
                 文章标题
@@ -60,7 +60,7 @@
                 id
                 cols="30"
                 rows="10"
-                maxlength="80"
+                maxlength="120"
                 v-model="title"
                 class="coolscrollbar contribute-title-textarea"
                 onpropertychange="this.style.height=this.scrollHeight + 'px'"
@@ -69,8 +69,8 @@
               ></textarea>
             </div>
           </li>
+          <!-- 文章内容 -->
           <li class="content-li">
-            <!-- 文章内容 -->
             <div class="contribute-content">
               <span class="contribute-content-text">
                 文章内容
@@ -93,9 +93,8 @@
               ></textarea>
             </div>
           </li>
-
+          <!-- 文章描述 -->
           <li class="info-li">
-            <!-- 文章描述 -->
             <div class="contribute-info">
               <span class="contribute-info-text">
                 文章描述
@@ -109,7 +108,7 @@
                 cols="30"
                 rows="10"
                 v-model="description"
-                maxlength="1000"
+                maxlength="3000"
                 class="coolscrollbar contribute-info-textarea"
                 onpropertychange="this.style.height=this.scrollHeight + 'px'"
                 oninput="this.style.height=this.scrollHeight + 'px'"
@@ -121,11 +120,31 @@
               ></textarea>
             </div>
           </li>
-
-          <li class="videoLink-li">
-            <!-- 文章视频链接 -->
-            <div class="contribute-videoLink">
-              <span class="contribute-videoLink-text">文章视频链接&nbsp;
+          <!-- 文章下载链接 -->
+          <li class="downloadLink-li">
+            <div class="contribute-downloadLink">
+              <span class="contribute-downloadLink-text">下载链接&nbsp;
+                <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
+              </span>
+              <!-- 设置textarea高度自动化 隐藏右侧滚动条 -->
+              <textarea
+                name="articleTextarea"
+                id
+                cols="30"
+                rows="10"
+                v-model="downloadLink"
+                maxlength="1000"
+                class="coolscrollbar contribute-downloadLink-textarea"
+                onpropertychange="this.style.height=this.scrollHeight + 'px'"
+                oninput="this.style.height=this.scrollHeight + 'px'"
+                placeholder="如有提供资源下载请填写百度云链接"
+              ></textarea>
+            </div>
+          </li>
+          <!-- 文章下载提取码 -->
+          <li class="downloadCode-li">
+            <div class="contribute-downloadCode">
+              <span class="contribute-downloadCode-text">下载提取码&nbsp;
                 <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
 
               </span>
@@ -135,25 +154,66 @@
                 id
                 cols="30"
                 rows="10"
-                v-model="videoLink"
-                maxlength="200"
-                class="coolscrollbar contribute-videoLink-textarea"
+                v-model="downloadPassword"
+                maxlength="60"
+                class="coolscrollbar contribute-downloadCode-textarea"
                 onpropertychange="this.style.height=this.scrollHeight + 'px'"
                 oninput="this.style.height=this.scrollHeight + 'px'"
-                placeholder="如文章需要插入视频请上传到B站后复制视频链接"
+                placeholder="如提供资源需提取码请填写"
               ></textarea>
             </div>
           </li>
-          
+          <!-- 资源大小 -->
+          <li class="downloadLink-li">
+            <div class="contribute-downloadLink">
+              <span class="contribute-downloadLink-text">资源大小&nbsp;
+                <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
 
+              </span>
+              <!-- 设置textarea高度自动化 隐藏右侧滚动条 -->
+              <textarea
+                name="articleTextarea"
+                id
+                cols="30"
+                rows="10"
+                v-model="size"
+                maxlength="10"
+                class="coolscrollbar contribute-downloadLink-textarea"
+                onpropertychange="this.style.height=this.scrollHeight + 'px'"
+                oninput="this.style.height=this.scrollHeight + 'px'"
+                placeholder="如提供资源请填写资源大小 如：3.2GB / 201MB / 565KB 如未知大小无需填写"
+              ></textarea>
+            </div>
+          </li>
+          <!-- 文章解压密码 -->
+          <li class="zipPassword-li">
+            <div class="contribute-zipPassword">
+              <span class="contribute-zipPassword-text">解压密码&nbsp;
+                <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
+
+              </span>
+              <!-- 设置textarea高度自动化 隐藏右侧滚动条 -->
+              <textarea
+                name="articleTextarea"
+                id
+                cols="30"
+                rows="10"
+                maxlength="60"
+                v-model="downloadUnzip"
+                class="coolscrollbar contribute-zipPassword-textarea"
+                onpropertychange="this.style.height=this.scrollHeight + 'px'"
+                oninput="this.style.height=this.scrollHeight + 'px'"
+                placeholder="如资源需解压密码请填写"
+              ></textarea>
+            </div>
+          </li>
+          <!-- 文章图片链接 -->
           <li class="imgLink-li">
-            <!-- 文章图片链接 -->
             <div class="contribute-imgLink">
               <span class="contribute-imgLink-text">文章图片链接&nbsp;
                 <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
 
               </span>
-              <!-- 设置textarea高度自动化 隐藏右侧滚动条 -->
               <div class="currentAvatar">
                 <div class="uploadAvatar">
                   <label for="examplexxxs">
@@ -178,17 +238,17 @@
                   <img id="showImg" :src="avatar" alt>
                 </div>
               </div>
-              <p
+              <span
                 ref="uploadTips"
-                style="text-align:center;color:#999"
-              >请选择图片上传：支持JPG、PNG等格式，图片需小于3M，图片需小于3张</p>
+                style="margin-left:80px;color:#999"
+              >请选择图片上传：支持JPG、PNG等格式，图片需小于3M，图片需小于3张</span>
+              <a href="Javascript: void(0)" @click="initImg">重置图片</a>
             </div>
           </li>
-
-          <li class="downloadLink-li">
-            <!-- 文章下载链接 -->
-            <div class="contribute-downloadLink">
-              <span class="contribute-downloadLink-text">下载链接&nbsp;
+          <!-- 文章视频链接 -->
+          <li class="videoLink-li">
+            <div class="contribute-videoLink">
+              <span class="contribute-videoLink-text">文章视频链接&nbsp;
                 <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
 
               </span>
@@ -198,83 +258,19 @@
                 id
                 cols="30"
                 rows="10"
-                v-model="downloadLink"
-                maxlength="1000"
-                class="coolscrollbar contribute-downloadLink-textarea"
+                v-model="videoLink"
+                maxlength="200"
+                class="coolscrollbar contribute-videoLink-textarea"
                 onpropertychange="this.style.height=this.scrollHeight + 'px'"
                 oninput="this.style.height=this.scrollHeight + 'px'"
-                placeholder="如有提供资源下载请填写百度云链接"
+                placeholder="如文章需要插入视频请上传到B站后复制视频链接"
               ></textarea>
             </div>
           </li>
-
-          <li class="downloadLink-li">
-            <!-- 资源大小 -->
-            <div class="contribute-downloadLink">
-              <span class="contribute-downloadLink-text">资源大小&nbsp;
-                <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
-
-              </span>
-              <!-- 设置textarea高度自动化 隐藏右侧滚动条 -->
-              <textarea
-                name="articleTextarea"
-                id
-                cols="30"
-                rows="10"
-                v-model="size"
-                maxlength="1000"
-                class="coolscrollbar contribute-downloadLink-textarea"
-                onpropertychange="this.style.height=this.scrollHeight + 'px'"
-                oninput="this.style.height=this.scrollHeight + 'px'"
-                placeholder="如提供资源请填写资源大小 如：3.2GB / 201MB / 565KB"
-              ></textarea>
-            </div>
-          </li>
-
-          <li class="downloadCode-li">
-            <!-- 文章下载提取码 -->
-            <div class="contribute-downloadCode">
-              <span class="contribute-downloadCode-text">下载提取码&nbsp;
-                <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
-
-              </span>
-              <!-- 设置textarea高度自动化 隐藏右侧滚动条 -->
-              <textarea
-                name="articleTextarea"
-                id
-                cols="30"
-                rows="10"
-                v-model="downloadPassword"
-                maxlength="1000"
-                class="coolscrollbar contribute-downloadCode-textarea"
-                onpropertychange="this.style.height=this.scrollHeight + 'px'"
-                oninput="this.style.height=this.scrollHeight + 'px'"
-                placeholder="如提供资源需提取码请填写"
-              ></textarea>
-            </div>
-          </li>
-          <li class="zipPassword-li">
-            <!-- 文章解压密码 -->
-            <div class="contribute-zipPassword">
-              <span class="contribute-zipPassword-text">解压密码&nbsp;
-                <i class="far fa-question-circle" style="cursor: pointer" @click="goTips"></i>
-
-              </span>
-              <!-- 设置textarea高度自动化 隐藏右侧滚动条 -->
-              <textarea
-                name="articleTextarea"
-                id
-                cols="30"
-                rows="10"
-                maxlength="1000"
-                v-model="downloadUnzip"
-                class="coolscrollbar contribute-zipPassword-textarea"
-                onpropertychange="this.style.height=this.scrollHeight + 'px'"
-                oninput="this.style.height=this.scrollHeight + 'px'"
-                placeholder="如资源需解压密码请填写"
-              ></textarea>
-            </div>
-          </li>
+          <p style="text-align: center;color:#666;margin-bottom: 20px">
+            * 用户投稿须原创,或经授权拥有版权，如有侵权行为,将立即删除侵权内容并做出相应侵权机制措施。
+            <router-link target="_blank" to="/copyright">版权中心</router-link>
+          </p>
           <li role="separator" class="divider"></li>
           <li>
             <div class="mybtn">
@@ -282,8 +278,13 @@
                 <i class="fas fa-check"></i>
                 提交投稿
               </button>
+              <button type="button" class="preview btn btn-success" @click="preview">
+                <i class="fas fa-eye"></i>
+                预览投稿
+              </button>
             </div>
           </li>
+          
         </ul>
       </li>
     </ul>
@@ -305,9 +306,13 @@ export default {
         // {id: "information",name: "资讯"},
         {id: "synthesizer",name: "合成器"},
         {id: "effects",name: "效果器"},
-        {id: "samplePaCK",name: "采样包"},
+        {id: "samplePack",name: "采样包"},
         {id: "tutorial",name: "教程"},
         {id: "host",name: "宿主"},
+        {id: "project",name: "工程"},
+        {id: "preset",name: "预置"},
+        {id: "midi",name: "MIDI"},
+        {id: "kontakt",name: "KONTAKT"},
         // {id: "kontakt",name: "Kontakt"},
         // {id: "midi",name: "MIDI"},
         ],
@@ -348,6 +353,47 @@ export default {
     this.menu()
   },
   methods: {
+    // 预览投稿
+    preview() {
+      // 获取文章标题 判断是否为空
+      if( this.title.trim() === "" ) {
+        $(this.$refs.title).focus()
+        this.$refs.title.style.borderColor = "#EEA9B8"
+        setTimeout(() => {
+          this.$refs.title.style.borderColor = "#ccc"
+        }, 2000);
+        return
+      }
+
+      // 获取文章内容  判断是否为空
+      if( this.content.trim() === "" ) {
+        $(this.$refs.content).focus()
+        this.$refs.content.style.borderColor = "#EEA9B8"
+        setTimeout(() => {
+          this.$refs.content.style.borderColor = "#ccc"
+        }, 2000);
+        return
+      }
+      let article = {}
+      article.title = this.title
+      article.type = this.type
+      article.content = this.content
+      article.description = this.description
+      article.videoLink = this.videoLink
+      article.downloadLink = this.downloadLink
+      article.downloadPassword = this.downloadPassword
+      article.downloadUnzip = this.downloadUnzip
+      article.img = this.avatar
+      article.size = this.size
+      article.time = new Date().getTime()
+      article.nickname = JSON.parse(sessionStorage.getItem("user")).nickname
+
+      localStorage.setItem("contributeArticle",JSON.stringify(article))
+      const {href} = this.$router.resolve({
+        name: 'preview',params: {article: article}
+      })
+      window.open(href, '_blank')
+    },
     // 投稿提示
     goTips() {
       const {href} = this.$router.resolve({
@@ -507,32 +553,14 @@ export default {
         return new File([u8arr], filename, { type: mime });
       }
     },
-    uploadAvatar() {
-      if (this.isUpload === true) {
-        let userData = JSON.parse(sessionStorage.getItem("user"));
-        $.ajax({
-          url: "http://localhost:3001/fileUpload",
-          async: false,
-          type: "POST",
-          data: this.formData,
-          processData: false,
-          contentType: false,
-          success: function(ret) {
-            userData.avatar = ret.avatar;
-            sessionStorage.setItem("user", JSON.stringify(userData));
-          },
-          error: function(ret) {
-          }
-      });
-      this.$store.state.user = userData;
-      this.$router.go(0);
-    } else {
-        this.$refs.uploadTips.style.color = "#a94442";
-        setTimeout(() => {
-          this.$refs.uploadTips.style.color = "#999";
-        }, 2000);
+    // 初始化图片
+    initImg() {
+      if(this.avatar.length > 0) {
+        this.avatar = []
+        this.formData = new FormData()
       }
     }
+    
   },
   watch: {
     typeId(newVal, oldVal) {
@@ -541,6 +569,22 @@ export default {
       if (newVal != oldVal) {
         $(this.$refs[off]).css("display", "block");
         $(this.$refs[on]).css("display", "none");
+      }
+    },
+    
+    content(newVal, oldVal) {
+      if( newVal != oldVal) {
+        let height = $(this.$refs.dropdown).height()
+        this.$refs.contribute.style.minHeight = height + "px"
+        console.log()
+      }
+    },
+
+    description(newVal, oldVal) {
+      if( newVal != oldVal) {
+        let height = $(this.$refs.dropdown).height()
+        this.$refs.contribute.style.minHeight = height + "px"
+        console.log()
       }
     }
   }
@@ -551,14 +595,15 @@ export default {
 .contribute {
   z-index: 0;
   margin-top: 80px;
+  height: 100%;
 }
 .container {
-  min-height: 1400px;
+  min-height: 1250px;
   // background-color: pink;
   position: relative;
   text-align: center;
   padding: 0;
-  z-index: 999;
+  height: 100%;
   .contributeTips {
     position: absolute;
     background-color: #7745b8de;
@@ -583,11 +628,15 @@ export default {
   padding: 0;
   margin: 0;
   text-align: center;
-  height: 600px;
+  height: 100%;
   .dropdown {
     text-align: center;
   }
 }
+.dropdown {
+  height: 100%;
+}
+
 
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
@@ -688,7 +737,7 @@ export default {
     text-align: center;
     background-color: #f6f6f6;
     border-radius: 40px;
-    line-height: 42px;
+    line-height: 40px;
     color: #555;
   }
 }
@@ -700,7 +749,7 @@ export default {
   padding-left: 20px !important;
   .checkRow {
     float: left;
-    height: 60px;
+    height: 50px;
     padding: 0;
     margin: 2px;
     label {
@@ -739,7 +788,6 @@ export default {
 .contribute-downloadCode,
 .contribute-zipPassword {
   height: 100% !important;
-  margin-top: 10px !important;
   .contribute-content-text,
   .contribute-info-text,
   .contribute-videoLink-text,
@@ -797,18 +845,19 @@ export default {
     margin-left: -32px;
   }
   .contribute-downloadLink-textarea {
-    min-height: 60px;
-    height: 60px;
+    min-height: 36px;
+    height: 36px;
   }
   .contribute-zipPassword-textarea {
-    min-height: 60px;
-    height: 60px;
-    margin-left: -4px;
+    min-height: 36px;
+    max-height: 36px;
+    height: 36px;
+    margin-left: -2px;
   }
   .contribute-downloadCode-textarea {
-    min-height: 60px;
-    height: 60px;
-    margin-left: -22px;
+    min-height: 36px;
+    height: 36px;
+    margin-left: -20px;
   }
 }
 
@@ -838,10 +887,21 @@ li {
   text-align: center !important;
   margin-top: 50px;
   margin-bottom: 0;
+  position: relative;
   button {
     width: 160px;
     height: 54px;
     border-radius: 60px;
+  }
+  .preview {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    background-color: #FF6A6A;
+    border-radius: 6px;
+  }
+  .preview:hover,.preview:focus,.preview:active {
+    background-color: #FF6A6A !important;
   }
 }
 
@@ -867,7 +927,7 @@ input {
 }
 
 .type-li {
-  height: 100px;
+  height: 120px;
 }
 
 /*设置选中的input的样式*/
@@ -912,7 +972,7 @@ input:checked + label::after {
     text-align: left;
     // border-right: 1px solid #eee;
     // margin: 20px;
-    padding-left: 46px;
+    padding-left: 45px;
     padding-right: 0;
     margin: 0;
     input {

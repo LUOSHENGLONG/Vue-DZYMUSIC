@@ -1,5 +1,5 @@
 <template>
-    <div class="accountSecurity">
+    <div class="accountSecurity" ref="accountSecurity">
         <div class="account" v-if="!isSetting">
             设置密保
         </div>
@@ -31,7 +31,7 @@
                 
             </select>
             <input ref="answer" maxlength="6" v-model="answer" type="text" placeholder="请输入密保问题答案">
-            <button type="button" @click="verify" class="verify btn btn-success" style="background-color: #4fc08d;font-size:16px">验证</button>
+            <button type="button" @click="verify" class="verify btn btn-success" style="">验证</button>
             <div class="verifyTips" ref="verifyTips">
                 * 请选择你所设置的密保问题并填写答案,通过验证后修改。
             </div>
@@ -94,10 +94,8 @@ export default {
             }
             // 如果答案不为空 
             if( this.answer.trim() != "" && this.select != ""){
-                console.log(22)
                 axios.post("http://localhost:3001/updataProtect",{question: this.select,answer: this.answer,userId: this.userId})
                 .then( result => {
-                    console.log(result.data.count)
                     if( result.data.count ) {
                         if(result.data.count > 0) {
                             // 修改成功
@@ -125,7 +123,6 @@ export default {
             if( this.answer.trim() != "" && this.select != ""){
                 axios.post("http://localhost:3001/verifyProtect",{question: this.select,answer: this.answer,userId: this.userId})
                 .then( result => {
-                    console.log(result.data.count.count)
                     if( result.data.count.count === 0) {
                         // 验证失败
                         this.$refs.verifyTips.style.color = "#FF6A6A"
@@ -140,6 +137,7 @@ export default {
                         setTimeout(() => {
                             this.couponSelected = this.optionData[0].id;
                             this.$refs.protect.style.display = "none"
+                            $(this.$refs.accountSecurity).css("box-shadow","0 6px 23px rgba(0, 0, 0, 0.094)")
                             this.select = ""
                             this.answer = ""
                             this.isUpdate = true
@@ -159,7 +157,6 @@ export default {
             }
             axios.post("http://localhost:3001/getProtect",{userId: this.userId})
             .then( result => {
-                console.log(result.data.count.count)
                 if( result.data.count.count > 0) {
                     this.isSetting = true
                 } else {
@@ -176,15 +173,17 @@ export default {
             }
             // 如果答案不为空 
             if( this.answer.trim() != "" && this.select != ""){
-                console.log(22)
                 axios.post("http://localhost:3001/settingProtect",{question: this.select,answer: this.answer,userId: this.userId})
                 .then( result => {
-                    console.log(result.data.message)
                     if( result.data.code) {
                         if(result.data.code === 1) {
                             this.isSetting = true
+                            this.couponSelected = ""
+                            this.answer = ""
                         } else {
                             this.isSetting = false
+                            this.couponSelected = ""
+                            this.answer = ""
                         }
                     }
                 })
@@ -195,10 +194,8 @@ export default {
             let option = Array.prototype.slice.call($("option"))
             option.forEach( item => {
                 if( item.selected === true) {
-                    console.log($(item).val())
                     let value = $(item).val()
                     this.select = value
-                    console.log(this.select)
                 }
             })
             
@@ -206,7 +203,6 @@ export default {
         getQuestion() {
             axios.post("http://localhost:3001/getQuestion")
             .then( result => {
-                console.log(result.data)
                 this.optionData = result.data
                 this.couponSelected = this.optionData[0].id;
             })
@@ -214,24 +210,28 @@ export default {
         getData1() {
             return this.optionData.splice(0,2)
         }
-    }
+    },
+    
 }
 </script>
 <style lang="scss" scoped>
+.shadow {
+    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
+}
 .accountSecurity {
     padding: 0;
     margin-top: 42px;
     margin-bottom: 50px;
     text-align: center;
-    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
-    border-top: 0px solid #637383;
+    // box-shadow: 0 6px 10px rgba(0, 0, 0, 0.094);
     border-width: 4px;
     border-radius: 8px;
     overflow: hidden;
+    min-height: 250px;
     .account {
         font-size: 24px;
-        background-color: #34495e;
-        color: #fff;
+        background-color: #fbfbfb;
+        color: #555;
         padding: 10px 0 ;
         margin-bottom: 30px;
     }
@@ -322,7 +322,7 @@ button.active {
     }
 }
 
-.verify {
+.verify,.verify:focus,.verify:active {
     height: 40px;
     width: 80px;
     vertical-align: 1.5px;
@@ -330,9 +330,14 @@ button.active {
     background-color: #47b39d;
     border-color: #47b39d;
     border-radius: 40px;
+    font-size: 16px;
 }
 .verifyTips {
     margin: 15px 0;
     color: #555;
+}
+
+.fas {
+    margin-top: 0 !important;
 }
 </style>

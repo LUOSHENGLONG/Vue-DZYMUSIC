@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <div class="title">
+      <i class="fas fa-info" style="margin-right: 10px;"></i>
+      个人中心
+    </div>
+
     <div class="home"  :style="{minHeight: minHeight + 'px'}">
       <div class="tagPage">
         <!-- Nav tabs -->
@@ -43,9 +48,13 @@
 
                 <div class="info-right input-group input-group-lg">
                   <span class="input-group-addon" id="sizing-addon1">密保设置</span>
-                  <input type="text" class="form-control" disabled placeholder="未设置" aria-describedby="sizing-addon1">
+                  <input type="text" class="form-control" disabled :placeholder="protect" aria-describedby="sizing-addon1">
                   <span class="input-group-addon" id="sizing-addon1" style="padding: 0 5px; background-color: rgb(79, 192, 141);border-color: rgb(79, 192, 141);">
-                    <button @click="binding" class="real-name btn btn-success" style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;">立即设置</button>
+                    <button @click="goSetting" 
+                      class="real-name btn btn-success" 
+                      style="display: inline; background-color: rgb(79, 192, 141);font-size:17px;"
+                      v-text="protect === '已设置'?'立即修改':'立即设置'">
+                    </button>
                   </span>
                 </div>
               </div>
@@ -112,7 +121,7 @@
               <div class="media" v-for="item of data" :key="item.id">
                 <div class="media-left media-middle hidden-xs hidden-sm">
                   <router-link target="_blank" class="media-object-a" :to="{name: 'info', params: {type: item.type, id: item.id}}" >
-                    <img class="media-object" :src="item.img" alt="...">
+                    <img class="media-object" v-lazy="item.img" alt="...">
                   </router-link>
                 </div>
                 <div class="media-body">
@@ -124,9 +133,9 @@
                   <span class="mediaContent hidden-xs hidden-sm">{{ item.content }}</span>
                   </router-link>
                   <ul class="message hidden-xs hidden-sm">
-                    <li><span class="fas fa-user-edit"></span>发布人</li> 
+                    <li><span class="fas fa-user-edit"></span>{{ item.nickname }}</li> 
                     <li><span class="fas fa-clock"></span>{{ item.releaseTime | dateFormat }}</li>
-                    <li><span class="fas fa-eye"></span>120浏览</li>
+                    <li><span class="fas fa-window-maximize"></span>{{ item.size | sizeFormat }}</li>
                     
                   </ul>
                 </div>
@@ -154,9 +163,7 @@
                 
               </div>
 
-              <div  v-if="!isShow" ref="noResult" class="noResult" style="width: 100%; height:480px;text-align: center;">
-                <img src="../../images/empty.png" alt="">
-              </div>
+              
             </div>
             <!-- myContribute -->
             <div role="tabpanel" class="tab-pane" id="myContribute">
@@ -172,13 +179,17 @@
                   </thead>
                   <tbody v-for="item in userContribute" :key="item.id">
                     <tr v-if="item.isRelease === 1" >
-                      <td scope="row" style="text-align: left;padding-left: 20px">{{ item.title }}</td>
+                      <td scope="row" style="text-align: left;padding-left: 20px">
+                        <router-link target="_blank" style="color: #fff;" :to="{name: 'info', params: {type: item.type,id: item.id}}">{{ item.title }}
+
+                        </router-link>
+                      </td>
                       <td>{{ item.type | typeFormat }}</td>
                       <td>{{ item.contributeTime }}</td>
                       <td>
                         <div>已发布</div>&nbsp;
                         <router-link target="_blank" :to="{name: 'info', params: {type: item.type,id: item.id}}">查看</router-link>
-                        <a href="#" @click="deleteMyContribute($event,item.id)">删除</a>
+                        <a href="#" @click="deleteMyContribute($event,item.id)" style="color: rgb(255, 106, 106);">删除</a>
                       </td>
                     </tr>
                     <tr v-if="item.isRelease === 0">
@@ -193,9 +204,7 @@
                     
                   </tbody>
                 </table>
-              </div>
-
-              <div ref="paginate" class="pageNav" id="pageNav" v-if="showContribute">
+                <div ref="paginate" class="pageNav" id="pageNav" v-if="showContribute">
                 <paginate
                   :page-count="Math.ceil(contributePageCount / 10)"
                   :click-handler="contributePage"
@@ -204,7 +213,10 @@
                   :container-class="'pagination'"
                   >
                 </paginate>
+              </div> 
               </div>
+
+              
               <div  v-if="!showContribute" ref="noResult" class="noResult" style="width: 100%; height:480px;text-align: center;">
                 <img src="../../images/empty.png" alt="">
               </div>
@@ -250,7 +262,7 @@ export default {
       tips: "此功能暂未开通",
       isShow: true,
       showContribute: true,
-      
+      protect: "",
       
     }
   },
@@ -265,17 +277,33 @@ export default {
       this.userData = JSON.parse(sessionStorage.getItem("user"))
     } else {
       this.$router.push({path: '/'})
+      return
     }
+    this.isSetProtect()
     this.getLikeData()
     this.menu()
     let target = "[role='"+ this.active +"']"
-    console.log($(target))
     
     $(this.$refs[this.active]).click()
     $(target).addClass("active")
     this.getMyContribute()
   },
   methods: {
+    goSetting() {
+      this.$router.push({path: '/setting/account',params:{active: 'account'}})
+    },
+    isSetProtect() {
+      axios.post('http://127.0.0.1:3001/isSetProtect',{id: this.userData.id})
+      .then((result) => {
+        // result.data.code = 0 服务器出租哦 =1 未设置 =2已设置
+        console.log(result.data)
+        let code = result.data.code
+        
+        this.protect = result.data.message
+        
+        
+      })
+    },
     binding() {
       this.$refs.tips.style.display = "block"
       setTimeout(() => {
@@ -285,10 +313,10 @@ export default {
     deleteMyContribute(e, id) {
       e.preventDefault()
       axios.post('http://127.0.0.1:3001/deleteMyContribute',{id: id})
-        .then((result) => {
-          this.getMyContribute()
-          
-        })
+      .then((result) => {
+        this.getMyContribute()
+        
+      })
     },
     contributePage(e) {
       this.currentContributePage = e
@@ -306,13 +334,10 @@ export default {
             var m = (date.getMinutes() < 10 ? '0'+ date.getMinutes() : date.getMinutes()) + ':'
             var s = date.getSeconds() < 10 ? '0'+ date.getSeconds() : date.getSeconds()
             return Y+M+D+h+m+s
-            console.log(timestampToTime (1533293827000))
         }
         let userId = JSON.parse(sessionStorage.getItem("user")).id
-        console.log(userId)
         axios.post('http://127.0.0.1:3001/getMyContribute',{userId: userId, currentPage: this.currentContributePage})
         .then((result) => {
-          console.log(result.data.count[0].count)
           this.contributePageCount = result.data.count[0].count
           this.userContribute = result.data.pageData
           if( this.userContribute.length < 1) {
@@ -322,9 +347,7 @@ export default {
             this.showContribute = true
 
           }
-          console.log(this.userContribute)
           this.userContribute.forEach( item => {
-            console.log(item)
             item.contributeTime = timestampToTime(parseInt(item.contributeTime))
           })
         })
@@ -394,7 +417,7 @@ export default {
       axios.post("http://localhost:3001/cancelFavorite",
       {
         articleId: id,
-        userId: JSON.parse(sessionStorage.getItem("user")).id
+        nickname: JSON.parse(sessionStorage.getItem("user")).nickname
       })
       .then(result => {
         if( this.currentPage > 1) {
@@ -414,10 +437,12 @@ export default {
     getLikeData() {
       if( sessionStorage.getItem("user") != null) {
         this.userData = JSON.parse(sessionStorage.getItem("user"))
-        axios.post("http://localhost:3001/likeData",{userId: this.userData.id, currentPage: this.currentPage})
+        axios.post("http://localhost:3001/likeData",{nickname: this.userData.nickname, currentPage: this.currentPage})
         .then(result => {
           this.data = result.data.likeData
-          console.log(this.data.length)
+          this.PageCount = result.data.count.count
+          console.log(result.data)
+          console.log(this.data)
           if(this.data.length < 1) {
             this.isShow = false
             return
@@ -433,7 +458,7 @@ export default {
             img = []
 
             if(item.img === "" | item.img === null) {
-              return
+              img.push("http://localhost:3001/contribute/1788MUSIC.png")
             }
             item.img = item.img + ""
             item.img = item.img.replaceAll(test,"")
@@ -536,7 +561,6 @@ export default {
       let len = newVal.replace(/[^\u0000-\u00ff]/g,"aa").length
       if( len > 12) {
         this.nickname = cutString(newVal,12)
-        console.log(newVal)
       }
 
       function cutString(str,len,suffix){
@@ -573,11 +597,15 @@ export default {
 
 @import'../../lib/laydate/theme/default/laydate.css';
 .container {
-  padding: 0 20px;;
+  padding: 0;
   min-width: 1200px;
-    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
-    margin-top: 80px;
-  
+  box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
+  margin-top: 80px;
+  overflow: hidden;
+  border-radius: 8px;
+  border-top: 3px solid #bcc3caad;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 .Tab {
   padding-right: 0;
@@ -586,6 +614,7 @@ export default {
   margin: 0;
   border-radius: 5px;
   max-width: 100%;
+  padding: 0 20px;
   .tagPage {
     height: 100%;
     padding: 20px 0;
@@ -632,17 +661,7 @@ export default {
     }
   }
 }
-.title {
-  font-size: 18px !important;
-  color: #fff;
-  
-  font-size: 18px;
-  padding: 10px;
-  // text-align: center;
-  // border-bottom: 1px solid #ddd;
-  span {
-  }
-}
+
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
     color: #fff;
     cursor: default;
@@ -654,6 +673,7 @@ export default {
 .tab-pane {
   width: 100%;
   padding: 20px;
+  padding-top: 15px;
   margin-top: 22px;
   // border: 1px solid #eee;
   background-color: #fff;
@@ -903,9 +923,9 @@ form.form-search {
   li {
     list-style: none;
     display: inline-block;
-    width: 90px;
     height: 25px;
     text-align: center;
+    margin-right: 15px;
     color: rgba(0, 0, 0, 0.5);
     font-size: 14px;
     a {
@@ -946,7 +966,6 @@ button.active {
 .pageNav {
   background-color: #fff;
   text-align: center;
-  margin-top: 30px;
   .pagination {
     padding: 0;
     text-align: right;
@@ -1027,22 +1046,6 @@ button.active {
   
   }
 }
-// .exitName {
-//   // background-color: #ef5b54;
-//   // border-color: #ef5b54;
-//   // color: #fff;
-//   position: absolute;
-//   // display: none;
-//   z-index: 99;
-//   right: 0;
-//   top: 0;
-//   height: 46px;
-//   font-size: 18px;
-//   padding: 10px;
-// }
-
-
-
 @keyframes rotate{
   0%{
     transform: translateX(2px);
@@ -1108,10 +1111,7 @@ button.active {
   animation: rotate 2s linear infinite alternate;  /*开始动画后无限循环，用来控制rotate*/
 }
 
-.title{
-  transition: 0.5s;
-  animation: bgc 4s linear infinite alternate;  /*开始动画后无限循环，用来控制rotate*/
-}
+
 
 .myContribute{
   background-color: pink;
@@ -1121,7 +1121,7 @@ button.active {
 .table {
   text-align: center;
   box-shadow: 0 6px 20px #eee;
-  border-radius: 8px !important;
+  border-radius: 8px;
   overflow: hidden;
   tbody {
     border-top: 0px solid #fff;
@@ -1157,8 +1157,8 @@ a {
 
 .wrap{
   position: fixed;
-  left: 60%;
-  top:30%;
+  left: 56%;
+  top: 35%;
   background: rgba(0,0,0,.35);
   padding: 10px;
   border-radius: 5px;
@@ -1169,9 +1169,24 @@ a {
 }
 
 .bs-example {
-  border-top: 3px solid #637383;
+  border-top: 3px solid #c0c8cf;
   border-width: 4px;
   border-top-left-radius:2em;
   border-top-right-radius:2em;
+}
+
+.title {
+    background-color: #f4f4f4;
+    font-size: 18px;
+    color: #555;
+    padding: 10px 0;
+    text-align: center;
+    
+}
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    
 }
 </style>

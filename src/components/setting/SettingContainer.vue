@@ -1,5 +1,9 @@
 <template>
   <div class="container"  :style="{minHeight: minHeight + 'px'}">
+    <div class="title">
+      <i class="fas fa-cog" style="margin-right: 10px;"></i>
+      资料设置
+    </div>
     <div class="setting">
       <div class="tagPage">
         <!-- Nav tabs -->
@@ -7,31 +11,31 @@
           
           <ul class="settingInfo nav nav-tabs" role="tablist">
             <!-- <p class="title"><i class="fas fa-cog"></i> 设置&nbsp;</p> -->
-            <li role="presentation" class="active">
+            <li role="updateAvatar" ref="updateAvatar">
               <a href="#home" aria-controls="home" role="tab" data-toggle="tab">
                 <i class="far fa-user-circle" style="font-size:26px;vertical-align: -3px;"></i> 
                 &nbsp;修改头像
               </a>
             </li>
-            <li role="presentation">
+            <li role="info" ref="info">
               <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
                 <i class="fas fa-id-card-alt" style="font-size:24px;vertical-align: -3px;"></i> 
                 &nbsp;个人资料
                 </a>
             </li>
-            <li role="presentation">
+            <li role="identity" ref="identity">
               <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">
                 <i class="fas fa-id-card" style="font-size:24px;vertical-align: -3px;"></i> 
                 &nbsp;实名认证
               </a>
             </li>
-            <li role="presentation">
-              <a href="#safe" aria-controls="safe" role="tab" data-toggle="tab">
+            <li role="account">
+              <a href="#safe" ref="account" aria-controls="safe" role="tab" data-toggle="tab">
                 <i class="fas fa-key" style="font-size:24px;vertical-align: -3px;"></i> 
                 &nbsp;账户安全
               </a>
             </li>
-            <li role="presentation">
+            <li role="expand" ref="expand">
               <a href="#promotion" aria-controls="promotion" role="tab" data-toggle="tab">
                 <i class="fas fa-donate" style="font-size:24px;vertical-align: -3px;"></i> 
                 &nbsp;访问推广
@@ -136,6 +140,7 @@ export default {
       formData: {},
       isUpload: false,
       id: "",
+      active: this.$route.params.active,
     }
   },
   mounted() {
@@ -154,9 +159,13 @@ export default {
       this.avatar = `http://localhost:3001` + JSON.parse(sessionStorage.getItem("user")).avatar
     } else {
       this.$router.push({path: "/"})
+      return
     }
 
-    this.menu()
+    let target = "[role='"+ this.active +"']"
+    console.log(this.active)
+    $(this.$refs[this.active]).click()
+    $(target).addClass("active")
   },
   components: {
     "my-upload": myUpload,
@@ -306,10 +315,15 @@ export default {
 <style lang="scss" scoped>
 @import '../../lib/laydate/theme/default/laydate.css';
 .container {
-  padding: 0 20px;
-    box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
-    margin-top: 80px;
-    padding-bottom: 20px;
+  padding: 0;
+  box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
+  margin-top: 80px;
+  padding-bottom: 20px;
+  overflow: hidden;
+  border-radius: 8px;
+  border-top: 3px solid #34495e9f;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 .rightBorder {
   padding: 0;
@@ -323,6 +337,7 @@ export default {
   height: 100%;
   margin: 0px 0;
   border-radius: 5px;
+  padding: 0 20px;
   .tagPage {
     height: 100%;
     padding: 20px 0;
@@ -370,20 +385,7 @@ export default {
     }
   }
 }
-.title {
-  color: #fff;
-  letter-spacing: 4px;
-  background-color: #555;
-  font-size: 20px;
-  border-radius: 10px;
-  box-shadow: 2px 1px 10px #aaa;
-  padding: 8px;
-  text-align: center;
-  vertical-align: middle;
-  // border-bottom: 1px solid #ddd;
-  span {
-  }
-}
+
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
     color: #fff;
     cursor: default;
@@ -586,10 +588,7 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset;}
   animation: rotate 2s linear infinite alternate;  /*开始动画后无限循环，用来控制rotate*/
 }
 
-.title{
-  transition: 10s;
-  animation: bgc 10s linear infinite alternate;  /*开始动画后无限循环，用来控制rotate*/
-}
+
 .btn-success {
   background-color: #4fc08d;
   font-size: 16px;
@@ -656,5 +655,13 @@ ul,li {
   -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.title {
+  background-color: #f4f4f4;
+  font-size: 18px;
+  color: #555;
+  padding: 10px 0;
+  text-align: center;
 }
 </style>

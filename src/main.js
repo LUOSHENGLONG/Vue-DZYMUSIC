@@ -68,6 +68,14 @@ Vue.filter('typeFormat', function (dataStr) {
     return "宿主"
   }else if( dataStr === "tutorial") {
     return "教程"
+  }else if( dataStr === "project") {
+    return "工程"
+  }else if( dataStr === "kontakt") {
+    return "Kontakt"
+  }else if( dataStr === "preset") {
+    return "预置"
+  }else if( dataStr === "midi") {
+    return "MIDI"
   }
 })
 
@@ -83,7 +91,7 @@ Vue.filter('hiddenPhone', function (dataStr) {
   }
 })
 
-//filter
+//日起filter
 Vue.filter('dateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
   dataStr = parseInt(dataStr)
   moment.locale('zh-cn') //设置中文显示
@@ -99,6 +107,24 @@ Vue.filter('dateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
 
 })
 
+Vue.filter('commentDateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+  dataStr = parseInt(dataStr)
+  moment.locale('zh-cn') //设置中文显示
+
+  // 864000000毫秒等于10天
+  
+  return moment(dataStr).format('YYYY-MM-DD HH:mm:ss');
+
+})
+
+//资源大小filter
+Vue.filter('sizeFormat', function(dataStr) {
+  if( dataStr === "" || dataStr === null) {
+    return "未知"
+  }
+  return dataStr
+
+})
 
 
 Vue.filter('contributeTimeFormat', function(dataStr) {
@@ -123,7 +149,37 @@ Vue.filter('colorFormat', function (dataStr) {
   }else if( dataStr === "host") {
     return "background: #3366FF"
   }else if( dataStr === "tutorial") {
+    return "background: #9708cc"
+  }else if( dataStr === "project") {
+    return "background: #9452a5"
+  }else if( dataStr === "kontakt") {
     return "background: #CC0033"
+  }else if( dataStr === "preset") {
+    return "background: #9452a5"
+  }else if( dataStr === "midi") {
+    return "background: #CC0033"
+  }
+})
+
+Vue.filter('arrowsFormat', function (dataStr) {
+  if(dataStr === "synthesizer"){
+    return "color: #663a9e"
+  }else if( dataStr === "effects") {
+    return "color: #CC3366"
+  }else if( dataStr === "samplePack") {
+    return "color: #03A9F4"
+  }else if( dataStr === "host") {
+    return "color: #3366FF"
+  }else if( dataStr === "tutorial") {
+    return "color: #9708cc"
+  }else if( dataStr === "project") {
+    return "color: #9452a5"
+  }else if( dataStr === "kontakt") {
+    return "color: #CC0033"
+  }else if( dataStr === "preset") {
+    return "color: #9452a5"
+  }else if( dataStr === "midi") {
+    return "color: #CC0033"
   }
 })
 

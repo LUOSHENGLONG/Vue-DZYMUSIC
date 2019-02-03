@@ -1,5 +1,5 @@
 <template>
-   <div class="effectsContainer">
+   <div class="samplePackContainer">
     <EachContainer :data="data" :PageCount="count" @currentPage="setCurrentPage" :navType="navType"></EachContainer>
   </div>
 </template>
@@ -12,7 +12,7 @@ import EachContainer from '../sub/EachContainer.vue'
         data:[],
         count: {},
         currentPage: 1,
-        navType: "最新"
+        navType: "Kontakt"
       }
     },
     mounted() {
@@ -21,10 +21,9 @@ import EachContainer from '../sub/EachContainer.vue'
     ,
     methods: {
       getData() {
-        axios.post("http://localhost:3001/last",{currentPage: this.currentPage})
+        axios.post("http://localhost:3001/classify",{type: 'kontakt', currentPage: this.currentPage})
         .then(result => {
           this.data = result.data.data
-      console.log(this.data)
           this.count = result.data.count["count(id)"]
           let test = /(\")|(\])|(\[)/
           let img = []

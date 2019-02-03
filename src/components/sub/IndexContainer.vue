@@ -11,7 +11,7 @@
       <router-link :to="`/`+item.type+`/info/`+item.id" target="_blank" class="feature-news index-base-item" v-for="item of data" :key="item.id">
         <div class="title-image-wrap">
           <div class="title-image">
-            <img v-lazy="item.img" alt="">
+            <img class="indexImg" v-lazy="item.img" alt="">
           </div>
           <div class="gradient"></div>
           <span class="time left">{{item.releaseTime | dateFormat}}</span>
@@ -142,9 +142,9 @@ a {
     }
   }
   .feature-news:hover {
-    padding-top: 0px;
+    // padding-top: 0px;
     box-shadow: 2px 6px 15px rgba(0, 0, 0, 0.094);
-    img {
+    img.indexImg {
       transform: scale(1.2);
       transition: all 1s ease;
     }
@@ -152,7 +152,7 @@ a {
   .feature-news {
     border: 1px solid rgba(121, 121, 121, 0.094);
     border-top: 0;
-    padding-top: 2px;
+    // padding-top: 2px;
     box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);
     margin: 10px 0;
     display: inline-block;
@@ -236,6 +236,8 @@ a {
         line-height: 1.6;
         margin-bottom: 6px;
         margin: 0px;
+        word-wrap:break-word;
+        word-break:break-all;
       }
       h3 {
         display: block;
@@ -250,6 +252,8 @@ a {
         margin-top: 5px;
         font-size: 16px;
         color: #777777;
+        word-wrap:break-word;
+        word-break:break-all;
       }
       p {
         display: block;
