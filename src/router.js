@@ -26,18 +26,16 @@ import SettingContainer from './components/setting/SettingContainer.vue'
 import LoginContainer from './components/login/LoginContainer.vue'
 import EachContainer from './components/sub/EachContainer.vue'
 import InfoContainer from './components/sub/InfoContainer.vue'
-import RightContainer from './components/sub/RightContainer.vue'
-import Info2Container from './components/sub/InfoContainer2.vue'
+// import RightContainer from './components/sub/RightContainer.vue'
 import SearchContainer from './components/search/SearchContainer.vue'
 import Search2Container from './components/search/Search2Container.vue'
-import CommentContainer from './components/comment/CommentContainer.vue'
+// import CommentContainer from './components/comment/CommentContainer.vue'
 import LastContainer from './components/last/LastContainer.vue'
 import ContributeContainer from './components/contribute/ContributeContainer.vue'
 import SuccessContribute from './components/contribute/SuccessContribute.vue'
 import FailContribute from './components/contribute/FailContribute.vue'
 import TipsContainer from './components/contribute/TipsContainer.vue'
 import PreviewContainer from './components/contribute/PreviewContainer.vue'
-import UploadImagesContainer from './components/uploadImages/UploadImagesContainer.vue'
 import HelpContainer from './components/help/HelpContainer.vue'
 import SponsorContainer from './components/sponsor/SponsorContainer.vue'
 import AccountSecurityContainer from './components/accountSecurity/AccountSecurityContainer.vue'
@@ -50,7 +48,7 @@ import FeedbackContainer from './components/feedback/FeedbackContainer.vue'
 // 3. 创建路由对象
 var router = new VueRouter({
   routes: [
-    {path: '/', component: HomeContainer},
+    {path: '/', component: HomeContainer, name:"home"},
     {path: '/synthesizer', component: SynthesizerContainer},
     {path: '/effects', component: EffectsContainer},
     {path: '/samplePack', component: SamplePackContainer},
@@ -69,11 +67,10 @@ var router = new VueRouter({
     {path: '/sampleindex', component: SamplePackIndexContainer},
     {path: '/hostindex', component: HostIndexContainer},
     {path: '/tutorialindex', component: TutorialIndexContainer},
-    {path: '/user/:active', component: UserContainer},
-    {path: '/setting/:active', component: SettingContainer},
+    {path: '/user/:active', component: UserContainer, name:"user"},
+    {path: '/setting/:active', component: SettingContainer, name:"setting"},
     {path: '/login', component: LoginContainer},
     {path: '/each', component: EachContainer},
-    {path: '/uploadImages', component: UploadImagesContainer},
     {path: '/last', component: LastContainer},
     {path: '/contribute', component: ContributeContainer},
     {path: '/success', component: SuccessContribute},
@@ -82,7 +79,6 @@ var router = new VueRouter({
     {path: '/search/:keyword', component: SearchContainer, name:"search"},
     {path: '/search/:keyword', component: Search2Container, name:"search2"},
     {path: '/:type/info/:id', component: InfoContainer, name:"info"},
-    {path: '/:type/info/:id', component: Info2Container, name:"info2"},
     {path: '/help', component: HelpContainer},
     {path: '/sponsor', component: SponsorContainer},
     {path: '/accountSecurity', component: AccountSecurityContainer},
@@ -94,6 +90,26 @@ var router = new VueRouter({
 
   ]
 })
-
+// 导航守卫
+router.beforeEach((to, from, next) => {
+  // to: Route: 即将要进入的目标 路由对象
+  // from: Route: 当前导航正要离开的路由
+  // next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
+  const nextRoute = ['user', 'setting'];
+  let isLogin = false;  // 是否登录
+  if( sessionStorage.getItem("user") != null) {
+    isLogin = true
+  } else {
+    isLogin = false
+  }
+  // 未登录状态；当路由到nextRoute指定页时，跳转至login
+  if (nextRoute.indexOf(to.name) >= 0) {  
+    if (!isLogin) {
+      router.push({ name: 'home' })
+    }
+  }
+  
+  next();
+});
 // 把路由对象暴露出去
 export default router

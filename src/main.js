@@ -1,30 +1,38 @@
 // 入口文件
 import Vue from 'vue'
-import VueResource from 'vue-resource'
+// import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import VueLazyLoad from 'vue-lazyload'
-import VueCropper from 'vue-cropper'
+// import VueCropper from 'vue-cropper'
 import axios from 'axios'
 import VueProgressBar from 'vue-progressbar'
 import moment from 'moment' //设置中文
 import vueToTop from 'vue-totop'
+//分页插件
+import Paginate from 'vuejs-paginate'
+Vue.component('paginate', Paginate)
 // 分页
 // import VuePaginate from 'vue-paginate'
 // Vue.use(VuePaginate)
 // import Clipboard from 'clipboard'
-import {VTable,VPagination} from 'vue-easytable'
+// import {VTable,VPagination} from 'vue-easytable'
 
-Vue.component(VTable.name, VTable)
-Vue.component(VPagination.name, VPagination)
-Vue.use(VueResource)
+
+// axios.defaults.baseURL = ''
+
+Vue.prototype.axios = axios
+
+// Vue.component(VTable.name, VTable)
+// Vue.component(VPagination.name, VPagination)
+// Vue.use(VueResource)
 Vue.use(VueRouter)
-Vue.use(VueCropper)
+// Vue.use(VueCropper)
 Vue.use(vueToTop)
 
 //图片懒加载
 Vue.use(VueLazyLoad,{
-  error:'./src/images/1788.png',
-  loading:'./src/asset/icon/lazy8.gif'
+  error:'/tips/1788.png',
+  loading:'/tips/lazy8.gif'
 })
 
 
@@ -43,14 +51,12 @@ const options = {
 }
 
 Vue.use(VueProgressBar, options)
-// Vue.use(axios)
+Vue.use(axios)
 // Vue.use(Clipboard)
 // import Paginate from 'vuejs-paginate'
 // Vue.component('paginate', Paginate)
 
-//分页插件
-import Paginate from 'vuejs-paginate'
-Vue.component('paginate', Paginate)
+
 
 // 复制到剪切板
 import VueClipboard from 'vue-clipboard2'
@@ -107,6 +113,9 @@ Vue.filter('dateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
 
 })
 
+
+
+
 Vue.filter('commentDateFormat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
   dataStr = parseInt(dataStr)
   moment.locale('zh-cn') //设置中文显示
@@ -127,17 +136,7 @@ Vue.filter('sizeFormat', function(dataStr) {
 })
 
 
-Vue.filter('contributeTimeFormat', function(dataStr) {
-  
-  return "xxxxxxxx";
 
-})
-
-Vue.filter('userId', function(dataStr) {
-  
-  
-
-})
 // 
 Vue.filter('colorFormat', function (dataStr) {
   if(dataStr === "synthesizer"){
@@ -189,25 +188,26 @@ Vue.filter('arrowsFormat', function (dataStr) {
 
 import App from './App.vue'
 
-import './normalize.css'
 
 import store from './store/store.js'//引入store
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
-
+import './normalize.css'
 import 'swiper/dist/css/swiper.min.css'
-import '@fortawesome/fontawesome-free/css/all.css'
+// import '@fortawesome/fontawesome-free/css/all.min.css'
+
 import router from './router.js'
 
 
 
-Vue.http.interceptors.push((request, next) => {
-  NProgress.start();
+// Vue.http.interceptors.push((request, next) => {
+//   NProgress.start();
 
-  next((response)=>{
-    NProgress.done();
-  });
-});
+//   next((response)=>{
+//     NProgress.done();
+//   });
+// });
 
 const vm = new Vue({
   el: '#app',

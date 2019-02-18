@@ -81,22 +81,6 @@
               </form>
             </div>
             <div role="tabpanel" class="tab-pane" id="profile">
-              <!-- <div class="profile">
-                <ul>
-                  <li>
-                    <div class="">
-                      <span class="profile-span">注册时间</span>
-                      <input type="text" name="" id="" class="profile-input">
-                    </div>
-                  </li>
-                  <li>
-                    <div class="">
-                      <span class="profile-span">注册时间</span>
-                      <input type="text" name="" id="" class="profile-input">
-                    </div>
-                  </li>
-                </ul>
-              </div> -->
               <div class="safe">
                 <img src="../../images/working.png" alt="">
               </div>
@@ -122,8 +106,7 @@
 </template>
 
 <script>
-import laydate from '../../lib/laydate/laydate.js'
-import axios from 'axios'
+
 import myUpload from 'vue-image-crop-upload';
 
 import AccountSecurity from '../accountSecurity/AccountSecurityContainer.vue';
@@ -141,37 +124,41 @@ export default {
       isUpload: false,
       id: "",
       active: this.$route.params.active,
+      userData: {}
     }
   },
   mounted() {
+    // 组件最小高度设置
     this.minHeight = document.documentElement.clientHeight - 754
     window.onresize = () =>　{
       this.minHeight = document.documentElement.clientHeight - 754
     }
 
-    //初始化日历插件
-    laydate.render({
-      elem: '#birth' //指定元素
-    });
+    
 
     // 判断是否已登录
-    if( sessionStorage.getItem("user") != null) {
-      this.avatar = `http://localhost:3001` + JSON.parse(sessionStorage.getItem("user")).avatar
-    } else {
-      this.$router.push({path: "/"})
-      return
-    }
-
+    this.isLogin()
+    this.avatar = `` + this.userData.avatar
+    // 获取进入组件后左边控制栏所在的位置
     let target = "[role='"+ this.active +"']"
-    console.log(this.active)
     $(this.$refs[this.active]).click()
     $(target).addClass("active")
+
   },
   components: {
     "my-upload": myUpload,
     AccountSecurity
   },
   methods: {
+      // 判断是否登录
+      isLogin() {
+        if( sessionStorage.getItem("user") != null) {
+          this.userData = JSON.parse(sessionStorage.getItem("user"))
+        } else {
+          this.$router.push({path: '/'})
+          return
+        }
+      },
       menu() {
         window.scrollTo(0,0);
       },
@@ -225,10 +212,11 @@ export default {
          
       },
       uploadAvatar() {
+        this.isLogin()
         if( this.isUpload === true ) {
           let userData = JSON.parse(sessionStorage.getItem("user"))
           $.ajax({
-            url : 'http://localhost:3001/fileUpload',
+            url : '/api/fileUpload',
             async: false,
             type : 'POST',
             data : this.formData,
@@ -313,7 +301,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../lib/laydate/theme/default/laydate.css';
 .container {
   padding: 0;
   box-shadow: 0 6px 23px rgba(0, 0, 0, 0.094);

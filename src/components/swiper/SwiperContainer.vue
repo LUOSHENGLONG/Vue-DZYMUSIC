@@ -23,15 +23,15 @@
 <script>
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.min.css'
-  import axios from 'axios';
+  ;
   export default {
   data() {
     return {
       
       mySwiper: {},
       img:[
-        {id:1,src:'src/images/1788.png'},
-        {id:2,src:'src/images/1788.png'}],
+        {id:1,src:'/images/1788.png'},
+        {id:2,src:'/images/1788.png'}],
       swiperData: [],
       adData: []
     };
@@ -71,13 +71,13 @@
       })
     },
     getData() {
-      axios.post("http://localhost:3001/imagesData")
+      this.axios.post("/api/imagesData")
       .then( result => {
         if( result.data.code > 0) {
           this.swiperData = []
           this.adData = []
           result.data.imagesData.forEach( item => {
-              item.img = "http://localhost:3001" + item.img
+              item.img = "" + item.img
               if( item.type === "swiper") {
                   this.swiperData.push(item)
                   this.$nextTick(() => {  // 下一个UI帧再初始化swiper
@@ -101,15 +101,20 @@
 }
 .swiper-container {
     width: 100%;
-    height: 600px;
+    height: 650px;
     margin-bottom: 20px;
     z-index: 0;
-    
+    margin-top: 10px;
 } 
 .swiper-slide {
   width: 100%;
+  height: 600px;
   background-size: 1530px 600px;
   text-align: center;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+  overflow: hidden;
+
 }
 .swiper-slide img {
   height: 100%;

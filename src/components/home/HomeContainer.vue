@@ -1,7 +1,9 @@
 <template>
-  <div class="all container">
+  <div class="all container" v-if="isReady">
     <!-- 轮播图 -->
     <Swiper></Swiper>
+    <!-- 最新 合成器模块 -->
+    <LastIndexContainer></LastIndexContainer>
     <!-- 首页 合成器模块 -->
     <SynthesizerIndexContainer></SynthesizerIndexContainer>
     <!-- 首页 效果器模块 -->
@@ -29,6 +31,7 @@ import Navbar from '../navbar/NavbarContainer.vue'
 // import Progress from '../progress/ProgressContainer.vue'
 import Bottom from '../bottom/BottomContainer.vue'
 
+import LastIndexContainer from '../last/LastIndexContainer.vue'
 import SynthesizerIndexContainer from '../synthesizer/SynthesizerIndexContainer.vue'
 import EffectsIndexContainer from '../effects/EffectsIndexContainer.vue'
 import SamplePackIndexContainer from '../samplepack/SamplePackIndexContainer.vue'
@@ -38,7 +41,7 @@ import KontaktIndexContainer from '../kontakt/KontaktIndexContainer.vue'
 import ProjectIndexContainer from '../project/ProjectIndexContainer.vue'
 import PresetIndexContainer from '../preset/PresetIndexContainer.vue'
 
-import axios from 'axios'
+
 
 export default {
   components: {
@@ -53,67 +56,73 @@ export default {
     TutorialIndexContainer,
     KontaktIndexContainer,
     ProjectIndexContainer,
-    PresetIndexContainer
+    PresetIndexContainer,
+    LastIndexContainer,
   },
   data() {
     return {
       nickname: "",
       username: "",
       password: "",
-      mySwiper: {}
+      mySwiper: {},
+      isReady: false
+
     };
   },
   updated() {
     
   },
-  mounted() {
+  created() {
     this.getHomeData()
+
+  },
+  mounted() {
     this.menu()
+    if(localStorage.getItem("homeData") != null) {
+      this.isReady = true
+    }
   },
  
   methods: {
     getHomeData() {
-      axios.post("http://localhost:3001/homeData")
-        .then(result => {
+      var that = this
+      $.ajax({
+        url : '/api/homeData',
+        async: true,
+        type : 'POST',
+        processData: false,
+        contentType: false, 
+        success : function(result){
           if(result != null) {
             let test = /(\")|(\])|(\[)/
             String.prototype.replaceAll = function(s1,s2){ 
               return this.replace(new RegExp(s1,"gm"),s2); 
             }
-            result.data.data.forEach( origin => {
+            result.data.forEach( origin => {
               origin.forEach (item => {
                 item.img = item.img + ""
                 item.img = item.img.replaceAll(test,"")
                 let img = []
                 if(item.img.indexOf(",") > -1) {
                   item.img.split(",").forEach( item2 => {
-                    img.push("http://localhost:3001" + item2)
+                    img.push("" + item2)
                   })
                 }else {
-                  img.push("http://localhost:3001" + item.img)
+                  img.push("" + item.img)
                 }
                 item.img = img[0]
               })
             })
-            // 时间排序
-            // let t = {}
-            // this.$store.state.homeData = result.data
-            // result.data.data.forEach( item => {
-            //   for(var i=0;i<item.length;i++){
-            //     for(var j=i+1;j<item.length;j++){
-            //       if(item[i]>item[j]){
-            //           t=item[i];
-            //           item[i]=item[j];
-            //           item[j]=t;
-            //       }
-            //     }
-            //   }
-              
-            // })
-            localStorage.setItem("homeData",JSON.stringify(result.data))
-
+            
+          localStorage.setItem("homeData",JSON.stringify(result))
+          that.isReady = true
           }
-        })
+          
+        },
+        error : function(result){
+        } 
+      })
+      
     },
     menu() {
       window.scrollTo(0,0);

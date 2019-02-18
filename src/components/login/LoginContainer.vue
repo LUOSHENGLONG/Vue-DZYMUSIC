@@ -59,7 +59,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+
 
 export default {
   data() {
@@ -103,7 +103,7 @@ export default {
         }
         
 
-        axios.post("http://localhost:3001/login",{username:this.username,password:this.password,toggle: this.toggle})
+        this.axios.post("/api/login",{username:this.username,password:this.password,toggle: this.toggle})
         .then(result => {
             //登录成功
             if( result.data.status === 1 ) {

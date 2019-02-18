@@ -178,7 +178,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+
 
 
   export default {
@@ -187,7 +187,7 @@ import axios from 'axios'
         keyword: "",
         switch: 0,
         oldKeyword: "",
-        navAvatar: `http://localhost:3001` + this.$store.state.user.avatar,
+        navAvatar: `` + this.$store.state.user.avatar,
         nickname: this.$store.state.user.nickname,
         emailOrPhone: "",
       }
@@ -203,11 +203,17 @@ import axios from 'axios'
     },
     mounted() {
       let fr = new FileReader()
+      if( sessionStorage.getItem("user") != null) {
+        const user = JSON.parse(sessionStorage.getItem("user"))
+        this.navAvatar = `` + user.avatar
+        this.nickname = user.nickname
+        this.$store.commit("trueLogin")
+      } 
     },
     updated() {
       if( sessionStorage.getItem("user") != null) {
         const user = JSON.parse(sessionStorage.getItem("user"))
-        this.navAvatar = `http://localhost:3001` + user.avatar
+        this.navAvatar = `` + user.avatar
         this.nickname = user.nickname
         if(user.email.trim() != "" || user.email !=null) {
           this.emailOrPhone = user.email
@@ -236,11 +242,11 @@ import axios from 'axios'
           return
         }
         if(this.keyword.trim() !== "" || this.keyword.trim() !== null ){
-          this.keyword = this.keyword.replace(/\s+/g,"")
+          // this.keyword = this.keyword.replace(/\s+/g,"")
           if(this.switch % 2 === 0) {
-            this.$router.push({name: 'search', params: {keyword: this.keyword}})
+            this.$router.push({name: 'search', params: {keyword: this.keyword.trim()}})
           }else {
-            this.$router.push({name: 'search2', params: {keyword: this.keyword}})
+            this.$router.push({name: 'search2', params: {keyword: this.keyword.trim()}})
           }
           if(this.keyword !== this.oldKeyword) {
             this.switch ++

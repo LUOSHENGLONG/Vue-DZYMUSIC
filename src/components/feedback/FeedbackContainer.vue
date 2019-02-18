@@ -42,7 +42,7 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
+;
 export default {
     data() {
         return {
@@ -88,9 +88,8 @@ export default {
                 return 
             }
             let userId = JSON.parse(sessionStorage.getItem('user')).id
-            axios.post("http://localhost:3001/submitFeedback",{userId: userId,title: this.title, content: this.content})
+            this.axios.post("/api/submitFeedback",{userId: userId,title: this.title, content: this.content})
             .then( result => {
-                console.log(result.data)
                 if( result.data.code === 1) {
                     this.title = ""
                     this.content = ""

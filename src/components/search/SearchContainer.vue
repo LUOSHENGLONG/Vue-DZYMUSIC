@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+
 import EachContainer from '../sub/EachContainer.vue'
   export default {
     data() {
@@ -25,7 +25,7 @@ import EachContainer from '../sub/EachContainer.vue'
     ,
     methods: {
       getData() {
-        axios.post("http://localhost:3001/search",{currentPage: this.currentPage, keyword: this.keyword})
+        this.axios.post("/api/search",{currentPage: this.currentPage, keyword: this.keyword})
         .then(result => {
           this.data = result.data.data
           this.count = result.data.count["count(id)"]
@@ -40,14 +40,14 @@ import EachContainer from '../sub/EachContainer.vue'
               item.img = item.img.replaceAll(test,"")
               if(item.img.indexOf(",") > -1) {
                 item.img.split(",").forEach( item => {
-                  img.push("http://localhost:3001" + item)
+                  img.push("" + item)
                 })
               }else {
-                img.push("http://localhost:3001" + item.img)
+                img.push("" + item.img)
               }
               item.img = img[0]
             }else {
-              item.img = "http://localhost:3001/contribute/1788MUSIC.png"
+              item.img = "/contribute/1788MUSIC.png"
             }
           })
         })

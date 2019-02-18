@@ -49,13 +49,14 @@ export default {
       mySwiper: {},
       isLogin: false,
       isSignup: false,
+      token: "",
       top: 0 ,
       navStatus: this.$store.state.isLogin,
-      confirmLogin: this.$store.state.isLogin,
+      // confirmLogin: false,
     };
   },
   created() {
-    this.$store.commit("confirmLogin")
+    // this.$store.commit("confirmLogin")
     this.$Progress.start()
     //  hook the progress bar to start before we move router-view
     this.$router.beforeEach((to, from, next) => {
@@ -75,9 +76,11 @@ export default {
       //  finish the progress bar
       this.$Progress.finish()
     })
+    this.queryRightData()
   
   },
   mounted() {
+    this.confirmLogin()
     this.$Progress.finish()
     window.onresize = () => {
       // 浏览器大小改变时 登陆 注册 DIV left top 值改变是其在整个窗口保持居中
@@ -88,12 +91,41 @@ export default {
       this.auto()
     }
     
-    this.$store.commit("queryRightData")
-
+    // this.$store.commit("queryRightData")
   }
   ,
   methods: {
-    
+    confirmLogin() {
+      let token = ""
+      if( localStorage.getItem("token") != null ) {
+        token = localStorage.getItem("token")
+      }
+      if( sessionStorage.getItem("token") != null ) {
+        token = sessionStorage.getItem("token")
+      }
+      if( token === "") {
+        return
+      }
+      this.axios.post('/api/confirmLogin',{token: token})
+      .then( result => {
+        if(result.data === false){
+          sessionStorage.removeItem("user")
+          sessionStorage.removeItem("token")
+          this.$router.push({path: '/'})
+        }else {
+          sessionStorage.setItem("user",JSON.stringify(result.data.user))
+        }
+      })
+    },
+    queryRightData() {
+    this.axios.post("/api/rightData1")
+      .then(result => {
+        localStorage.setItem("rightData1",JSON.stringify(result.data.data))
+      })
+      .then(this.axios.post("/api/rightData2").then(result => {
+        localStorage.setItem("rightData2",JSON.stringify(result.data.data))
+      }))
+    },
     auto() {
       let divlogin = this.$refs.login
       // div宽度

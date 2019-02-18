@@ -18,13 +18,13 @@
                 &nbsp;个人信息
               </a>
             </li>
-            <li @click="showFavorite()" role="myFavorite">
+            <li role="myFavorite">
               <a href="#myFavorite" aria-controls="myFavorite" role="tab" data-toggle="tab">
                 <i class="fas fa-star-half-alt" style="font-size:24px;vertical-align: -2px;"></i> 
                 &nbsp;我的收藏
               </a>
             </li>
-            <li @click="showFavorite()" role="myContribute">
+            <li role="myContribute">
               <a href="#myContribute" ref="myContribute" @click="getMyContribute" aria-controls="myContribute" role="tab" data-toggle="tab">
                 <i class="fas fa-edit" style="font-size:22px;vertical-align: -2px;"></i> 
                 &nbsp;我的投稿
@@ -147,11 +147,11 @@
                   >
                 </button>
               </div>
-              <div ref="noResult" class="noResult" style="width: 100%; height:480px;display: none;margin-top: 50px;text-align: center;">
+              <div ref="noResult" class="noResult" style="width: 100%; height:480px;display: none;margin-top: 30px;text-align: center;">
                 <img src="../../images/empty.png" alt="" style="">
               </div>
               <!-- 分页 -->
-              <div ref="paginate" class="pageNav" id="pageNav" v-if="isShow">
+              <div ref="paginate" class="pageNav pageNav1" id="pageNav" v-if="isShow">
                 <paginate
                   :page-count="Math.ceil(PageCount / 6)"
                   :click-handler="page"
@@ -168,7 +168,19 @@
             <!-- myContribute -->
             <div role="tabpanel" class="tab-pane" id="myContribute">
               <div class="bs-example" data-example-id="hoverable-table"  v-if="showContribute">
-                <table class="table table-hover">
+                <div class="search">
+                  <div class="search-input">
+                    <input type="text" name="search" v-model="search" placeholder="请输入搜索关键字" id="search1" @keyup.enter="contributePage(1)">
+                    <label class="fa fa-search" for="search1" @click="contributePage(1)"></label>
+                    <div v-if="!searchResult"> 
+                      <i class="fa fa-times" style="font-size: 136px;color: #fff;margin-top: 30px;"></i>
+                    </div>
+                    <p class="searchEmpty" v-if="!searchResult">
+                      搜索结果为空
+                    </p>
+                  </div>
+                </div>
+                <table class="table table-hover" v-if="searchResult">
                   <thead>
                     <tr>
                       <th style="width: 60%;text-align: left;padding-left: 20px">文章标题</th>
@@ -204,13 +216,14 @@
                     
                   </tbody>
                 </table>
-                <div ref="paginate" class="pageNav" id="pageNav" v-if="showContribute">
+                <div ref="paginate" class="pageNav" id="pageNav" v-if="searchResult">
                 <paginate
                   :page-count="Math.ceil(contributePageCount / 10)"
                   :click-handler="contributePage"
                   :prev-text="'上一页'"
                   :next-text="'下一页'"
                   :container-class="'pagination'"
+                   v-if="searchResult"
                   >
                 </paginate>
               </div> 
@@ -233,12 +246,7 @@
 </template>
 
 <script>
-import laydate from '../../lib/laydate/laydate.js'
-import axios from 'axios'
-import paginate from "../../asset/jPaginate/jquery.paginate.js"
-laydate.render({
-  elem: '#birth' //指定元素
-});
+
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
@@ -263,61 +271,78 @@ export default {
       isShow: true,
       showContribute: true,
       protect: "",
+      search: "",
+      searchResult: true,
       
     }
   },
   mounted() {
-
+    // 组件最小高度设置
     this.minHeight = document.documentElement.clientHeight - 754
     window.onresize = () =>　{
       this.minHeight = document.documentElement.clientHeight - 754
     }
-
-    if( sessionStorage.getItem("user") != null) {
-      this.userData = JSON.parse(sessionStorage.getItem("user"))
-    } else {
-      this.$router.push({path: '/'})
-      return
-    }
+    // 判断是否登录 未登录则跳转首页
+    this.isLogin()
+    // 判断是否设置密保
     this.isSetProtect()
+    // 获取收藏文章数据
     this.getLikeData()
+    // 每次进入当前组件回到顶部
     this.menu()
+    // 获取进入组件后左边控制栏所在的位置
     let target = "[role='"+ this.active +"']"
-    
     $(this.$refs[this.active]).click()
     $(target).addClass("active")
+    // 获取投稿数据
     this.getMyContribute()
   },
   methods: {
+    // 判断是否登录
+    isLogin() {
+      if( sessionStorage.getItem("user") != null) {
+        this.userData = JSON.parse(sessionStorage.getItem("user"))
+      } else {
+        this.$router.push({path: '/'})
+        return
+      }
+    },
+
+    // 路由至设置
     goSetting() {
+      this.isLogin()
       this.$router.push({path: '/setting/account',params:{active: 'account'}})
     },
+
+    // 获取用户是否设置密保
     isSetProtect() {
-      axios.post('http://127.0.0.1:3001/isSetProtect',{id: this.userData.id})
+      this.axios.post('/api/isSetProtect',{id: this.userData.id})
       .then((result) => {
         // result.data.code = 0 服务器出租哦 =1 未设置 =2已设置
-        console.log(result.data)
         let code = result.data.code
-        
         this.protect = result.data.message
-        
-        
       })
     },
+
+    // 提示
     binding() {
       this.$refs.tips.style.display = "block"
       setTimeout(() => {
         this.$refs.tips.style.display = "none"
       }, 2000);
     },
+
+    // 删除投稿文章
     deleteMyContribute(e, id) {
+      this.isLogin()
       e.preventDefault()
-      axios.post('http://127.0.0.1:3001/deleteMyContribute',{id: id})
+      this.axios.post('/api/deleteMyContribute',{id: id})
       .then((result) => {
         this.getMyContribute()
-        
       })
+      
     },
+    // 获取投稿分页数据
     contributePage(e) {
       this.currentContributePage = e
       this.getMyContribute()
@@ -325,6 +350,7 @@ export default {
     // 获取投稿 
     getMyContribute() {
       if( sessionStorage.getItem("user")) {
+        // 时间 显示优化
         function timestampToTime (cjsj) {
             var date = new Date(cjsj) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
             var Y = date.getFullYear() + '-'
@@ -336,10 +362,20 @@ export default {
             return Y+M+D+h+m+s
         }
         let userId = JSON.parse(sessionStorage.getItem("user")).id
-        axios.post('http://127.0.0.1:3001/getMyContribute',{userId: userId, currentPage: this.currentContributePage})
+        this.axios.post('/api/getMyContribute',{userId: userId, currentPage: this.currentContributePage, search: this.search})
         .then((result) => {
+          this.showContribute = false
           this.contributePageCount = result.data.count[0].count
           this.userContribute = result.data.pageData
+          setTimeout(() => {
+            this.showContribute = true
+            
+          }, 1);
+          if(this.contributePageCount === 0) {
+            this.searchResult = false
+          }else {
+            this.searchResult = true
+          }
           if( this.userContribute.length < 1) {
             this.showContribute = false
             return
@@ -355,36 +391,31 @@ export default {
         
       }
     },
+
     // 回到顶部
     menu() {
       window.scrollTo(0,0);
     },
+
     // 更换用户名
     savePerInfo() {
-      
+      this.isLogin()
+      // 如果昵称不为空 
       if( this.nickname.trim() != "") {
         if( this.oldNickname === this.nickname ) {
-          $(".exitName").text("用户名已存在")
-          $(".exitName").css("background-color","#ef5b54")
-          $(".exitName").css("display","block")
-          $(".nickname").focus()
-          $(".exitName").animate({"opacity":0},3000, ()=> {
-            $(".exitName").css("display","none")
-            $(".exitName").animate({"opacity":1},100)
-          })
-          
+          // 昵称与原昵称相同则返回
           return
         }
         this.oldNickname = this.nickname
-        axios.post("http://localhost:3001/updateNickname",
+        this.axios.post("/api/updateNickname",
         {
           nickname: this.nickname,
           userId: this.userData.id
         })
         .then(result => {
+          // 更新成功
           if (result.data.code === 0) {
-            // this.userData = result.data.user[0]
-            // localStorage.setItem("user",JSON.stringify(this.userData))
+            // 更新成功 则把sessionStorage重新设置
             let tempDate = JSON.parse(sessionStorage.getItem("user"))
             tempDate.nickname = result.data.nickname
             sessionStorage.setItem("user",JSON.stringify(tempDate))
@@ -393,6 +424,7 @@ export default {
             this.$router.go(0)
             this.$refs.exitName.textContent = result.data.success
           }
+          // 更新失败 昵称被占用
           if (result.data.code === 1) {
             this.$refs.exitName.textContent = result.data.error
             this.$refs.exitName.style.color = "#a94442"
@@ -406,6 +438,7 @@ export default {
           $(".nickname").focus()
       }
     },
+
     // 我的收藏 分页
     page(e) {
       this.currentPage = e
@@ -414,12 +447,14 @@ export default {
     },
     // 取消收藏
     cancelLike(id) {
-      axios.post("http://localhost:3001/cancelFavorite",
+      this.isLogin()
+      this.axios.post("/api/cancelFavorite",
       {
         articleId: id,
         nickname: JSON.parse(sessionStorage.getItem("user")).nickname
       })
       .then(result => {
+
         if( this.currentPage > 1) {
           if( this.PageCount % 6 === 1) {
             if( this.currentPage > 1) {
@@ -437,12 +472,10 @@ export default {
     getLikeData() {
       if( sessionStorage.getItem("user") != null) {
         this.userData = JSON.parse(sessionStorage.getItem("user"))
-        axios.post("http://localhost:3001/likeData",{nickname: this.userData.nickname, currentPage: this.currentPage})
+        this.axios.post("/api/likeData",{nickname: this.userData.nickname, currentPage: this.currentPage})
         .then(result => {
           this.data = result.data.likeData
           this.PageCount = result.data.count.count
-          console.log(result.data)
-          console.log(this.data)
           if(this.data.length < 1) {
             this.isShow = false
             return
@@ -452,22 +485,23 @@ export default {
           String.prototype.replaceAll = function(s1,s2){ 
             return this.replace(new RegExp(s1,"gm"),s2); 
           }
+          // 优化img 显示路径
           let test = /(\")|(\])|(\[)/
           let img = []
           this.data.forEach( item => {
             img = []
 
             if(item.img === "" | item.img === null) {
-              img.push("http://localhost:3001/contribute/1788MUSIC.png")
+              img.push("/contribute/1788MUSIC.png")
             }
             item.img = item.img + ""
             item.img = item.img.replaceAll(test,"")
             if(item.img.indexOf(",") > -1) {
               item.img.split(",").forEach( item => {
-                img.push("http://localhost:3001" + item)
+                img.push("" + item)
               })
             }else {
-              img.push("http://localhost:3001" + item.img)
+              img.push("" + item.img)
             }
             item.img = img[0]
             
@@ -476,84 +510,18 @@ export default {
       }
       
     },
-    showFavorite() {
-    },
-    del() {
-      this.$refs.formEdit.style.display="block"
-    },
-    editBatch(e) {
-      e.preventDefault()
-      this.$refs.btnCancel.style.display="block"
-
-      this.$refs.btnDelbat.forEach(item => {
-        item.style.display="none"
-      })
-      this.$refs.btnBat.forEach(item => {
-        item.style.display="block"
-      })
-
-      this.$refs.btnEdit.style.display =　"none"
-      this.$refs.btnDel.style.display =　"block"
-
-      this.$refs.btnLab.forEach(item => {
-        item.style.display="block"
-      })
-      
-    },
-    cancal(e) {
-      e.preventDefault()
-      this.$refs.btnCancel.style.display="none"
-      this.$refs.btnDelbat.forEach(item => {
-        item.style.display="block"
-      })
-      this.$refs.btnBat.forEach(item => {
-        item.style.display="none"
-      })
-
-      this.$refs.btnEdit.style.display =　"block"
-      this.$refs.btnDel.style.display =　"none"
-
-      this.$refs.btnLab.forEach(item => {
-        item.style.display="none"
-      })
-
-    },
-    bacthDel() {
-      this.batchData.forEach(id => {
-        this.data.forEach((item,i) => {
-          if(item.id === id) {
-            this.data.splice(i,1)
-          }
-        })
-      })
-    },
-    delOne(id) {
-      this.data.forEach((item,i) => {
-        if(item.id === id) {
-          this.data.splice(i,1)
-        }
-      })
-    },
-    batData (e) {
-      let idIndex = this.batchData.indexOf(e)
-      if (idIndex >= 0) {
-        // 如果已经包含了该id, 则去除(单选按钮由选中变为非选中状态)
-        this.batchData.splice(idIndex, 1)
-      } else {
-        // 选中该checkbox
-        this.batchData.push(e)
-      }
-    }
+    
+    
   },
   components: {
   },
   watch: {
     PageCount(newVal, oldVal) {
       if(newVal === 0) {
-        this.$refs.paginate.style.display = "none"
+        $(".pageNav1").css("display","none")
         this.$refs.noResult.style.display = "block"
       } else {
-        this.$refs.paginate.style.display = "block"
+        $(".pageNav1").css("display","block")
         this.$refs.noResult.style.display = "none"
       }
     },
@@ -595,7 +563,6 @@ export default {
 <style lang="scss" scoped>
 @import '../../asset/jPaginate/css/style.css';
 
-@import'../../lib/laydate/theme/default/laydate.css';
 .container {
   padding: 0;
   min-width: 1200px;
@@ -966,6 +933,7 @@ button.active {
 .pageNav {
   background-color: #fff;
   text-align: center;
+  display: block;
   .pagination {
     padding: 0;
     text-align: right;
@@ -1097,7 +1065,7 @@ button.active {
     transition: 0.5s;
     animation: overturn 2s linear infinite alternate;  /*开始动画后无限循环，用来控制rotate*/
   }
-  .fa-image, .fa-plus {
+  .fa-image, .fa-plus, .fa-search,fa-times {
     animation: none;
   }
 }
@@ -1120,13 +1088,14 @@ button.active {
 
 .table {
   text-align: center;
-  box-shadow: 0 6px 20px #eee;
-  border-radius: 8px;
   overflow: hidden;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   tbody {
     border-top: 0px solid #fff;
     tr{
     background-color: #34495e;
+    
     color: #fff;
     }
     tr:hover {
@@ -1167,12 +1136,43 @@ a {
   display: none;
   z-index: 99;
 }
-
+input:focus {
+  outline: 0;
+}
+.search {
+  background-color: #34495e;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  text-align: center;
+  padding: 15px 20px;
+  position: relative;
+  .search-input {
+    text-align: center;
+    input {
+    width: 300px;
+    height: 40px;
+    border-radius: 6px;
+    border: 0;
+    padding: 10px;
+    font-size: 16px;
+    
+    }
+    .fa-search {
+      font-size: 24px;
+      margin-left: -36px;
+      vertical-align: -3px;
+      color: #47b39d;
+      cursor: pointer;
+    }
+  }
+  
+}
 .bs-example {
   border-top: 3px solid #c0c8cf;
   border-width: 4px;
   border-top-left-radius:2em;
   border-top-right-radius:2em;
+  // box-shadow: 0 6px 20px #eee;
 }
 
 .title {
@@ -1188,5 +1188,11 @@ a {
     max-width: 100%;
     margin-bottom: 20px;
     
+}
+.searchEmpty {
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  margin-top: 20px;
 }
 </style>

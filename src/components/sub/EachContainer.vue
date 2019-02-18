@@ -113,7 +113,7 @@
 import RightContainer from './RightContainer.vue'
 import Swiper from '../swiper/AdSwiperContainer.vue'
 
-import axios from 'axios'
+
 import paginate from "../../asset/jPaginate/jquery.paginate.js"
   export default {
     data() {
@@ -135,14 +135,15 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
 
       
     },
-    updated() {
-      
+    created() {
+      this.getData1()
+      this.getData2()
     },
     
     methods: {
       
       getData1() {
-        axios.post("http://localhost:3001/rightData1",{currentPage: this.currentPage, keyword: this.keyword})
+        this.axios.post("/api/rightData1",{currentPage: this.currentPage, keyword: this.keyword})
         .then(result => {
           if(result != null) {
             this.rightData1 = result.data.data
@@ -150,7 +151,7 @@ import paginate from "../../asset/jPaginate/jquery.paginate.js"
         })
       },
       getData2() {
-        axios.post("http://localhost:3001/rightData2",{currentPage: this.currentPage, keyword: this.keyword})
+        this.axios.post("/api/rightData2",{currentPage: this.currentPage, keyword: this.keyword})
         .then(result => {
           if(result != null) {
             this.rightData2 = result.data.data

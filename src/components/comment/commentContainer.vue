@@ -29,7 +29,7 @@
       <div class="list-item reply-wrap">
         <div class="user-face">
           <a href="javascript:void(0);" target="_blank">
-          <img v-lazy="`http://localhost:3001`+item.avatar" alt="">
+          <img v-lazy="``+item.avatar" alt="">
           </a>
           
           <div class="hot-follow" style="display: none">
@@ -67,7 +67,7 @@
           <div class="replay-box" v-for="reply of filter(item.id)" :key="reply.id">
             <div class="replay-item reply-wrap">
               <a href="javascript:void(0);" target="_blank" class="reply-face">
-                <img class="reply-face-img" :src="`http://localhost:3001`+reply.fromAvatar" alt="">
+                <img class="reply-face-img" v-lazy="``+reply.fromAvatar" alt="">
               </a>
               <div class="replay-con">
                 <div class="user">
@@ -116,7 +116,7 @@
   </section>
 </template>
 <script>
-import axios from 'axios'
+
 
 export default {
   data() {
@@ -138,7 +138,7 @@ export default {
     this.getComment()
     
     if( sessionStorage.getItem('user') != null) {
-      this.CommentAvatar = `http://localhost:3001` + JSON.parse(sessionStorage.getItem('user')).avatar
+      this.CommentAvatar = `` + JSON.parse(sessionStorage.getItem('user')).avatar
     }else {
         this.navAvatar = "./src/images/tx.jpg"
       }
@@ -252,7 +252,7 @@ export default {
         
         const mydate = new Date()
         
-        axios.post("http://localhost:3001/sendComment",
+        this.axios.post("/api/sendComment",
           {
             topicId: this.topicId,
             topicType: 0,
@@ -268,7 +268,7 @@ export default {
       this.commentContent = ""
     },
     getComment() {
-      axios.post("http://localhost:3001/getComment",{id: this.topicId})
+      this.axios.post("/api/getComment",{id: this.topicId})
         .then(result => {
           this.commentsData = result.data.comments
           this.replysData = result.data.replys
@@ -292,7 +292,7 @@ export default {
         return
       }
       if(this.replyComment.trim().length > 0) {
-        axios.post("http://localhost:3001/sendReply",
+        this.axios.post("/api/sendReply",
           {
             commentId: this.topicId,
             replyId: id,

@@ -2,6 +2,7 @@
   <footer class="footer ">
     <div class="container">
       <div id="news" class="col-md-12 col-lg-12 col-xs-12  col-sm-12">
+        <div class="favicon"></div>
         <div class="inner">
           <h3><label for="member_email">订阅我们的月刊 (中文)</label></h3>
           <form class="newsletter-form">
@@ -124,7 +125,7 @@
   </footer>
 </template>
 <script>
-import axios from 'axios';
+;
   export default {
     data() {
       return {
@@ -198,7 +199,7 @@ import axios from 'axios';
             }, 5000);
             return
           }
-          axios.post("http://localhost:3001/submitsubscription",{email: this.email})
+          this.axios.post("/api/submitsubscription",{email: this.email})
           .then( result => {
             if( result.data.code != null) {
               if( result.data.code === 1 ) {
@@ -307,7 +308,7 @@ input {
 
 #news {
   position: relative;
-  padding: 40px 20px 70px;
+  padding: 2px 20px 70px;
   text-align: center;
 }
 
@@ -379,5 +380,12 @@ p {
 }
 .footer-top {
   margin-bottom: 20px;
+}
+.favicon {
+  height: 160px;
+  background-image: url(/images/favicon.ico);
+  background-repeat: no-repeat;
+  background-size: 10%;
+  background-position-x: 50%;
 }
 </style>

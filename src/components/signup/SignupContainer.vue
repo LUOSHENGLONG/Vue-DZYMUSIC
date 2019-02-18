@@ -57,7 +57,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+
 import md5 from 'js-md5';
 export default {
     
@@ -92,7 +92,7 @@ export default {
     },
     sendCode() {
         // 发送请求拿到验证码
-        axios.post("http://localhost:3001/getCAPTCHA")
+        this.axios.post("/api/getCAPTCHA")
         .then( result => {
             // result 装载着验证码相关信息
             this.CAPTCHAMD5 = result.data.text
@@ -130,22 +130,18 @@ export default {
             return
         }
 
-        console.log(this.CAPTCHAMD5)
 
-        console.log(md5(`music` + this.CAPTCHA.toLowerCase()) )
         if( md5(`music` + this.CAPTCHA.toLowerCase()) !== this.CAPTCHAMD5){
             $(this.$refs.CAPTCHA).focus();
             this.$refs.CAPTCHA.style.border = "1px solid #c9302c"
             setTimeout(() => {
                 this.$refs.CAPTCHA.style.border = "1px solid #e1e1e1"
             }, 1500);
-            console.log(false)
             return 
         }
         this.$refs.CAPTCHA.style.border = "1px solid #eee"
-        axios.post("http://localhost:3001/register",{username:this.email,password:this.password})
+        this.axios.post("/api/register",{username:this.email,password:this.password})
         .then(result => {
-            console.log(result)
             // 0 代表 邮箱 或 手机 已注册
             if( result.data.status === 0 ){
                 this.$refs.errorTip.style.background = "#c9302c"
@@ -161,7 +157,6 @@ export default {
                 this.sendCode()
             // 注册成功    
             }else {
-                console.log("注册成功")
                 this.$refs.successTip.style.background = "#337ab7"
                 this.$refs.successTip.style.cursor = "#default"
                 this.$refs.email.style.border = "1px solid #eee"
@@ -176,7 +171,6 @@ export default {
             this.CAPTCHANum2 = Math.floor(Math.random()*9)+1 
         })
         .catch( err => {
-            console.log(err)
         })
     },
     hiddenErrorTip() {
@@ -522,6 +516,10 @@ export default {
     margin-top: 20px;
     line-height: 40px;
 }
+
+
+// 解决 input自动提示补全 背景黄色
+input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 
 </style>
 

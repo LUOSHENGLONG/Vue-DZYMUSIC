@@ -59,7 +59,7 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
+;
 import { setTimeout } from 'timers';
 export default {
     data() {
@@ -94,7 +94,7 @@ export default {
             }
             // 如果答案不为空 
             if( this.answer.trim() != "" && this.select != ""){
-                axios.post("http://localhost:3001/updataProtect",{question: this.select,answer: this.answer,userId: this.userId})
+                this.axios.post("/api/updataProtect",{question: this.select,answer: this.answer,userId: this.userId})
                 .then( result => {
                     if( result.data.count ) {
                         if(result.data.count > 0) {
@@ -121,7 +121,7 @@ export default {
             }
             // 如果答案不为空 
             if( this.answer.trim() != "" && this.select != ""){
-                axios.post("http://localhost:3001/verifyProtect",{question: this.select,answer: this.answer,userId: this.userId})
+                this.axios.post("/api/verifyProtect",{question: this.select,answer: this.answer,userId: this.userId})
                 .then( result => {
                     if( result.data.count.count === 0) {
                         // 验证失败
@@ -155,7 +155,7 @@ export default {
             }else {
                 this.$router.push({path: '/'})
             }
-            axios.post("http://localhost:3001/getProtect",{userId: this.userId})
+            this.axios.post("/api/getProtect",{userId: this.userId})
             .then( result => {
                 if( result.data.count.count > 0) {
                     this.isSetting = true
@@ -173,7 +173,7 @@ export default {
             }
             // 如果答案不为空 
             if( this.answer.trim() != "" && this.select != ""){
-                axios.post("http://localhost:3001/settingProtect",{question: this.select,answer: this.answer,userId: this.userId})
+                this.axios.post("/api/settingProtect",{question: this.select,answer: this.answer,userId: this.userId})
                 .then( result => {
                     if( result.data.code) {
                         if(result.data.code === 1) {
@@ -201,7 +201,7 @@ export default {
             
         },
         getQuestion() {
-            axios.post("http://localhost:3001/getQuestion")
+            this.axios.post("/api/getQuestion")
             .then( result => {
                 this.optionData = result.data
                 this.couponSelected = this.optionData[0].id;

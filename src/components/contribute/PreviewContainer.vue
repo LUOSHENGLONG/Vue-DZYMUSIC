@@ -8,7 +8,7 @@
         <div class="shadeLayer" @click="hiddenOrg">
         </div>
         <div class="originImg" ref="originImg" @click="hiddenOrg">
-            <img ref="showOrigin" src="http://localhost:3001/contribute/1788MUSIC.png" alt="" title="点击返回">
+            <img ref="showOrigin" src="/contribute/1788MUSIC.png" alt="" title="点击返回">
         </div>
         
         
@@ -110,7 +110,7 @@
 <script>
 
 import Clipboard from 'clipboard';
-import axios from 'axios'
+
 
   export default {
     data() {

@@ -17,7 +17,7 @@
 <script>
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.min.css'
-  import axios from 'axios';
+  ;
   export default {
   data() {
     return {
@@ -38,7 +38,6 @@
 
     
     window.onload = () => {
-        console.log($('.swiper-slide'))
     }
     
   },
@@ -75,18 +74,17 @@
       })
     },
     getData() {
-      axios.post("http://localhost:3001/imagesData")
+      this.axios.post("/api/imagesData")
       .then( result => {
         if( result.data.code > 0) {
             this.swiperData = []
             this.adData = []
             result.data.imagesData.forEach( item => {
-                item.img = "http://localhost:3001" + item.img
+                item.img = "" + item.img
                 if( item.type === "swiper") {
                     this.swiperData.push(item)
                     this.$nextTick(() => {  // 下一个UI帧再初始化swiper
                         this.getSwiper();
-                        console.log()
                         
                     });
                 }
@@ -97,9 +95,6 @@
             let slide = Array.prototype.slice.call($('.swiper-slide'))
             $(slide[0]).css("background-image","url("+ this.swiperData[0].img +")")
             $(slide[slide.length-1]).css("background-image","url("+ this.swiperData[this.swiperData.length-1].img +")")
-
-            
-            console.log(111111)
         }
       })
     }

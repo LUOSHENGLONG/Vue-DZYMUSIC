@@ -4,7 +4,7 @@
         <!-- <i class="glyphicon glyphicon-remove" style="font-size: 50px;margin-top: 50px;cursor:pointer" @click="hiddenOrg"></i> -->
       </div>
       <div class="originImg" ref="originImg" @click="hiddenOrg">
-        <img ref="showOrigin" src="http://localhost:3001/contribute/1788MUSIC.png" alt="" title="点击返回">
+        <img ref="showOrigin" src="/contribute/1788MUSIC.png" alt="" title="点击返回">
       </div>
       <!--广告 -->
       <div class="ad-container col-sm-12 col-md-12 col-lg-12">
@@ -167,9 +167,10 @@
               <li v-for="(item) of rightData1" :key="item.id">
                 <!-- <div class="zhx"></div> -->
                 <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
-                <a ref="rankA" href="#" target="_blank" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
+                <router-link target="_blank" :to="`/`+item.type+`/info/`+item.id" class="list-group-item">
+                <!-- <a ref="rankA" href="#" target="_blank" @click="intoInfo($event,item.id,item.type)" class="list-group-item"> -->
                   <p :ref="`rankTitleHot`+item.id" @mouseout="stopScroll(item.id,'Hot')" @mouseover="scrollTitle(item.id,'Hot')" class="rank-title">{{ item.title }}</p>
-                </a>
+                </router-link>
               </li>
               
             </ul>
@@ -187,9 +188,10 @@
               <li v-for="(item) of rightData2" :key="item.id">
                 <!-- <div class="zhx"></div> -->
                 <!-- <p class="rank-num hidden-sm">&nbsp;{{ index+1 }}. </p> -->
-                <a ref="rankA" target="_blank" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item">
+                <router-link target="_blank" :to="`/`+item.type+`/info/`+item.id" class="list-group-item">
+                <!-- <a ref="rankA" target="_blank" href="#" @click="intoInfo($event,item.id,item.type)" class="list-group-item"> -->
                   <p :ref="`rankTitleLike`+item.id" @mouseout="stopScroll(item.id,'Like')" @mouseover="scrollTitle(item.id,'Like')" class="rank-title">{{ item.title }}</p>
-                </a>
+                </router-link>
               </li>
               
             </ul>
@@ -207,7 +209,7 @@ import CommentContainer from '../comment/CommentContainer.vue'
 import RightContainer from './RightContainer.vue'
 
 import Clipboard from 'clipboard';
-import axios from 'axios'
+
 import { setTimeout } from 'timers';
 
   export default {
@@ -312,10 +314,8 @@ import { setTimeout } from 'timers';
           return
         }
         
-        
         const mydate = new Date()
-        
-        axios.post("http://localhost:3001/favorite",
+        this.axios.post("/api/favorite",
         {
           articleId: this.id,
           nickname: JSON.parse(sessionStorage.getItem("user")).nickname,
@@ -340,7 +340,7 @@ import { setTimeout } from 'timers';
         const mydate = new Date()
         //UUID
         
-        axios.post("http://localhost:3001/cancelFavorite",
+        this.axios.post("/api/cancelFavorite",
         {
           articleId: this.id,
           nickname: JSON.parse(sessionStorage.getItem("user")).nickname
@@ -364,12 +364,13 @@ import { setTimeout } from 'timers';
         setTimeout(() => {
           this.switchArticle = true
         }, 1);
+        
       },
       menu() {
         window.scrollTo(0,0);
       },
       getInfoData() {
-        axios.post("http://localhost:3001/info",{id: this.id})
+        this.axios.post("/api/info",{id: this.id})
         .then(result => {
           this.infoData = result.data.data
           String.prototype.replaceAll = function(s1,s2){ 
@@ -377,20 +378,23 @@ import { setTimeout } from 'timers';
           }
           let test = /(\")|(\])|(\[)/
           let img = []
-          // test = /\[\]\"/
+          // test = /\[\]\"/ img路径
           if(this.infoData.img === "" | this.infoData.img === null) {
             return
+          }
+          // 大小
+          if(this.infoData.size !=null ) {
+            this.infoData.size = this.infoData.size.toUpperCase().replaceAll(/^\s+|\s+$/g, '')
           }
           this.infoData.img = this.infoData.img.replaceAll(test,"")
           if(this.infoData.img.indexOf(",") > -1) {
             this.infoData.img.split(",").forEach( item => {
-              img.push("http://localhost:3001" + item)
+              img.push("" + item)
             })
           }else {
-            img.push("http://localhost:3001" + this.infoData.img)
+            img.push("" + this.infoData.img)
           }
           this.infoData.img = img
-          console.log(this.infoData.videoLink)
           if( this.infoData.videoLink === "" || this.infoData.videoLink === null ) {
             this.haveVideoLink = false
             return
@@ -404,7 +408,7 @@ import { setTimeout } from 'timers';
       },
       getFavorite() {
         if( sessionStorage.getItem("user") !== null) {
-          axios.post("http://localhost:3001/getFavorite",{articleId: this.id,nickname: JSON.parse(sessionStorage.getItem("user")).nickname})
+          this.axios.post("/api/getFavorite",{articleId: this.id,nickname: JSON.parse(sessionStorage.getItem("user")).nickname})
           .then(result => {
             if(parseInt(result.data.isFavorite) === 1) {
               this.isFavorite = true

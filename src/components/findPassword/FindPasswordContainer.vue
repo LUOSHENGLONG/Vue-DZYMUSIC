@@ -66,7 +66,7 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
+;
 import md5 from 'js-md5';
 export default {
     data() {
@@ -97,7 +97,7 @@ export default {
             if(this.emailPassword.trim() != "") {
                 // 验证密码是否不低于8位且包含数字字母
                 if( passwordConfirm.test(this.emailPassword) ) {
-                    axios.post("http://localhost:3001/updatePassword",{emailOrPhone: "email",account: this.account2,password: this.emailPassword})
+                    this.axios.post("/api/updatePassword",{emailOrPhone: "email",account: this.account2,password: this.emailPassword})
                     .then( result => {
                         console.log(result.data)
                         if( result.data.code != null) {
@@ -170,7 +170,7 @@ export default {
                     this.$refs.emailInput.style.borderColor = "#aaa"
                 }, 3000);
             }else {
-                axios.post("http://localhost:3001/sendEmail",{email: this.account2})
+                this.axios.post("/api/sendEmail",{email: this.account2})
                 .then( result => {
                     console.log(result.data)
                     console.log(result.data.code === null)
@@ -254,7 +254,7 @@ export default {
                 }else {
                     // 通过验证则更新数据库
                     console.log(this.emailOrPhone)
-                    axios.post("http://localhost:3001/updatePassword",
+                    this.axios.post("/api/updatePassword",
                         {emailOrPhone: this.emailOrPhone,account: this.account1,password: this.newPassword})
                     .then ( result => {
                         console.log(result)
@@ -335,7 +335,7 @@ export default {
                 return
             }
 
-            axios.post("http://localhost:3001/findPasswordByEmail",{emailOrPhone: this.emailOrPhone,account: this.account1,question: this.select,answer: this.answer})    
+            this.axios.post("/api/findPasswordByEmail",{emailOrPhone: this.emailOrPhone,account: this.account1,question: this.select,answer: this.answer})    
             .then( result => {
                 console.log(result.data)
                 if( result.data.code === 1){
@@ -361,7 +361,7 @@ export default {
             })        
         },
         getQuestion() {
-            axios.post("http://localhost:3001/getQuestion")
+            this.axios.post("/api/getQuestion")
             .then( result => {
                 console.log(result.data)
                 this.optionData = result.data

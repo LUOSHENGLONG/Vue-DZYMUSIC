@@ -341,7 +341,7 @@ export default {
     if (sessionStorage.getItem("user") != null) {
       const user = JSON.parse(sessionStorage.getItem("user"));
       
-      this.navAvatar = `http://localhost:3001` + user.avatar;
+      this.navAvatar = user.avatar;
       this.nickname = user.nickname;
       if (user.email.trim() != "" || user.email != null) {
         this.emailOrPhone = user.email;
@@ -427,6 +427,8 @@ export default {
       // 获取文章类型 id为 如 samplePack 
       this.type = $('input[name="type"]:checked')[0].id
 
+      // 优化size 全部转成大写
+      this.size = this.size === "" ? this.size : this.size.toUpperCase()
       
 
       this.formData.append("title",this.title)
@@ -443,7 +445,7 @@ export default {
 
       let that = this
       $.ajax({
-        url: "http://localhost:3001/submitContribute",
+        url: "/api/submitContribute",
         // async: false,
         type: "POST",
         data: this.formData,
@@ -576,7 +578,6 @@ export default {
       if( newVal != oldVal) {
         let height = $(this.$refs.dropdown).height()
         this.$refs.contribute.style.minHeight = height + "px"
-        console.log()
       }
     },
 
@@ -584,7 +585,6 @@ export default {
       if( newVal != oldVal) {
         let height = $(this.$refs.dropdown).height()
         this.$refs.contribute.style.minHeight = height + "px"
-        console.log()
       }
     }
   }

@@ -54,6 +54,8 @@
           this.$router.push({path: "/host"})
         }else if(this.type === "教程") {
           this.$router.push({path: "/tutorial"})
+        }else if(this.type === "最新") {
+          this.$router.push({path: "/last"})
         }
       },
       intoInfo(e, id) {
@@ -80,6 +82,13 @@
     }
     ,
     components: {
+    },
+    watch: {
+      // data(newVal,oldVal) {
+      //   if(newVal == null) {
+      //     this.$router.push({path: '/'})
+      //   }
+      // }
     }
   }
 </script>
@@ -183,6 +192,11 @@ a {
       position: relative;
       height: 32px;
       padding-top: 180px;
+      background-image: url(/images/favicon.ico);
+      background-size: 10%;
+      background-repeat: no-repeat;
+      background-position-x: 98%;
+      background-position-y: 2%;
       .title-image {
         width: 100%;
         height: 180px;
